@@ -49,8 +49,8 @@ $desktop_logo_data = petromin_get_acf_image_data($header_logo_field['desktop_log
 $mobile_logo_data = petromin_get_acf_image_data($header_logo_field['mobile_logo'] ?? null, 'full', get_template_directory_uri() . '/assets/img/petromin-logo-300x75-1.webp', $logo_alt_fallback);
 
 // User Menu Links
-$login_link = $user_menu['login_link'] ?? '#';
-$signup_link = $user_menu['signup_link'] ?? '#';
+$login_link = petromin_normalize_link($user_menu['login_link'] ?? '', '#');
+$signup_link = petromin_normalize_link($user_menu['signup_link'] ?? '', '#');
 
 // Default navigation menu items if ACF is empty
 $default_nav_items = [
@@ -109,9 +109,9 @@ $mobile_items = !empty($mobile_menu) ? $mobile_menu : $default_mobile_items;
                 class="xl:w-10/12 lg:w-4/5 h-[4.125rem] bg-white relative lg:flex lg:flex-row flex-col  items-center justify-start hidden -skew-x-[18deg] lg:px-[1.875rem] origin-bottom">
                 <div class="w-full flex justify-between items-center skew-x-[18deg]">
                     <ul class="nav-menu flex items-center 2xl:gap-14 xl:gap-8 gap-x-6 justify-between w-full">
-                        <?php foreach ($nav_items as $nav_item) : 
+                        <?php foreach ($nav_items as $nav_item) :
                             $menu_text = $nav_item['menu_text'] ?? '';
-                            $menu_link = $nav_item['menu_link'] ?? '#';
+                            $menu_link = petromin_normalize_link($nav_item['menu_link'] ?? '', '#');
                             $target = $nav_item['menu_item_target'] ?? false ? '_blank' : '_self';
                         ?>
                             <li>
@@ -217,9 +217,9 @@ $mobile_items = !empty($mobile_menu) ? $mobile_menu : $default_mobile_items;
                 <div class="space-y-2 py-6">
                     <div class="flex flex-col gap-5 items-center">
                         <div class="flex flex-col w-full gap-y-5">
-                            <?php foreach ($mobile_items as $index => $mobile_item) : 
+                            <?php foreach ($mobile_items as $index => $mobile_item) :
                                 $mobile_text = $mobile_item['mobile_menu_text'] ?? '';
-                                $mobile_link = $mobile_item['mobile_menu_link'] ?? '#';
+                                $mobile_link = petromin_normalize_link($mobile_item['mobile_menu_link'] ?? '', '#');
                                 $menu_id = 'mmMenu' . $index;
                             ?>
                                 <div class="relative flex flex-col gap-y-3">

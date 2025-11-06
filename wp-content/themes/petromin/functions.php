@@ -59,6 +59,91 @@ if (!function_exists('petromin_get_acf_image_data')) {
     }
 }
 
+if (!function_exists('petromin_normalize_link')) {
+    function petromin_normalize_link($link, $fallback = '#')
+    {
+        if (is_array($link)) {
+            if (!empty($link['url'])) {
+                $link = $link['url'];
+            } elseif (!empty($link['ID'])) {
+                $link = get_permalink($link['ID']);
+            } elseif (!empty($link['id'])) {
+                $link = get_permalink($link['id']);
+            }
+        }
+
+        if (is_numeric($link)) {
+            $link = get_permalink($link);
+        }
+
+        if (!is_string($link)) {
+            $link = '';
+        }
+
+        $link = trim($link);
+
+        if ($link === '') {
+            return $fallback;
+        }
+
+        $special_protocols = ['mailto:', 'tel:', 'javascript:'];
+        foreach ($special_protocols as $protocol) {
+            if (stripos($link, $protocol) === 0) {
+                return $link;
+            }
+        }
+
+        $parsed_link = wp_parse_url($link);
+
+        if ($parsed_link === false) {
+            return $fallback;
+        }
+
+        // Already relative URLs should be returned as-is.
+        if (empty($parsed_link['host']) && empty($parsed_link['scheme'])) {
+            return $link;
+        }
+
+        $site_url_parts = wp_parse_url(home_url());
+
+        if (!is_array($site_url_parts)) {
+            return $link;
+        }
+
+        $hosts_match = isset($parsed_link['host'], $site_url_parts['host'])
+            && strcasecmp($parsed_link['host'], $site_url_parts['host']) === 0;
+
+        if (!$hosts_match) {
+            return $link;
+        }
+
+        $relative_path = $parsed_link['path'] ?? '/';
+
+        if ($relative_path === '') {
+            $relative_path = '/';
+        }
+
+        // Remove the site path from the URL if WordPress is installed in a subdirectory.
+        if (!empty($site_url_parts['path'])) {
+            $site_path = rtrim($site_url_parts['path'], '/');
+
+            if ($site_path !== '' && strpos($relative_path, $site_path) === 0) {
+                $relative_path = substr($relative_path, strlen($site_path));
+                if ($relative_path === '') {
+                    $relative_path = '/';
+                }
+            }
+        }
+
+        $query = isset($parsed_link['query']) ? '?' . $parsed_link['query'] : '';
+        $fragment = isset($parsed_link['fragment']) ? '#' . $parsed_link['fragment'] : '';
+
+        $normalized = $relative_path . $query . $fragment;
+
+        return $normalized !== '' ? $normalized : $fallback;
+    }
+}
+
 
 function my_acf_google_map_api( $api ){
     $api['key'] = 'AIzaSyDC3RCcvMaCHd7VOf7hRhgceXDQ5cSFyGU';
@@ -139,7 +224,11 @@ add_action('acf/init', function () {
                         'key' => 'field_menu_item_link',
                         'label' => 'Menu Link',
                         'name' => 'menu_link',
-                        'type' => 'text',
+                        'type' => 'page_link',
+                        'post_type' => '',
+                        'allow_null' => 1,
+                        'allow_archives' => 1,
+                        'return_format' => 'url',
                         'wrapper' => [
                             'width' => '50%',
                         ],
@@ -168,15 +257,23 @@ add_action('acf/init', function () {
                         'key' => 'field_login_link',
                         'label' => 'Login Link',
                         'name' => 'login_link',
-                        'type' => 'text',
-                        'default_value' => '#'
+                        'type' => 'page_link',
+                        'post_type' => '',
+                        'allow_null' => 1,
+                        'allow_archives' => 1,
+                        'return_format' => 'url',
+                        'default_value' => ''
                     ],
                     [
                         'key' => 'field_signup_link',
                         'label' => 'Sign Up Link',
                         'name' => 'signup_link',
-                        'type' => 'text',
-                        'default_value' => '#'
+                        'type' => 'page_link',
+                        'post_type' => '',
+                        'allow_null' => 1,
+                        'allow_archives' => 1,
+                        'return_format' => 'url',
+                        'default_value' => ''
                     ],
                 ],
             ],
@@ -201,7 +298,11 @@ add_action('acf/init', function () {
                         'key' => 'field_mobile_menu_link',
                         'label' => 'Menu Link',
                         'name' => 'mobile_menu_link',
-                        'type' => 'text',
+                        'type' => 'page_link',
+                        'post_type' => '',
+                        'allow_null' => 1,
+                        'allow_archives' => 1,
+                        'return_format' => 'url',
                         'wrapper' => [
                             'width' => '50%',
                         ],
@@ -889,7 +990,10 @@ add_action('acf/init', function () {
                                 'key' => 'field_news_media_mention_date',
                                 'label' => 'Date',
                                 'name' => 'date',
-                                'type' => 'text',
+                                'type' => 'date_picker',
+                                'display_format' => 'F j, Y',
+                                'return_format' => 'F j, Y',
+                                'first_day' => 0,
                             ],
                             [
                                 'key' => 'field_news_media_mention_image',
@@ -946,7 +1050,10 @@ add_action('acf/init', function () {
                                 'key' => 'field_news_press_release_date',
                                 'label' => 'Date',
                                 'name' => 'date',
-                                'type' => 'text',
+                                'type' => 'date_picker',
+                                'display_format' => 'F j, Y',
+                                'return_format' => 'F j, Y',
+                                'first_day' => 0,
                             ],
                             [
                                 'key' => 'field_news_press_release_pdf_link',
@@ -995,7 +1102,10 @@ add_action('acf/init', function () {
                                 'key' => 'field_news_featured_date',
                                 'label' => 'Date',
                                 'name' => 'date',
-                                'type' => 'text',
+                                'type' => 'date_picker',
+                                'display_format' => 'F j, Y',
+                                'return_format' => 'F j, Y',
+                                'first_day' => 0,
                             ],
                             [
                                 'key' => 'field_news_featured_image',
@@ -1058,7 +1168,10 @@ add_action('acf/init', function () {
                                 'key' => 'field_news_event_date',
                                 'label' => 'Date',
                                 'name' => 'date',
-                                'type' => 'text',
+                                'type' => 'date_picker',
+                                'display_format' => 'F j, Y',
+                                'return_format' => 'F j, Y',
+                                'first_day' => 0,
                             ],
                             [
                                 'key' => 'field_news_event_image',
