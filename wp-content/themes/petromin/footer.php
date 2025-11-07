@@ -1,202 +1,549 @@
+<?php
+$footer_brand = function_exists('get_field') ? (get_field('footer_brand', 'option') ?: []) : [];
+$footer_highlight = function_exists('get_field') ? (get_field('footer_highlight_box', 'option') ?: []) : [];
+$footer_head_office = function_exists('get_field') ? (get_field('footer_head_office', 'option') ?: []) : [];
+$footer_link_columns_raw = function_exists('get_field') ? (get_field('footer_link_columns', 'option') ?: []) : [];
+$footer_store_badges_raw = function_exists('get_field') ? (get_field('footer_store_badges', 'option') ?: []) : [];
+$footer_social_links_raw = function_exists('get_field') ? (get_field('footer_social_links', 'option') ?: []) : [];
+$footer_copyright = function_exists('get_field') ? (get_field('footer_copyright', 'option') ?: '') : '';
 
+$default_footer_description = 'Petromin Express is India’s leading multibrand car service and repair network. In partnership with HPCL, we deliver a standardised, tech-enabled service experience across fully owned garages.';
+
+$footer_logo_data = petromin_get_acf_image_data(
+    $footer_brand['logo'] ?? null,
+    'full',
+    get_template_directory_uri() . '/assets/img/image-38.webp',
+    'Petromin Express Logo'
+);
+
+$footer_description = trim((string) ($footer_brand['description'] ?? ''));
+if ($footer_description === '') {
+    $footer_description = $default_footer_description;
+}
+
+$default_info_columns = [
+    [
+        'title' => 'Station Hours',
+        'lines' => [
+            ['line_text' => '8 AM to 8 PM'],
+            ['line_text' => 'Monday to Saturday'],
+            ['line_text' => 'Open: 3rd & 4th Sunday'],
+            ['line_text' => 'Closed: 1st & 2nd Sunday'],
+        ],
+    ],
+    [
+        'title' => 'Call Center',
+        'lines' => [
+            ['line_text' => '6 AM to 11 PM'],
+            ['line_text' => 'Monday to Sunday'],
+        ],
+    ],
+];
+
+$info_columns_raw = $footer_highlight['info_columns'] ?? [];
+$normalized_info_columns = [];
+
+if (is_array($info_columns_raw)) {
+    foreach ($info_columns_raw as $column) {
+        if (!is_array($column)) {
+            continue;
+        }
+
+        $column_title = trim((string) ($column['title'] ?? ''));
+        $lines_raw = $column['lines'] ?? [];
+        $lines = [];
+
+        if (is_array($lines_raw)) {
+            foreach ($lines_raw as $line) {
+                $line_text = '';
+                if (is_array($line)) {
+                    $line_text = $line['line_text'] ?? '';
+                } else {
+                    $line_text = $line;
+                }
+
+                $line_text = trim((string) $line_text);
+
+                if ($line_text === '') {
+                    continue;
+                }
+
+                $lines[] = $line_text;
+            }
+        }
+
+        if ($column_title === '' && empty($lines)) {
+            continue;
+        }
+
+        $normalized_info_columns[] = [
+            'title' => $column_title,
+            'lines' => $lines,
+        ];
+    }
+}
+
+if (empty($normalized_info_columns)) {
+    foreach ($default_info_columns as $default_column) {
+        $lines = [];
+        foreach ($default_column['lines'] as $line) {
+            $lines[] = $line['line_text'];
+        }
+        $normalized_info_columns[] = [
+            'title' => $default_column['title'],
+            'lines' => $lines,
+        ];
+    }
+}
+
+$contact_phone = trim((string) ($footer_highlight['contact_phone'] ?? ''));
+if ($contact_phone === '') {
+    $contact_phone = '+91 86686 92000';
+}
+
+$contact_email = trim((string) ($footer_highlight['contact_email'] ?? ''));
+if ($contact_email === '') {
+    $contact_email = 'customercare.pe@petromin.in';
+}
+
+$head_office_title = trim((string) ($footer_head_office['title'] ?? ''));
+if ($head_office_title === '') {
+    $head_office_title = 'Head Office';
+}
+
+$head_office_address = trim((string) ($footer_head_office['address'] ?? ''));
+if ($head_office_address === '') {
+    $head_office_address = "Sai Brindhavan, Plot No. 40C, Door 1, 3rd Main Road
+Kottur Gardens, Kotturpuram, Chennai, Tamil Nadu - 600085";
+}
+
+$default_footer_columns = [
+    [
+        'column_title' => 'Services',
+        'primary_links' => [
+            ['link_text' => 'Car Service', 'link_url' => '#', 'open_in_new_tab' => false],
+            ['link_text' => 'Battery Service', 'link_url' => '#', 'open_in_new_tab' => false],
+            ['link_text' => 'Tyre Care', 'link_url' => '#', 'open_in_new_tab' => false],
+            ['link_text' => 'AC Service', 'link_url' => '#', 'open_in_new_tab' => false],
+            ['link_text' => 'Eco Car Wash', 'link_url' => '#', 'open_in_new_tab' => false],
+            ['link_text' => 'Headlight Polish', 'link_url' => '#', 'open_in_new_tab' => false],
+            ['link_text' => 'Body Shop', 'link_url' => '#', 'open_in_new_tab' => false],
+            ['link_text' => 'Engine Care', 'link_url' => '#', 'open_in_new_tab' => false],
+        ],
+        'secondary_links' => [
+            ['link_text' => 'About Us', 'link_url' => '#', 'open_in_new_tab' => false],
+            ['link_text' => 'Blogs', 'link_url' => '#', 'open_in_new_tab' => false],
+            ['link_text' => 'PETROMINit!', 'link_url' => '#', 'open_in_new_tab' => false],
+            ['link_text' => 'Locate Us', 'link_url' => '#', 'open_in_new_tab' => false],
+            ['link_text' => 'Privacy Policy', 'link_url' => '#', 'open_in_new_tab' => false],
+        ],
+    ],
+    [
+        'column_title' => 'Latest Offers',
+        'primary_links' => [
+            ['link_text' => 'PMS Service @Rs.2499', 'link_url' => '#', 'open_in_new_tab' => false],
+            ['link_text' => 'Tyre Offer - Buy 4 + 1TMSS', 'link_url' => '#', 'open_in_new_tab' => false],
+            ['link_text' => 'Full Body Car Paint Offer', 'link_url' => '#', 'open_in_new_tab' => false],
+            ['link_text' => 'Dent & Paint Repair', 'link_url' => '#', 'open_in_new_tab' => false],
+            ['link_text' => 'AC Gas Top-up & Inspection', 'link_url' => '#', 'open_in_new_tab' => false],
+            ['link_text' => 'Express Car Service (@Rs.999)', 'link_url' => '#', 'open_in_new_tab' => false],
+            ['link_text' => 'Petrofit', 'link_url' => '#', 'open_in_new_tab' => false],
+            ['link_text' => 'Brake Pad Replacement', 'link_url' => '#', 'open_in_new_tab' => false],
+            ['link_text' => 'AC Inspection @Rs.99', 'link_url' => '#', 'open_in_new_tab' => false],
+            ['link_text' => 'Brake Inspection @Rs.99', 'link_url' => '#', 'open_in_new_tab' => false],
+        ],
+        'secondary_links' => [
+            ['link_text' => 'Newsroom', 'link_url' => '#', 'open_in_new_tab' => false],
+            ['link_text' => 'Terms & Condition', 'link_url' => '#', 'open_in_new_tab' => false],
+            ['link_text' => 'Refund Policy', 'link_url' => '#', 'open_in_new_tab' => false],
+        ],
+    ],
+];
+
+$normalized_footer_columns = [];
+$footer_columns_source = is_array($footer_link_columns_raw) ? $footer_link_columns_raw : [];
+
+if (!empty($footer_columns_source)) {
+    foreach ($footer_columns_source as $column) {
+        if (!is_array($column)) {
+            continue;
+        }
+
+        $column_title = trim((string) ($column['column_title'] ?? ''));
+        $primary_links_raw = $column['primary_links'] ?? [];
+        $secondary_links_raw = $column['secondary_links'] ?? [];
+        $primary_links = [];
+        $secondary_links = [];
+
+        if (is_array($primary_links_raw)) {
+            foreach ($primary_links_raw as $link) {
+                if (!is_array($link)) {
+                    continue;
+                }
+
+                $link_text = trim((string) ($link['link_text'] ?? ''));
+                if ($link_text === '') {
+                    continue;
+                }
+
+                $link_url = petromin_normalize_link($link['link_url'] ?? '', '#');
+                $primary_links[] = [
+                    'text' => $link_text,
+                    'url' => $link_url,
+                    'target' => !empty($link['open_in_new_tab']) ? '_blank' : '_self',
+                ];
+            }
+        }
+
+        if (is_array($secondary_links_raw)) {
+            foreach ($secondary_links_raw as $link) {
+                if (!is_array($link)) {
+                    continue;
+                }
+
+                $link_text = trim((string) ($link['link_text'] ?? ''));
+                if ($link_text === '') {
+                    continue;
+                }
+
+                $link_url = petromin_normalize_link($link['link_url'] ?? '', '#');
+                $secondary_links[] = [
+                    'text' => $link_text,
+                    'url' => $link_url,
+                    'target' => !empty($link['open_in_new_tab']) ? '_blank' : '_self',
+                ];
+            }
+        }
+
+        if ($column_title === '' && empty($primary_links) && empty($secondary_links)) {
+            continue;
+        }
+
+        $normalized_footer_columns[] = [
+            'column_title' => $column_title,
+            'primary_links' => $primary_links,
+            'secondary_links' => $secondary_links,
+        ];
+    }
+}
+
+if (empty($normalized_footer_columns)) {
+    foreach ($default_footer_columns as $column) {
+        $normalized_primary = [];
+        foreach ($column['primary_links'] as $link) {
+            $normalized_primary[] = [
+                'text' => $link['link_text'],
+                'url' => petromin_normalize_link($link['link_url'], '#'),
+                'target' => !empty($link['open_in_new_tab']) ? '_blank' : '_self',
+            ];
+        }
+
+        $normalized_secondary = [];
+        foreach ($column['secondary_links'] as $link) {
+            $normalized_secondary[] = [
+                'text' => $link['link_text'],
+                'url' => petromin_normalize_link($link['link_url'], '#'),
+                'target' => !empty($link['open_in_new_tab']) ? '_blank' : '_self',
+            ];
+        }
+
+        $normalized_footer_columns[] = [
+            'column_title' => $column['column_title'],
+            'primary_links' => $normalized_primary,
+            'secondary_links' => $normalized_secondary,
+        ];
+    }
+}
+
+$default_store_badges = [
+    [
+        'badge_link' => '#',
+        'badge_image' => [
+            'url' => get_template_directory_uri() . '/assets/img/assets1.webp',
+            'alt' => 'Google Play',
+        ],
+    ],
+    [
+        'badge_link' => '#',
+        'badge_image' => [
+            'url' => get_template_directory_uri() . '/assets/img/app_store_btn.webp',
+            'alt' => 'App Store',
+        ],
+    ],
+];
+
+$store_badges_source = !empty($footer_store_badges_raw) && is_array($footer_store_badges_raw) ? $footer_store_badges_raw : $default_store_badges;
+$normalized_store_badges = [];
+
+foreach ($store_badges_source as $badge) {
+    if (!is_array($badge)) {
+        continue;
+    }
+
+    $badge_image_field = $badge['badge_image'] ?? null;
+    $fallback_url = '';
+    $fallback_alt = '';
+
+    if (is_array($badge_image_field) && isset($badge_image_field['url'])) {
+        $fallback_url = $badge_image_field['url'];
+        $fallback_alt = $badge_image_field['alt'] ?? '';
+    }
+
+    $badge_image_data = petromin_get_acf_image_data($badge_image_field, 'full', $fallback_url, $fallback_alt);
+
+    if (!$badge_image_data) {
+        continue;
+    }
+
+    $badge_link = petromin_normalize_link($badge['badge_link'] ?? '', '#');
+
+    $normalized_store_badges[] = [
+        'link' => $badge_link,
+        'image' => $badge_image_data,
+    ];
+}
+
+$default_social_links = [
+    ['platform' => 'x', 'url' => '#', 'open_in_new_tab' => true],
+    ['platform' => 'linkedin', 'url' => '#', 'open_in_new_tab' => true],
+    ['platform' => 'facebook', 'url' => '#', 'open_in_new_tab' => true],
+    ['platform' => 'instagram', 'url' => '#', 'open_in_new_tab' => true],
+    ['platform' => 'youtube', 'url' => '#', 'open_in_new_tab' => true],
+];
+
+$social_links_source = !empty($footer_social_links_raw) && is_array($footer_social_links_raw) ? $footer_social_links_raw : $default_social_links;
+$normalized_social_links = [];
+
+foreach ($social_links_source as $social_link) {
+    if (!is_array($social_link)) {
+        continue;
+    }
+
+    $platform = strtolower(trim((string) ($social_link['platform'] ?? '')));
+    $icon_svg = petromin_get_social_icon_svg($platform);
+
+    if ($icon_svg === '') {
+        continue;
+    }
+
+    $url = petromin_normalize_link($social_link['url'] ?? '', '#');
+    $target = !empty($social_link['open_in_new_tab']) ? '_blank' : '_self';
+
+    $normalized_social_links[] = [
+        'platform' => $platform,
+        'icon' => $icon_svg,
+        'url' => $url,
+        'target' => $target,
+    ];
+}
+
+if (empty($normalized_social_links)) {
+    foreach ($default_social_links as $social_link) {
+        $platform = $social_link['platform'];
+        $icon_svg = petromin_get_social_icon_svg($platform);
+
+        if ($icon_svg === '') {
+            continue;
+        }
+
+        $normalized_social_links[] = [
+            'platform' => $platform,
+            'icon' => $icon_svg,
+            'url' => petromin_normalize_link($social_link['url'], '#'),
+            'target' => !empty($social_link['open_in_new_tab']) ? '_blank' : '_self',
+        ];
+    }
+}
+
+if ($footer_copyright === '') {
+    $footer_copyright = '© 2025, Automini Car Services Pvt. Ltd.';
+}
+
+$contact_phone_href = '#';
+if ($contact_phone !== '') {
+    $phone_digits = preg_replace('/[^0-9+]/', '', $contact_phone);
+    if (!empty($phone_digits)) {
+        $contact_phone_href = 'tel:' . $phone_digits;
+    }
+}
+
+$contact_email_href = '#';
+if ($contact_email !== '') {
+    $contact_email_href = stripos($contact_email, 'mailto:') === 0 ? $contact_email : 'mailto:' . $contact_email;
+}
+
+$arrow_icon_url = esc_url(get_template_directory_uri() . '/assets/img/fi_19024510.webp');
+?>
 <footer class="w-full bg-black relative text-white font-inter lg:py-8 py-4 z-10">
     <div class="py-12 relative view !pl-0">
         <div class="flex flex-col md:flex-row gap-12">
-            <!-- Left Column -->
             <div class="md:w-3/5 w-full flex flex-col gap-8">
                 <div class="flex flex-col items-start gap-5 lg:pl-[5rem] md:pl-[4rem] pl-[1rem]">
-                    <a href="#">
-                        <img src="img/image-38.webp" alt="Petromin Express Logo" title="Petromin Express Logo"
-                            class="w-auto h-16 object-contain" loading="lazy" fetchpriority="low">
+                    <a href="<?php echo esc_url(home_url('/')); ?>">
+                        <?php if (!empty($footer_logo_data)) : ?>
+                            <img src="<?php echo esc_url($footer_logo_data['url']); ?>"
+                                 alt="<?php echo esc_attr($footer_logo_data['alt']); ?>"
+                                 title="<?php echo esc_attr($footer_logo_data['alt']); ?>"
+                                 class="w-auto h-16 object-contain"
+                                 loading="lazy"
+                                 fetchpriority="low">
+                        <?php endif; ?>
                     </a>
                     <p class="text-base text-white font-normal leading-relaxed max-w-md">
-                        Petromin Express is India’s leading multibrand car service and repair network. In
-                        partnership
-                        with HPCL, we deliver a standardised, techenabled service experience across fully owned
-                        garages.
+                        <?php echo nl2br(esc_html($footer_description)); ?>
                     </p>
                 </div>
 
-                <!-- Skewed Gradient Box -->
-                <div
-                    class="w-full lg:pl-[5rem] md:pl-[4rem] pl-[1rem] md:p-12 p-8 flex flex-col bg-[linear-gradient(268.6deg,_#CB122D_0.16%,_#650916_100%)]  origin-top -skew-x-[18deg]">
-                    <!-- <img src="img/Union-1.webp" alt="bg img" title="bg img"
-                        class="md:absolute w-auto object-cover object-left top-[17rem] h-72" loading="lazy"
-                        fetchpriority="low"> -->
+                <div class="w-full lg:pl-[5rem] md:pl-[4rem] pl-[1rem] md:p-12 p-8 flex flex-col bg-[linear-gradient(268.6deg,_#CB122D_0.16%,_#650916_100%)] origin-top -skew-x-[18deg]">
                     <div class="flex items-center skew-x-[18deg] lg:pl-[3.5rem] md:pl-[3rem] pl-[4rem]">
-                        <div class=" flex flex-col justify-center gap-8 text-white">
+                        <div class="flex flex-col justify-center gap-8 text-white">
                             <div class="flex md:flex-row flex-col md:gap-28 gap-y-6">
-                                <div>
-                                    <h3 class="font-medium md:text-base text-sm mb-2">Station Hours </h3>
-                                    <div class="lg:text-xl text-base flex flex-col gap-y-1">
-                                        <span class="block md:font-bold font-semibold">8 AM to 8 PM </span>
-                                        <span class="block md:font-bold font-semibold">Monday to Saturday</span>
-                                        <span class="block">Open: 3rd & 4th Sunday<br></span>
-                                        <span class="block">Closed: 1st & 2nd Sunday</span>
+                                <?php foreach ($normalized_info_columns as $column) : ?>
+                                    <div>
+                                        <?php if (!empty($column['title'])) : ?>
+                                            <h3 class="font-medium md:text-base text-sm mb-2">
+                                                <?php echo esc_html($column['title']); ?>
+                                            </h3>
+                                        <?php endif; ?>
+                                        <?php if (!empty($column['lines'])) : ?>
+                                            <div class="lg:text-xl text-base flex flex-col gap-y-1">
+                                                <?php foreach ($column['lines'] as $line_index => $line_text) : ?>
+                                                    <span class="block <?php echo $line_index < 2 ? 'md:font-bold font-semibold' : ''; ?>">
+                                                        <?php echo esc_html($line_text); ?>
+                                                    </span>
+                                                <?php endforeach; ?>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
-                                </div>
-                                <div>
-                                    <h3 class="font-medium lg:text-base text-sm mb-2">Call Center</h3>
-                                    <div class="lg:text-xl text-base flex flex-col gap-y-1">
-                                        <span class="block md:font-bold font-semibold">6 AM to 11 PM</span>
-                                        <span class="block md:font-bold font-semibold">Monday to Sunday</span>
-                                    </div>
-                                </div>
+                                <?php endforeach; ?>
                             </div>
 
-                            <div
-                                class="mt-3 flex md:flex-row flex-col gap-1 2xl:text-xl lg:text-xl text-base font-bold">
-                                <a href="#">+91 86686 92000 </a>
-                                <span class="md:inline hidden">|</span>
-                                <a href="mailto:customercare.pe@petromin.in"
-                                    class="2xl:text-xl lg:text-xl text-sm underline hover:text-gray-200 md:pl-1">
-                                    customercare.pe@petromin.in
-                                </a>
+                            <div class="mt-3 flex md:flex-row flex-col gap-1 2xl:text-xl lg:text-xl text-base font-bold">
+                                <?php if ($contact_phone !== '') : ?>
+                                    <a href="<?php echo esc_url($contact_phone_href); ?>">
+                                        <?php echo esc_html($contact_phone); ?>
+                                    </a>
+                                <?php endif; ?>
+                                <?php if ($contact_phone !== '' && $contact_email !== '') : ?>
+                                    <span class="md:inline hidden">|</span>
+                                <?php endif; ?>
+                                <?php if ($contact_email !== '') : ?>
+                                    <a href="<?php echo esc_url($contact_email_href); ?>"
+                                       class="2xl:text-xl lg:text-xl text-sm underline hover:text-gray-200 md:pl-1">
+                                        <?php echo esc_html($contact_email); ?>
+                                    </a>
+                                <?php endif; ?>
                             </div>
 
                         </div>
                     </div>
                 </div>
 
-
-                <div class="block md:hidden lg:pl-[5rem] md:pl-[4rem] pl-[1rem]">
-                    <h3 class="font-semibold lg:mt-12 md:mt-6 mt-2 mb-1">Head Office</h3>
-                    <p class="text-sm">
-                        Sai Brindhavan, Plot No. 40C, Door 1, 3rd Main Road<br>
-                        Kottur Gardens, Kotturpuram, Chennai, Tamil Nadu - 600085
-                    </p>
-                </div>
+                <?php if (!empty($head_office_address)) : ?>
+                    <div class="block md:hidden lg:pl-[5rem] md:pl-[4rem] pl-[1rem]">
+                        <h3 class="font-semibold lg:mt-12 md:mt-6 mt-2 mb-1">
+                            <?php echo esc_html($head_office_title); ?>
+                        </h3>
+                        <p class="text-sm">
+                            <?php echo nl2br(esc_html($head_office_address)); ?>
+                        </p>
+                    </div>
+                <?php endif; ?>
             </div>
-            <!-- Right Column -->
+
             <div class="md:w-2/5 w-full md:mt-20">
                 <div class="flex">
-                    <div class="md:w-1/2 w-full md:pl-0 pl-[1rem]">
-                        <h3 class="font-semibold mb-2">Services</h3>
-                        <ul class="flex flex-col  text-sm space-y-1 mb-4">
-                            <li><a href="#" class="hover:text-gray-300 duration-300">Car Service</a></li>
-                            <li><a href="#" class="hover:text-gray-300 duration-300">Battery Service</a></li>
-                            <li><a href="#" class="hover:text-gray-300 duration-300">Tyre Care</a></li>
-                            <li><a href="#" class="hover:text-gray-300 duration-300">AC Service</a></li>
-                            <li><a href="#" class="hover:text-gray-300 duration-300">Eco Car Wash</a></li>
-                            <li><a href="#" class="hover:text-gray-300 duration-300">Headlight Polish</a></li>
-                            <li><a href="#" class="hover:text-gray-300 duration-300">Body Shop</a></li>
-                            <li><a href="#" class="hover:text-gray-300 duration-300">Engine Care</a></li>
-                        </ul>
-                        <div class="w-full flex">
-                            <ul class="flex flex-col  text-sm gap-y-5">
-                                <li class="font-semibold"><a href="#" class="hover:text-gray-300 duration-300">About
-                                        Us</a></li>
-                                <li class="font-semibold"><a href="#"
-                                        class="hover:text-gray-300 duration-300">Blogs</a></li>
-                                <li class="font-semibold"><a href="#"
-                                        class="hover:text-gray-300 duration-300">PETROMINit!</a></li>
-                                <li class="font-semibold"><a href="#"
-                                        class="hover:text-gray-300 duration-300">Locate Us</a></li>
-                                <li class="font-semibold"><a href="#"
-                                        class="hover:text-gray-300 duration-300">Privacy Policy</a></li>
-                            </ul>
+                    <?php foreach ($normalized_footer_columns as $index => $column) : ?>
+                        <div class="md:w-1/2 w-full <?php echo $index === 0 ? 'md:pl-0 pl-[1rem]' : ''; ?>">
+                            <?php if (!empty($column['column_title'])) : ?>
+                                <h3 class="font-semibold mb-2">
+                                    <?php echo esc_html($column['column_title']); ?>
+                                </h3>
+                            <?php endif; ?>
+                            <?php if (!empty($column['primary_links'])) : ?>
+                                <ul class="flex flex-col text-sm space-y-1 mb-4">
+                                    <?php foreach ($column['primary_links'] as $link) : ?>
+                                        <li>
+                                            <a href="<?php echo esc_url($link['url']); ?>"
+                                               class="hover:text-gray-300 duration-300"
+                                               target="<?php echo esc_attr($link['target']); ?>"
+                                               <?php echo $link['target'] === '_blank' ? 'rel="noopener noreferrer"' : ''; ?>>
+                                                <?php echo esc_html($link['text']); ?>
+                                            </a>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            <?php endif; ?>
+                            <?php if (!empty($column['secondary_links'])) : ?>
+                                <div class="w-full flex">
+                                    <ul class="flex flex-col md:text-base text-sm gap-y-5">
+                                        <?php foreach ($column['secondary_links'] as $link) : ?>
+                                            <li class="font-semibold">
+                                                <a href="<?php echo esc_url($link['url']); ?>"
+                                                   class="hover:text-gray-300 duration-300"
+                                                   target="<?php echo esc_attr($link['target']); ?>"
+                                                   <?php echo $link['target'] === '_blank' ? 'rel="noopener noreferrer"' : ''; ?>>
+                                                    <?php echo esc_html($link['text']); ?>
+                                                </a>
+                                            </li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </div>
+                            <?php endif; ?>
                         </div>
-                    </div>
-                    <div class="md:w-1/2 w-full">
-                        <h3 class="font-semibold mb-2">Latest Offers</h3>
-                        <ul class="flex flex-col  text-sm space-y-1 mb-6">
-                            <li><a href="#" class="hover:text-gray-300 duration-300">PMS Service @Rs.2499</a></li>
-                            <li><a href="#" class="hover:text-gray-300 duration-300">Tyre Offer - Buy 4 + 1TMSS</a>
-                            </li>
-                            <li><a href="#" class="hover:text-gray-300 duration-300">Full Body Car Paint Offer</a>
-                            </li>
-                            <li><a href="#" class="hover:text-gray-300 duration-300">Dent & Paint Repair</a></li>
-                            <li><a href="#" class="hover:text-gray-300 duration-300">AC Gas Top-up & Inspection</a>
-                            </li>
-                            <li><a href="#" class="hover:text-gray-300 duration-300">Express Car Service
-                                    (@Rs.999)</a></li>
-                            <li><a href="#" class="hover:text-gray-300 duration-300">Petrofit</a></li>
-                            <li><a href="#" class="hover:text-gray-300 duration-300">Brake Pad Replacement</a></li>
-                            <li><a href="#" class="hover:text-gray-300 duration-300">AC Inspection @Rs.99</a></li>
-                            <li><a href="#" class="hover:text-gray-300 duration-300">Brake Inspection @Rs.99</a>
-                            </li>
-                        </ul>
-                        <div class="w-full flex">
-                            <ul class="flex flex-col md:text-base text-sm gap-y-5">
-                                <li class="font-semibold"><a href="#"
-                                        class="hover:text-gray-300 duration-300">Newsroom</a></li>
-                                <li class="font-semibold"><a href="#" class="hover:text-gray-300 duration-300">Terms
-                                        & Condition</a></li>
-                                <li class="font-semibold"><a href="#"
-                                        class="hover:text-gray-300 duration-300">Refund Policy</a></li>
-                            </ul>
-                        </div>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
         </div>
 
-        <!-- Footer Bottom -->
-        <div
-            class="flex md:items-end items-start md:flex-row flex-col justify-between pt-8 lg:pl-[5rem] md:pl-[4rem] pl-[1rem]">
+        <div class="flex md:items-end items-start md:flex-row flex-col justify-between pt-8 lg:pl-[5rem] md:pl-[4rem] pl-[1rem]">
             <div>
-                <div class="md:block hidden">
-                    <h3 class="font-semibold  mb-1">Head Office</h3>
-                    <p class="text-sm">
-                        Sai Brindhavan, Plot No. 40C, Door 1, 3rd Main Road<br>
-                        Kottur Gardens, Kotturpuram, Chennai, Tamil Nadu - 600085
-                    </p>
-                </div>
+                <?php if (!empty($head_office_address)) : ?>
+                    <div class="md:block hidden">
+                        <h3 class="font-semibold mb-1">
+                            <?php echo esc_html($head_office_title); ?>
+                        </h3>
+                        <p class="text-sm">
+                            <?php echo nl2br(esc_html($head_office_address)); ?>
+                        </p>
+                    </div>
+                <?php endif; ?>
                 <div class="flex md:flex-row flex-col md:items-center items-start mt-10 lg:gap-8 gap-4">
-                    <div class="flex items-center gap-3">
-                        <a href="#" class="hover:scale-105 duration-300" title="Google play" target="_blank">
-                            <img src="img/assets1.webp" alt="Google play" title="Google play"
-                                class="w-auto h-10 object-contain" loading="lazy" fetchpriority="low">
-                        </a>
-                        <a href="#" class="hover:scale-105 duration-300" title="App store" target="_blank">
-                            <img src="img/app_store_btn.webp" class="w-auto h-10 object-contain" loading="lazy"
-                                fetchpriority="low" alt="app store" title="app store">
-                        </a>
-                    </div>
+                    <?php if (!empty($normalized_store_badges)) : ?>
+                        <div class="flex items-center gap-3">
+                            <?php foreach ($normalized_store_badges as $badge) : ?>
+                                <a href="<?php echo esc_url($badge['link']); ?>"
+                                   class="hover:scale-105 duration-300"
+                                   target="_blank"
+                                   rel="noopener noreferrer">
+                                    <img src="<?php echo esc_url($badge['image']['url']); ?>"
+                                         alt="<?php echo esc_attr($badge['image']['alt']); ?>"
+                                         title="<?php echo esc_attr($badge['image']['alt']); ?>"
+                                         class="w-auto h-10 object-contain"
+                                         loading="lazy"
+                                         fetchpriority="low">
+                                </a>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
 
-                    <div class="flex gap-4 text-white social_links">
-                        <a href="#" class="hover:scale-75 duration-300" title="Twitter" target="_blank">
-                            <svg class="size-5 text-white" stroke="currentColor" fill="currentColor"
-                                stroke-width="0" viewBox="0 0 16 16" height="24px" width="24px"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z">
-                                </path>
-                            </svg></a>
-                        <a href="#" class="hover:scale-75 duration-300" title="Linkedin" target="_blank"><svg
-                                class="size-6 text-white" stroke="currentColor" fill="currentColor" stroke-width="0"
-                                viewBox="0 0 512 512" height="24px" width="24px" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M417.2 64H96.8C79.3 64 64 76.6 64 93.9V415c0 17.4 15.3 32.9 32.8 32.9h320.3c17.6 0 30.8-15.6 30.8-32.9V93.9C448 76.6 434.7 64 417.2 64zM183 384h-55V213h55v171zm-25.6-197h-.4c-17.6 0-29-13.1-29-29.5 0-16.7 11.7-29.5 29.7-29.5s29 12.7 29.4 29.5c0 16.4-11.4 29.5-29.7 29.5zM384 384h-55v-93.5c0-22.4-8-37.7-27.9-37.7-15.2 0-24.2 10.3-28.2 20.3-1.5 3.6-1.9 8.5-1.9 13.5V384h-55V213h55v23.8c8-11.4 20.5-27.8 49.6-27.8 36.1 0 63.4 23.8 63.4 75.1V384z">
-                                </path>
-                            </svg></a>
-                        <a href="#" class="hover:scale-75 duration-300" title="Facebook" target="_blank"><svg
-                                class="size-5 text-white" stroke="currentColor" fill="currentColor" stroke-width="0"
-                                viewBox="0 0 320 512" height="24px" width="24px" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M80 299.3V512H196V299.3h86.5l18-97.8H196V166.9c0-51.7 20.3-71.5 72.7-71.5c16.3 0 29.4 .4 37 1.2V7.9C291.4 4 256.4 0 236.2 0C129.3 0 80 50.5 80 159.4v42.1H14v97.8H80z">
-                                </path>
-                            </svg></a>
-                        <a href="#" class="hover:scale-75 duration-300" title="Instagram" target="_blank"><svg
-                                class="size-6 text-white" stroke="currentColor" fill="currentColor" stroke-width="0"
-                                viewBox="0 0 24 24" height="24px" width="24px" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M13.0281 2.00073C14.1535 2.00259 14.7238 2.00855 15.2166 2.02322L15.4107 2.02956C15.6349 2.03753 15.8561 2.04753 16.1228 2.06003C17.1869 2.1092 17.9128 2.27753 18.5503 2.52503C19.2094 2.7792 19.7661 3.12253 20.3219 3.67837C20.8769 4.2342 21.2203 4.79253 21.4753 5.45003C21.7219 6.0867 21.8903 6.81337 21.9403 7.87753C21.9522 8.1442 21.9618 8.3654 21.9697 8.58964L21.976 8.78373C21.9906 9.27647 21.9973 9.84686 21.9994 10.9723L22.0002 11.7179C22.0003 11.809 22.0003 11.903 22.0003 12L22.0002 12.2821L21.9996 13.0278C21.9977 14.1532 21.9918 14.7236 21.9771 15.2163L21.9707 15.4104C21.9628 15.6347 21.9528 15.8559 21.9403 16.1225C21.8911 17.1867 21.7219 17.9125 21.4753 18.55C21.2211 19.2092 20.8769 19.7659 20.3219 20.3217C19.7661 20.8767 19.2069 21.22 18.5503 21.475C17.9128 21.7217 17.1869 21.89 16.1228 21.94C15.8561 21.9519 15.6349 21.9616 15.4107 21.9694L15.2166 21.9757C14.7238 21.9904 14.1535 21.997 13.0281 21.9992L12.2824 22C12.1913 22 12.0973 22 12.0003 22L11.7182 22L10.9725 21.9993C9.8471 21.9975 9.27672 21.9915 8.78397 21.9768L8.58989 21.9705C8.36564 21.9625 8.14444 21.9525 7.87778 21.94C6.81361 21.8909 6.08861 21.7217 5.45028 21.475C4.79194 21.2209 4.23444 20.8767 3.67861 20.3217C3.12278 19.7659 2.78028 19.2067 2.52528 18.55C2.27778 17.9125 2.11028 17.1867 2.06028 16.1225C2.0484 15.8559 2.03871 15.6347 2.03086 15.4104L2.02457 15.2163C2.00994 14.7236 2.00327 14.1532 2.00111 13.0278L2.00098 10.9723C2.00284 9.84686 2.00879 9.27647 2.02346 8.78373L2.02981 8.58964C2.03778 8.3654 2.04778 8.1442 2.06028 7.87753C2.10944 6.81253 2.27778 6.08753 2.52528 5.45003C2.77944 4.7917 3.12278 4.2342 3.67861 3.67837C4.23444 3.12253 4.79278 2.78003 5.45028 2.52503C6.08778 2.27753 6.81278 2.11003 7.87778 2.06003C8.14444 2.04816 8.36564 2.03847 8.58989 2.03062L8.78397 2.02433C9.27672 2.00969 9.8471 2.00302 10.9725 2.00086L13.0281 2.00073ZM12.0003 7.00003C9.23738 7.00003 7.00028 9.23956 7.00028 12C7.00028 14.7629 9.23981 17 12.0003 17C14.7632 17 17.0003 14.7605 17.0003 12C17.0003 9.23713 14.7607 7.00003 12.0003 7.00003ZM12.0003 9.00003C13.6572 9.00003 15.0003 10.3427 15.0003 12C15.0003 13.6569 13.6576 15 12.0003 15C10.3434 15 9.00028 13.6574 9.00028 12C9.00028 10.3431 10.3429 9.00003 12.0003 9.00003ZM17.2503 5.50003C16.561 5.50003 16.0003 6.05994 16.0003 6.74918C16.0003 7.43843 16.5602 7.9992 17.2503 7.9992C17.9395 7.9992 18.5003 7.4393 18.5003 6.74918C18.5003 6.05994 17.9386 5.49917 17.2503 5.50003Z">
-                                </path>
-                            </svg></a>
-                        <a href="#" class="hover:scale-75 duration-300" title="Youtube" target="_blank"><svg
-                                class="size-6 text-white" stroke="currentColor" fill="currentColor" stroke-width="0"
-                                viewBox="0 0 24 24" height="24px" width="24px" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd"
-                                    d="M9.522,15.553 L9.52125,8.80975 L16.00575,12.193 L9.522,15.553 Z M23.76,7.64125 C23.76,7.64125 23.52525,5.9875 22.806,5.25925 C21.89325,4.303 20.87025,4.2985 20.4015,4.243 C17.043,4 12.00525,4 12.00525,4 L11.99475,4 C11.99475,4 6.957,4 3.5985,4.243 C3.129,4.2985 2.10675,4.303 1.19325,5.25925 C0.474,5.9875 0.24,7.64125 0.24,7.64125 C0.24,7.64125 0,9.58375 0,11.5255 L0,13.3465 C0,15.289 0.24,17.23075 0.24,17.23075 C0.24,17.23075 0.474,18.8845 1.19325,19.61275 C2.10675,20.569 3.306,20.539 3.84,20.63875 C5.76,20.82325 12,20.88025 12,20.88025 C12,20.88025 17.043,20.87275 20.4015,20.62975 C20.87025,20.5735 21.89325,20.569 22.806,19.61275 C23.52525,18.8845 23.76,17.23075 23.76,17.23075 C23.76,17.23075 24,15.289 24,13.3465 L24,11.5255 C24,9.58375 23.76,7.64125 23.76,7.64125 L23.76,7.64125 Z">
-                                </path>
-                            </svg></a>
-                    </div>
+                    <?php if (!empty($normalized_social_links)) : ?>
+                        <div class="flex gap-4 text-white social_links">
+                            <?php foreach ($normalized_social_links as $social_link) : ?>
+                                <a href="<?php echo esc_url($social_link['url']); ?>"
+                                   class="hover:scale-75 duration-300"
+                                   title="<?php echo esc_attr(ucfirst($social_link['platform'])); ?>"
+                                   target="<?php echo esc_attr($social_link['target']); ?>"
+                                   <?php echo $social_link['target'] === '_blank' ? 'rel="noopener noreferrer"' : ''; ?>>
+                                    <?php echo $social_link['icon']; ?>
+                                </a>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
-            <div
-                class="lg:text-center lg:text-base text-sm lg:font-normal text-start font-bold text-white lg:py-4 pt-16">
-                © 2025, Automini Car Services Pvt. Ltd.
+            <div class="lg:text-center lg:text-base text-sm lg:font-normal text-start font-bold text-white lg:py-4 pt-16">
+                <?php echo esc_html($footer_copyright); ?>
             </div>
         </div>
 
@@ -291,14 +638,14 @@ function setupDropdown({
             if (!isOpen) {
                 $icon.html(`
           <div class="relative flex items-center gap-1 text-white text-sm bg-[#ff8300] py-3 px-3 -right-4">
-            <img src="http://46.101.222.112/petromin/wp-content/themes/custom-theme/assets/img/fi_19024510.webp"
+            <img src="<?php echo $arrow_icon_url; ?>"
               alt="arrow-icon" class="rotate-180 lg:size-[21px] size-4 invert brightness-0">
             <span>Back</span>
           </div>
         `);
             } else {
                 $icon.html(`
-          <img src="http://46.101.222.112/petromin/wp-content/themes/custom-theme/assets/img/fi_19024510.webp"
+          <img src="<?php echo $arrow_icon_url; ?>"
             alt="arrow-icon" class="lg:size-[21px] size-4">
         `);
             }
@@ -315,7 +662,7 @@ function setupDropdown({
             });
             if ($icon.length) {
                 $icon.html(`
-          <img src="http://46.101.222.112/petromin/wp-content/themes/custom-theme/assets/img/fi_19024510.webp"
+          <img src="<?php echo $arrow_icon_url; ?>"
             alt="arrow-icon" class="lg:size-[21px] size-4">
         `);
             }
@@ -332,7 +679,7 @@ function setupDropdown({
         $dropdown.addClass('hidden');
         if ($icon.length) {
             $icon.html(`
-        <img src="http://46.101.222.112/petromin/wp-content/themes/custom-theme/assets/img/fi_19024510.webp"
+        <img src="<?php echo $arrow_icon_url; ?>"
           alt="arrow-icon" class="lg:size-[21px] size-4">
       `);
         }
