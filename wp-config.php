@@ -23,10 +23,10 @@
 define( 'DB_NAME', 'petromin-wordpress-new' );
 
 /** Database username */
-define( 'DB_USER', 'bynocs' );
+define( 'DB_USER', 'root' );
 
 /** Database password */
-define( 'DB_PASSWORD', 'wordpress@1234' );
+define( 'DB_PASSWORD', '' );
 
 /** Database hostname */
 define( 'DB_HOST', 'localhost' );

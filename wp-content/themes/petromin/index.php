@@ -6,8 +6,7 @@
         <div class="relative w-full h-full overflow-hidden">
             <video autoplay muted loop playsinline
                 class="absolute inset-0 w-full h-full object-cover md:object-left object-left">
-                <source
-                    src="http://46.101.222.112/petromin/wp-content/uploads/2025/09/20250821_1944_Evening-Garage-Activity_storyboard_01k360878xfkes6bv9dj8t9fsh-1-1.mp4"
+                <source src="http://46.101.222.112/petromin/wp-content/uploads/2025/09/20250821_1944_Evening-Garage-Activity_storyboard_01k360878xfkes6bv9dj8t9fsh-1-1.mp4"
                     type="video/mp4">
                 Your browser does not support the video tag.
             </video>
@@ -2538,4 +2537,79 @@
         </div>
     </div>
 
+
 <?php get_footer(); ?>
+
+
+    <script>
+        const headers = document.querySelectorAll('#faqAccordion .accordion-header');
+
+        headers.forEach(header => {
+            header.addEventListener('click', () => {
+                const item = header.parentElement;
+                const body = item.querySelector('.accordion-body');
+                const icon = header.querySelector('.accordion-icon');
+
+                const isActive = !body.classList.contains('hidden');
+
+                // Close all
+                document.querySelectorAll('#faqAccordion .accordion-body').forEach(el => el.classList.add(
+                    'hidden'));
+                document.querySelectorAll('#faqAccordion .accordion-icon').forEach(el => el.textContent =
+                    '+');
+                document.querySelectorAll('#faqAccordion .accordion-header').forEach(el => {
+                    el.classList.remove('text-[#CB122D]');
+                    el.classList.add('text-gray-800');
+                });
+
+                // Reopen only if it was not active
+                if (!isActive) {
+                    body.classList.remove('hidden');
+                    icon.textContent = '−';
+                    header.classList.add('text-[#CB122D]');
+                    header.classList.remove('text-gray-800');
+                }
+            });
+        });
+    </script>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabsContainer = document.getElementById('tabs-nav');
+            const tabLinks = document.querySelectorAll(".tab-btn");
+            const tabContents = document.querySelectorAll(".content-item");
+
+            function resetTabs(clicked) {
+                tabLinks.forEach(tab => {
+                    if (tab !== clicked) { // don’t reset the one that was clicked
+                        tab.className = "tab-btn px-3 py-5 -my-5 font-bold text-white";
+                        tab.innerHTML = tab.innerText;
+                    }
+                });
+            }
+
+            tabsContainer.addEventListener("click", function (e) {
+                const clicked = e.target.closest(".tab-btn");
+                if (!clicked) return;
+
+                const target = clicked.dataset.tab;
+
+                // Reset other tabs
+                resetTabs(clicked);
+
+                // Reset content
+                tabContents.forEach(c => c.classList.add("hidden"));
+
+                // Apply active styles to clicked
+                clicked.className =
+                    "tab-btn active relative z-10 px-3 py-5 -my-5 font-bold bg-gradient-to-l from-[#CB122D] via-[#650916] to-[#CB122D] text-white -skew-x-[18deg]";
+                clicked.innerHTML =
+                    `<span class="skew-x-[18deg] block whitespace-nowrap">${clicked.innerText}</span>`;
+
+                // Show correct content
+                document.querySelector(`.content-item[data-content="${target}"]`).classList.remove(
+                    "hidden");
+            });
+        });
+    </script>
