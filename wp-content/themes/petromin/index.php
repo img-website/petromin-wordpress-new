@@ -1,108 +1,389 @@
-<?php /* Template Name: home page */ get_header();
+<?php
+/* Template Name: home page */
+get_header();
+
+$assets_url = trailingslashit(trailingslashit(get_template_directory_uri()) . 'assets');
+$images_url = trailingslashit($assets_url . 'img');
+
+$hero_defaults = [
+    'video' => [
+        'url' => 'http://46.101.222.112/petromin/wp-content/uploads/2025/09/20250821_1944_Evening-Garage-Activity_storyboard_01k360878xfkes6bv9dj8t9fsh-1-1.mp4',
+        'mime_type' => 'video/mp4',
+    ],
+    'headline_prefix' => 'Redefining',
+    'headline_highlight' => 'EXPRESS',
+    'headline_suffix' => 'car care across India.',
+    'headline_suffix_primary' => 'car care',
+    'headline_suffix_secondary' => 'across India.',
+    'features' => [
+        [
+            'title' => 'Honest',
+            'subtitle' => 'Pricing',
+            'icon' => [
+                'url' => $images_url . 'Isolation_Mode-1.webp',
+                'alt' => 'Honest Pricing icon',
+            ],
+        ],
+        [
+            'title' => 'Genuine',
+            'subtitle' => 'Parts',
+            'icon' => [
+                'url' => $images_url . 'genuine-part.webp',
+                'alt' => 'Genuine Parts icon',
+            ],
+        ],
+        [
+            'title' => 'Certified',
+            'subtitle' => 'Technicians',
+            'icon' => [
+                'url' => $images_url . 'technician.webp',
+                'alt' => 'Certified Technicians icon',
+            ],
+        ],
+        [
+            'title' => 'Warranty',
+            'subtitle' => 'Coverage',
+            'icon' => [
+                'url' => $images_url . 'coverage.webp',
+                'alt' => 'Warranty Coverage icon',
+            ],
+        ],
+    ],
+];
+
+$offers_defaults = [
+    'heading' => 'Latest Offers',
+    'slides' => [
+        [
+            'desktop_image' => [
+                'url' => $images_url . 'latest-offers-img-1-scaled-1.webp',
+                'alt' => 'Latest offer',
+            ],
+            'mobile_image' => [
+                'url' => $images_url . 'image-39.webp',
+                'alt' => 'Latest offer',
+            ],
+        ],
+        [
+            'desktop_image' => [
+                'url' => $images_url . 'latest-offers-img-1-scaled-1.webp',
+                'alt' => 'Latest offer',
+            ],
+            'mobile_image' => [
+                'url' => $images_url . 'image-39.webp',
+                'alt' => 'Latest offer',
+            ],
+        ],
+        [
+            'desktop_image' => [
+                'url' => $images_url . 'latest-offers-img-1-scaled-1.webp',
+                'alt' => 'Latest offer',
+            ],
+            'mobile_image' => [
+                'url' => $images_url . 'image-39.webp',
+                'alt' => 'Latest offer',
+            ],
+        ],
+        [
+            'desktop_image' => [
+                'url' => $images_url . 'latest-offers-img-1-scaled-1.webp',
+                'alt' => 'Latest offer',
+            ],
+            'mobile_image' => [
+                'url' => $images_url . 'image-39.webp',
+                'alt' => 'Latest offer',
+            ],
+        ],
+    ],
+    'navigation_icon' => [
+        'url' => $images_url . 'fi_19024510.webp',
+        'alt' => 'Navigation arrow icon',
+    ],
+];
+
+$hero_field = function_exists('get_field') ? (get_field('hero_section') ?: []) : [];
+$offers_field = function_exists('get_field') ? (get_field('latest_offers_section') ?: []) : [];
+
+$hero_video_field = $hero_field['background_video'] ?? null;
+$hero_video_url = '';
+$hero_video_type = '';
+
+if (is_array($hero_video_field)) {
+    if (!empty($hero_video_field['url'])) {
+        $hero_video_url = $hero_video_field['url'];
+    }
+
+    if (!empty($hero_video_field['mime_type'])) {
+        $hero_video_type = $hero_video_field['mime_type'];
+    }
+} elseif (is_string($hero_video_field)) {
+    $hero_video_url = trim($hero_video_field);
+}
+
+if ($hero_video_url === '') {
+    $hero_video_url = $hero_defaults['video']['url'];
+}
+
+if ($hero_video_type === '') {
+    $hero_video_type = $hero_defaults['video']['mime_type'];
+}
+
+$hero_headline_prefix = trim($hero_field['headline_prefix'] ?? '');
+if ($hero_headline_prefix === '') {
+    $hero_headline_prefix = $hero_defaults['headline_prefix'];
+}
+
+$hero_headline_highlight = trim($hero_field['headline_highlight'] ?? '');
+if ($hero_headline_highlight === '') {
+    $hero_headline_highlight = $hero_defaults['headline_highlight'];
+}
+
+$hero_headline_suffix = trim($hero_field['headline_suffix'] ?? '');
+if ($hero_headline_suffix === '') {
+    $hero_headline_suffix = $hero_defaults['headline_suffix'];
+}
+
+$hero_headline_suffix_primary = trim($hero_field['headline_suffix_primary'] ?? '');
+$hero_headline_suffix_secondary = trim($hero_field['headline_suffix_secondary'] ?? '');
+
+if ($hero_headline_suffix_primary === '' && $hero_headline_suffix_secondary === '') {
+    if ($hero_headline_suffix !== '') {
+        $hero_headline_suffix_primary = $hero_headline_suffix;
+        $hero_headline_suffix_secondary = '';
+    } else {
+        $hero_headline_suffix_primary = $hero_defaults['headline_suffix_primary'];
+        $hero_headline_suffix_secondary = $hero_defaults['headline_suffix_secondary'];
+    }
+}
+
+$hero_features_field = $hero_field['features'] ?? [];
+$hero_features = [];
+$source_features = [];
+
+if (is_array($hero_features_field) && !empty($hero_features_field)) {
+    $source_features = $hero_features_field;
+} else {
+    $source_features = $hero_defaults['features'];
+}
+
+foreach ($source_features as $index => $feature_field) {
+    $default_feature = $hero_defaults['features'][$index] ?? [
+        'title' => '',
+        'subtitle' => '',
+        'icon' => [
+            'url' => '',
+            'alt' => '',
+        ],
+    ];
+
+    $title = '';
+    if (isset($feature_field['feature_title'])) {
+        $title = trim($feature_field['feature_title']);
+    } elseif (isset($feature_field['title'])) {
+        $title = trim($feature_field['title']);
+    }
+
+    if ($title === '') {
+        $title = $default_feature['title'] ?? '';
+    }
+
+    $subtitle = '';
+    if (isset($feature_field['feature_subtitle'])) {
+        $subtitle = trim($feature_field['feature_subtitle']);
+    } elseif (isset($feature_field['subtitle'])) {
+        $subtitle = trim($feature_field['subtitle']);
+    }
+
+    if ($subtitle === '') {
+        $subtitle = $default_feature['subtitle'] ?? '';
+    }
+
+    $icon_field = $feature_field['feature_icon'] ?? ($feature_field['icon'] ?? null);
+    $icon_default = $default_feature['icon'] ?? ['url' => '', 'alt' => ''];
+    $icon_alt_fallback = $icon_default['alt'] ?? ($title !== '' ? $title : $hero_headline_prefix);
+    $icon_data = petromin_get_acf_image_data($icon_field, 'full', $icon_default['url'] ?? '', $icon_alt_fallback);
+
+    if (!$icon_data && !empty($icon_default['url'])) {
+        $icon_data = $icon_default;
+    }
+
+    if ($title === '' && $subtitle !== '') {
+        $title = $subtitle;
+        $subtitle = '';
+    }
+
+    if ($title === '' && $subtitle === '' && !$icon_data) {
+        continue;
+    }
+
+    $hero_features[] = [
+        'title' => $title,
+        'subtitle' => $subtitle,
+        'icon' => $icon_data,
+    ];
+}
+
+$offers_heading = trim($offers_field['heading'] ?? '');
+if ($offers_heading === '') {
+    $offers_heading = $offers_defaults['heading'];
+}
+
+$offers_slides_field = $offers_field['slides'] ?? [];
+$offers_slides = [];
+
+if (is_array($offers_slides_field) && !empty($offers_slides_field)) {
+    $slides_source = $offers_slides_field;
+    $using_defaults = false;
+} else {
+    $slides_source = $offers_defaults['slides'];
+    $using_defaults = true;
+}
+foreach ($slides_source as $index => $slide_field) {
+    $default_slide = $offers_defaults['slides'][$index] ?? [
+        'desktop_image' => [
+            'url' => '',
+            'alt' => $offers_heading,
+        ],
+        'mobile_image' => [
+            'url' => '',
+            'alt' => $offers_heading,
+        ],
+    ];
+
+    $desktop_default = $default_slide['desktop_image'] ?? [
+        'url' => '',
+        'alt' => $offers_heading,
+    ];
+    $mobile_default = $default_slide['mobile_image'] ?? [
+        'url' => '',
+        'alt' => $offers_heading,
+    ];
+
+    if (!$using_defaults) {
+        if (!empty($slide_field['desktop_alt'])) {
+            $desktop_default['alt'] = trim($slide_field['desktop_alt']);
+        }
+
+        if (!empty($slide_field['mobile_alt'])) {
+            $mobile_default['alt'] = trim($slide_field['mobile_alt']);
+        }
+    }
+
+    $desktop_image = petromin_get_acf_image_data($slide_field['desktop_image'] ?? null, 'full', $desktop_default['url'], $desktop_default['alt']);
+    $mobile_image = petromin_get_acf_image_data($slide_field['mobile_image'] ?? null, 'full', $mobile_default['url'], $mobile_default['alt']);
+
+    if (!$desktop_image && !$mobile_image) {
+        continue;
+    }
+
+    $offers_slides[] = [
+        'desktop' => $desktop_image,
+        'mobile' => $mobile_image,
+    ];
+}
+
+$offers_nav_icon_data = petromin_get_acf_image_data($offers_field['navigation_icon'] ?? null, 'full', $offers_defaults['navigation_icon']['url'], $offers_defaults['navigation_icon']['alt']);
+
+if (!$offers_nav_icon_data) {
+    $offers_nav_icon_data = $offers_defaults['navigation_icon'];
+}
 ?>
-
-
     <section class="heroSection w-full relative z-0 md:h-dvh h-full">
         <div class="relative w-full h-full overflow-hidden">
+            <?php if ($hero_video_url !== ''): ?>
             <video autoplay muted loop playsinline
                 class="absolute inset-0 w-full h-full object-cover md:object-left object-left">
-                <source
-                    src="http://46.101.222.112/petromin/wp-content/uploads/2025/09/20250821_1944_Evening-Garage-Activity_storyboard_01k360878xfkes6bv9dj8t9fsh-1-1.mp4"
-                    type="video/mp4">
-                Your browser does not support the video tag.
+                <source src="<?php echo esc_url($hero_video_url); ?>" type="<?php echo esc_attr($hero_video_type); ?>">
+                <?php esc_html_e('Your browser does not support the video tag.', 'petromin'); ?>
             </video>
+            <?php endif; ?>
 
             <div class="w-full relative z-10">
                 <div class="view max-md:pl-0 flex flex-col max-md:gap-y-16">
                     <div class="px-6 mb-8 md:mb-8 pt-16 md:pt-24">
                         <h1
                             class="drop-shadow-[0_4px_8px_rgba(0,0,0,0.6)] lg:text-6xl md:text-5xl text-[2.625rem] mt-6 font-bold italic md:!leading-[4.688rem] w-fit text-white md:block hidden">
-                            Redefining
-                            <span
-                                class="relative px-4 !pr-7  backdrop-blur-[0.125rem] -skew-x-[16deg]  before:absolute before:inset-0 before:bg-gradient-to-l before:from-[#CB122D] before:via-[#CB122D] before:to-[#650916] before:-skew-x-[16deg] before:-z-10 before:lg:h-[4.688rem] before:h-[3.688rem] before:flex before:justify-center before:items-center before:top-auto">
-                                EXPRESS
-                            </span>
-                            <span class="block">car care across India.</span>
+                            <?php if ($hero_headline_prefix !== ''): ?>
+                                <?php echo esc_html($hero_headline_prefix); ?>
+                            <?php endif; ?>
+                            <?php if ($hero_headline_highlight !== ''): ?>
+                                <span
+                                    class="relative px-4 !pr-7  backdrop-blur-[0.125rem] -skew-x-[16deg]  before:absolute before:inset-0 before:bg-gradient-to-l before:from-[#CB122D] before:via-[#CB122D] before:to-[#650916] before:-skew-x-[16deg] before:-z-10 before:lg:h-[4.688rem] before:h-[3.688rem] before:flex before:justify-center before:items-center before:top-auto">
+                                    <?php echo esc_html($hero_headline_highlight); ?>
+                                </span>
+                            <?php endif; ?>
+                            <?php if ($hero_headline_suffix !== ''): ?>
+                                <span class="block"><?php echo esc_html($hero_headline_suffix); ?></span>
+                            <?php endif; ?>
                         </h1>
                         <h1
                             class="text-[2.625rem] mt-6 font-bold italic leading-[3.2rem] whitespace-nowrap text-white block md:hidden">
-                            Redefining
-                            <span
-                                class="relative block px-4 !pr-7 mt-4 w-fit drop-shadow-[0_4px_8px_rgba(0,0,0,0.6)]  bg-gradient-to-l from-[#CB122D] via-[#CB122D] to-[#650916] -skew-x-[16deg] -z-10 h-[4.688rem] flex justify-center items-center ">
-                                <span class="skew-x-[16deg]"> EXPRESS</span>
-                            </span>
-                            car care <span class="block">across India.</span>
+                            <?php if ($hero_headline_prefix !== ''): ?>
+                                <?php echo esc_html($hero_headline_prefix); ?>
+                            <?php endif; ?>
+                            <?php if ($hero_headline_highlight !== ''): ?>
+                                <span
+                                    class="relative block px-4 !pr-7 mt-4 w-fit drop-shadow-[0_4px_8px_rgba(0,0,0,0.6)]  bg-gradient-to-l from-[#CB122D] via-[#CB122D] to-[#650916] -skew-x-[16deg] -z-10 h-[4.688rem] flex justify-center items-center ">
+                                    <span class="skew-x-[16deg]"><?php echo esc_html($hero_headline_highlight); ?></span>
+                                </span>
+                            <?php endif; ?>
+                            <?php if ($hero_headline_suffix_primary !== ''): ?>
+                                <?php echo esc_html($hero_headline_suffix_primary); ?>
+                            <?php endif; ?>
+                            <?php if ($hero_headline_suffix_secondary !== ''): ?>
+                                <span class="block"><?php echo esc_html($hero_headline_suffix_secondary); ?></span>
+                            <?php endif; ?>
                         </h1>
                     </div>
+                    <?php if (!empty($hero_features)): ?>
                     <div
                         class="absolute services_sec md:flex hidden w-fit lg:py-5 py-3  px-8  bg-[linear-gradient(268.6deg,_#CB122D_0.16%,_#650916_100%)] top-auto bottom-[-7rem] left-0 origin-top -skew-x-[18deg]">
                         <div class="view w-fit flex items-center justify-center skew-x-[18deg] pr-0">
+                            <?php foreach ($hero_features as $feature): ?>
                             <div class="flex flex-col lg:flex-row items-center gap-2 mx-3">
-                                <img src="img/Isolation_Mode-1.webp" alt="Honest Pricing" title="Honest Pricing"
-                                    class="size-8" loading="lazy" fetchpriority="low">
-                                <div class="text-base text-white font-bold font-inter leading-tight">Honest <span
-                                        class="block">Pricing</span></div>
-                            </div>
-
-                            <div class="flex flex-col lg:flex-row items-center gap-2 mx-3">
-                                <img src="img/genuine-part.webp" alt="Genuine_Icon" title="Genuine_Icon" class="size-8"
-                                    loading="lazy" fetchpriority="low">
-                                <div class="text-base text-white font-bold font-inter leading-tight">Genuine <span
-                                        class="block">Parts</span>
+                                <?php if (!empty($feature['icon']['url'])): ?>
+                                <img src="<?php echo esc_url($feature['icon']['url']); ?>"
+                                    alt="<?php echo esc_attr($feature['icon']['alt']); ?>"
+                                    title="<?php echo esc_attr($feature['icon']['alt']); ?>" class="size-8" loading="lazy"
+                                    fetchpriority="low">
+                                <?php endif; ?>
+                                <div class="text-base text-white font-bold font-inter leading-tight">
+                                    <?php if ($feature['title'] !== ''): ?>
+                                        <?php echo esc_html($feature['title']); ?>
+                                    <?php endif; ?>
+                                    <?php if ($feature['subtitle'] !== ''): ?>
+                                        <span class="block"><?php echo esc_html($feature['subtitle']); ?></span>
+                                    <?php endif; ?>
                                 </div>
                             </div>
-
-                            <div class="flex flex-col lg:flex-row items-center gap-2 mx-3">
-                                <img src="img/technician.webp" alt="Certified Technicians" title="Certified Technicians"
-                                    class="size-8" loading="lazy" fetchpriority="low">
-                                <p class="text-base text-white font-bold font-inter leading-tight">Certified <span
-                                        class="block">Technicians</span>
-                                </p>
-                            </div>
-
-                            <div class="flex flex-col lg:flex-row items-center gap-2 mx-3">
-                                <img src="img/coverage.webp" alt="Warranty Coverage" alt="Warranty Coverage"
-                                    class="size-8" loading="lazy" fetchpriority="low">
-                                <p class="text-base text-white font-bold font-inter leading-tight">Warranty
-                                    <span class="block">Coverage</span>
-                                </p>
-                            </div>
-
+                            <?php endforeach; ?>
                         </div>
                     </div>
                     <div
                         class="bg-[linear-gradient(268.6deg,_#CB122D_0.16%,_#650916_100%)] relative feature-box1 flex md:hidden py-6 px-6 max-w-fit shadow-xl mb-12 ">
                         <div class="flex flex-col items-start justify-start gap-y-4 ">
-                            <div class="flex items-start gap-2 me-3">
-                                <img src="img/Isolation_Mode-1.webp" alt="Honest Pricing" title="Honest Pricing"
-                                    class="size-8" loading="lazy" fetchpriority="low">
-                                <p class="text-base text-sm text-white font-bold font-inter">Honest <span
-                                        class="block">Pricing</span></p>
-                            </div>
-
-                            <div class="flex items-start gap-2 me-3">
-                                <img src="img/genuine-part.webp" alt="Genuine Parts" title="Genuine Parts"
-                                    class="size-8" loading="lazy" fetchpriority="low">
-                                <p class="text-base text-white font-bold font-inter">Genuine <span
-                                        class="block">Parts</span>
+                            <?php $hero_features_count = count($hero_features); ?>
+                            <?php foreach ($hero_features as $feature_index => $feature): ?>
+                            <div class="flex items-start gap-2<?php echo $feature_index < $hero_features_count - 1 ? ' me-3' : ''; ?>">
+                                <?php if (!empty($feature['icon']['url'])): ?>
+                                <img src="<?php echo esc_url($feature['icon']['url']); ?>"
+                                    alt="<?php echo esc_attr($feature['icon']['alt']); ?>"
+                                    title="<?php echo esc_attr($feature['icon']['alt']); ?>" class="size-8" loading="lazy"
+                                    fetchpriority="low">
+                                <?php endif; ?>
+                                <p class="text-base text-white font-bold font-inter">
+                                    <?php if ($feature['title'] !== ''): ?>
+                                        <?php echo esc_html($feature['title']); ?>
+                                    <?php endif; ?>
+                                    <?php if ($feature['subtitle'] !== ''): ?>
+                                        <span class="block"><?php echo esc_html($feature['subtitle']); ?></span>
+                                    <?php endif; ?>
                                 </p>
                             </div>
-
-                            <div class="flex items-start gap-2 me-3">
-                                <img src="img/technician.webp" alt="Certified Technicians" title="Certified Technicians"
-                                    class="size-8" loading="lazy" fetchpriority="low">
-                                <p class="text-base text-white font-bold font-inter">Certified <span
-                                        class="block">Technicians</span></p>
-                            </div>
-
-                            <div class="flex items-start gap-2">
-                                <img src="img/coverage.webp" alt="Warranty Coverage" title="Warranty Coverage"
-                                    class="size-8" loading="lazy" fetchpriority="low">
-                                <p class="text-base text-white font-bold font-inter">Warranty <span
-                                        class="block">Coverage</span></p>
-                            </div>
+                            <?php endforeach; ?>
                         </div>
                     </div>
+                    <?php endif; ?>
 
                 </div>
 
@@ -116,88 +397,58 @@
             <div class="flex items-center justify-between md:pb-16 pb-12">
                 <h2
                     class="text-[1.75rem] md:text-3xl lg:text-4xl 2xl:text-[3.125rem] 2xl:!leading-[3.313rem] !leading-12 font-inter font-bold text-black pr-2">
-                    Latest Offers
+                    <?php echo esc_html($offers_heading); ?>
                 </h2>
+                <?php if (!empty($offers_slides) && !empty($offers_nav_icon_data['url'])): ?>
                 <div
                     class=" md:flex items-center justify-start hidden origin-bottom z-20 bg-[#CB122D] px-4 shadow-[-6px_6px_0px_-1px_rgba(0,0,0,0.9)] w-56 h-16 transition transform -skew-x-12 duration-150 ease-in-out">
                     <div class="swiper-prev cursor-pointer">
                         <span>
-                            <img src="img/fi_19024510.webp"
-                                class="text-white size-8 rotate-180 skew-x-12 invert brightness-0" alt="arrow icon"
-                                title="arrow icon">
+                            <img src="<?php echo esc_url($offers_nav_icon_data['url']); ?>"
+                                class="text-white size-8 rotate-180 skew-x-12 invert brightness-0"
+                                alt="<?php echo esc_attr($offers_nav_icon_data['alt']); ?>"
+                                title="<?php echo esc_attr($offers_nav_icon_data['alt']); ?>">
                         </span>
                     </div>
                     <div class="swiper-next cursor-pointer">
                         <span>
-                            <img src="img/fi_19024510.webp"
+                            <img src="<?php echo esc_url($offers_nav_icon_data['url']); ?>"
                                 class="text-white size-8 skew-x-12 invert brightness-0 mb-[0.188rem] ml-3"
-                                alt="arrow icon" title="arrow icon">
+                                alt="<?php echo esc_attr($offers_nav_icon_data['alt']); ?>"
+                                title="<?php echo esc_attr($offers_nav_icon_data['alt']); ?>">
                         </span>
                     </div>
                 </div>
+                <?php endif; ?>
             </div>
         </div>
 
+        <?php if (!empty($offers_slides)): ?>
         <div class="swiper benefitSwiper relative flex justify-center z-0 ">
 
             <div class="swiper-wrapper">
 
+                <?php foreach ($offers_slides as $slide): ?>
                 <div class="swiper-slide">
-                    <img src="img/latest-offers-img-1-scaled-1.webp" alt="latest offer" title="latest offer" width="369"
-                        height="369" class="w-full h-full object-cover shadow-lg lg:flex hidden" loading="lazy"
+                    <?php if (!empty($slide['desktop']['url'])): ?>
+                    <img src="<?php echo esc_url($slide['desktop']['url']); ?>" alt="<?php echo esc_attr($slide['desktop']['alt']); ?>"
+                        title="<?php echo esc_attr($slide['desktop']['alt']); ?>" width="369" height="369"
+                        class="w-full h-full object-cover shadow-lg lg:flex hidden" loading="lazy"
                         fetchpriority="low">
-                    <img src="img/image-39.webp" width="369" height="369"
-                        class="w-full h-full object-cover object-center flex lg:hidden" alt="latest offer"
-                        title="latest offer">
+                    <?php endif; ?>
+                    <?php if (!empty($slide['mobile']['url'])): ?>
+                    <img src="<?php echo esc_url($slide['mobile']['url']); ?>" width="369" height="369"
+                        class="w-full h-full object-cover object-center flex lg:hidden"
+                        alt="<?php echo esc_attr($slide['mobile']['alt']); ?>"
+                        title="<?php echo esc_attr($slide['mobile']['alt']); ?>">
+                    <?php endif; ?>
                 </div>
-
-                <div class="swiper-slide">
-                    <img src="img/latest-offers-img-1-scaled-1.webp" alt="latest offer" title="latest offer" width="369"
-                        height="369" class="w-full h-full object-cover shadow-lg lg:flex hidden" loading="lazy"
-                        fetchpriority="low">
-                    <img src="img/image-39.webp" width="369" height="369"
-                        class="w-full h-full object-cover object-center flex lg:hidden" alt="latest offer"
-                        title="latest offer">
-                </div>
-
-                <div class="swiper-slide">
-                    <img src="img/latest-offers-img-1-scaled-1.webp" alt="latest offer" title="latest offer" width="369"
-                        height="369" class="w-full h-full object-cover shadow-lg lg:flex hidden" loading="lazy"
-                        fetchpriority="low">
-                    <img src="img/image-39.webp" width="369" height="369"
-                        class="w-full h-full object-cover object-center flex lg:hidden" alt="latest offer"
-                        title="latest offer">
-                </div>
-
-                <div class="swiper-slide">
-                    <img src="img/latest-offers-img-1-scaled-1.webp" alt="latest offer" title="latest offer" width="369"
-                        height="369" class="w-full h-full object-cover shadow-lg lg:flex hidden" loading="lazy"
-                        fetchpriority="low">
-                    <img src="img/image-39.webp" width="369" height="369"
-                        class="w-full h-full object-cover object-center flex lg:hidden" alt="latest offer"
-                        title="latest offer">
-                </div>
-                <div class="swiper-slide">
-                    <img src="img/latest-offers-img-1-scaled-1.webp" alt="latest offer" title="latest offer" width="369"
-                        height="369" class="w-full h-full object-cover shadow-lg lg:flex hidden" loading="lazy"
-                        fetchpriority="low">
-                    <img src="img/image-39.webp" width="369" height="369"
-                        class="w-full h-full object-cover object-center flex lg:hidden" alt="latest offer"
-                        title="latest offer">
-                </div>
-                <div class="swiper-slide">
-                    <img src="img/latest-offers-img-1-scaled-1.webp" alt="latest offer" title="latest offer" width="369"
-                        height="369" class="w-full h-full object-cover shadow-lg lg:flex hidden" loading="lazy"
-                        fetchpriority="low">
-                    <img src="img/image-39.webp" width="369" height="369"
-                        class="w-full h-full object-cover object-center flex lg:hidden" alt="latest offer"
-                        title="latest offer">
-                </div>
+                <?php endforeach; ?>
             </div>
 
         </div>
+        <?php endif; ?>
     </section>
-
     <section class="tabSection relative font-inter overflow-hidden lg:pt-[6.188rem] pt-[6.688rem] lg:block hidden">
         <div class="relative view mb-6">
             <div class="flex items-center justify-between md:pb-6 pb-4">
