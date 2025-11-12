@@ -124,16 +124,16 @@ if (!function_exists('petromin_normalize_link')) {
         }
 
         // Remove the site path from the URL if WordPress is installed in a subdirectory.
-        if (!empty($site_url_parts['path'])) {
-            $site_path = rtrim($site_url_parts['path'], '/');
+        // if (!empty($site_url_parts['path'])) {
+        //     $site_path = rtrim($site_url_parts['path'], '/');
 
-            if ($site_path !== '' && strpos($relative_path, $site_path) === 0) {
-                $relative_path = substr($relative_path, strlen($site_path));
-                if ($relative_path === '') {
-                    $relative_path = '/';
-                }
-            }
-        }
+        //     if ($site_path !== '' && strpos($relative_path, $site_path) === 0) {
+        //         $relative_path = substr($relative_path, strlen($site_path));
+        //         if ($relative_path === '') {
+        //             $relative_path = '/';
+        //         }
+        //     }
+        // }
 
         $query = isset($parsed_link['query']) ? '?' . $parsed_link['query'] : '';
         $fragment = isset($parsed_link['fragment']) ? '#' . $parsed_link['fragment'] : '';

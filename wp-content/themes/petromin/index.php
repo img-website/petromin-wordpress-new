@@ -7,7 +7,7 @@ $images_url = trailingslashit($assets_url . 'img');
 
 $hero_defaults = [
     'video' => [
-        'url' => 'http://46.101.222.112/petromin/wp-content/uploads/2025/09/20250821_1944_Evening-Garage-Activity_storyboard_01k360878xfkes6bv9dj8t9fsh-1-1.mp4',
+        'url' => $assets_url . 'videos/heroVideo.mp4',
         'mime_type' => 'video/mp4',
     ],
     'headline_prefix' => 'Redefining',
