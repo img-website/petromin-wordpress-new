@@ -1,5 +1,16 @@
 <?php
 
+if (!function_exists('petromin_theme_setup')) {
+    /**
+     * Register theme supports needed for the blog editor (featured images, title tag, etc.).
+     */
+    function petromin_theme_setup()
+    {
+        add_theme_support('post-thumbnails');
+        add_theme_support('title-tag');
+    }
+}
+add_action('after_setup_theme', 'petromin_theme_setup');
 
 if (!function_exists('petromin_get_acf_image_data')) {
     function petromin_get_acf_image_data($image_field, $size = 'full', $fallback_url = '', $fallback_alt = '')
@@ -2670,3 +2681,40 @@ function load_more_blog_posts() {
 }
 add_action('wp_ajax_load_more_blog_posts', 'load_more_blog_posts');
 add_action('wp_ajax_nopriv_load_more_blog_posts', 'load_more_blog_posts');
+
+/**
+ * Ensure the permalink structure uses /blog/%postname%/ so single posts live under the Blog path.
+ */
+function petromin_ensure_blog_permalink_structure() {
+    if (!function_exists('get_option') || !function_exists('update_option')) {
+        return;
+    }
+
+    $desired_structure = '/blog/%postname%/';
+    $current_structure = get_option('permalink_structure');
+
+    $needs_flush = false;
+    if ($current_structure !== $desired_structure) {
+        update_option('permalink_structure', $desired_structure);
+        $needs_flush = true;
+    }
+
+    $desired_category_base = 'blog/category';
+    $current_category_base = get_option('category_base');
+
+    if ($current_category_base !== $desired_category_base) {
+        update_option('category_base', $desired_category_base);
+        $needs_flush = true;
+    }
+
+    if ($needs_flush) {
+        flush_rewrite_rules(false);
+    }
+}
+add_action('init', 'petromin_ensure_blog_permalink_structure');
+
+// Enable featured images
+add_theme_support('post-thumbnails');
+
+// Add excerpt support
+add_post_type_support('post', 'excerpt');

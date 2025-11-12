@@ -46,8 +46,17 @@ $blog_args = [
     'post_status' => 'publish'
 ];
 
-// Check if category filter is applied
-$selected_category = isset($_GET['category']) ? sanitize_text_field($_GET['category']) : '';
+// Check if category archive or filter is applied
+$selected_category = '';
+if (is_category()) {
+    $queried_category = get_queried_object();
+    if ($queried_category && !is_wp_error($queried_category) && !empty($queried_category->slug)) {
+        $selected_category = $queried_category->slug;
+    }
+}
+if (!$selected_category && isset($_GET['category'])) {
+    $selected_category = sanitize_text_field($_GET['category']);
+}
 if ($selected_category) {
     $blog_args['category_name'] = $selected_category;
 }
@@ -139,14 +148,14 @@ $blog_query = new WP_Query($blog_args);
         
         <div class="view absolute h-full z-10 inset-0 w-full md:flex hidden justify-center items-center translate-y-[-6rem] pointer-events-none">
             <div class="flex w-full items-center justify-between duration-150 ease-in-out">
-                <div class="swiper-prev cursor-pointer pointer-events-auto">
+                <div class="swiper-prev !cursor-pointer !pointer-events-auto !opacity-100">
                     <span>
                         <svg class="md:size-10 size-6" xmlns="http://www.w3.org/2000/svg" width="27" height="41" viewBox="0 0 27 41" fill="none">
                             <path d="M-0.000417709 20.0601L13.12 40.1044H26.8877L22.5048 33.423L13.7673 20.0601L22.5048 6.7051L26.8877 0H13.12L-0.000417709 20.0601Z" fill="white" />
                         </svg>
                     </span>
                 </div>
-                <div class="swiper-next cursor-pointer pointer-events-auto">
+                <div class="swiper-next !cursor-pointer !pointer-events-auto !opacity-100">
                     <span>
                         <svg class="md:size-10 size-6" xmlns="http://www.w3.org/2000/svg" width="26" height="41" viewBox="0 0 26 41" fill="none">
                             <path d="M25.7191 20.0601L13.1691 40.1044H0L4.1923 33.423L12.55 20.0601L4.1923 6.7051L0 0H13.1691L25.7191 20.0601Z" fill="white" />
@@ -160,26 +169,9 @@ $blog_query = new WP_Query($blog_args);
 
 <section class="relative md:pt-28 pt-10 pb-10 md:pb-16">
     <div class="view flex flex-col gap-y-10">
-        <!-- Category Filter -->
-        <?php if ($categories) : ?>
-        <div class="flex flex-wrap gap-3 mb-6">
-            <a href="<?php echo esc_url(get_permalink()); ?>" 
-               class="px-4 py-2 bg-[#FEF3E8] text-[#FF8300] font-medium md:text-base text-sm hover:bg-[#FF8300] hover:text-white transition-colors duration-300 <?php echo empty($selected_category) ? 'bg-[#FF8300] text-white' : ''; ?>">
-                All Categories
-            </a>
-            <?php foreach ($categories as $category) : 
-                if ($category->slug !== 'uncategorized') : ?>
-                    <a href="<?php echo esc_url(add_query_arg('category', $category->slug, get_permalink())); ?>" 
-                       class="px-4 py-2 bg-[#FEF3E8] text-[#FF8300] font-medium md:text-base text-sm hover:bg-[#FF8300] hover:text-white transition-colors duration-300 <?php echo ($selected_category === $category->slug) ? 'bg-[#FF8300] text-white' : ''; ?>">
-                        <?php echo esc_html($category->name); ?>
-                    </a>
-                <?php endif;
-            endforeach; ?>
-        </div>
-        <?php endif; ?>
 
         <!-- Blog Posts Grid -->
-        <div class="grid md:grid-cols-3 grid-cols-1 gap-6">
+        <div class="grid md:grid-cols-3 grid-cols-1 gap-x-6 gap-y-20">
             <?php if ($blog_query->have_posts()) : 
                 while ($blog_query->have_posts()) : 
                     $blog_query->the_post();
@@ -194,7 +186,7 @@ $blog_query = new WP_Query($blog_args);
                         <a href="<?php the_permalink(); ?>" class="w-full relative overflow-hidden duration-300">
                             <img fetchpriority="low" loading="lazy" 
                                 src="<?php echo esc_url($post_image ?: $fallback_image); ?>"
-                                class="size-full group-hover:lg:scale-125 duration-300" 
+                                class="size-full group-hover:lg:scale-125 duration-300 aspect-[445/278] object-cover" 
                                 alt="<?php echo esc_attr(get_the_title()); ?>" 
                                 title="<?php echo esc_attr(get_the_title()); ?>">
                         </a>
@@ -213,7 +205,7 @@ $blog_query = new WP_Query($blog_args);
                             <h2 class="lg:text-xl md:text-lg text-base font-semibold text-[#121212] group-hover:lg:text-[#CB122D] duration-300">
                                 <?php echo esc_html(get_the_title()); ?>
                             </h2>
-                            <span>
+                            <span class="translate-y-1">
                                 <svg class="size-5 group-hover:lg:text-[#CB122D] duration-300" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 13 20" fill="none">
                                     <path d="M12.2789 9.69546L5.34274 19.3833H0L2 16.3833L6.5 9.69546L2 2.8833L0 0L5.34274 0L12.2789 9.69546Z" fill="currentColor" />
                                 </svg>
