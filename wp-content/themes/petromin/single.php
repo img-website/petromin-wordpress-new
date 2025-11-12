@@ -182,7 +182,7 @@ $images_url = $assets_url . '/img';
                         </div>
                     <?php else : ?>
                         <!-- Fallback Related Posts -->
-                        <div class="flex flex-col pt-9 md:pt-3 gap-6 md:gap-4">
+                        <!-- <div class="flex flex-col pt-9 md:pt-3 gap-6 md:gap-4">
                             <?php 
                             $fallback_posts = [
                                 [
@@ -234,7 +234,7 @@ $images_url = $assets_url . '/img';
                                     </div>
                                 </div>
                             <?php endforeach; ?>
-                        </div>
+                        </div> -->
                     <?php endif; ?>
                 </div>
             </div>
