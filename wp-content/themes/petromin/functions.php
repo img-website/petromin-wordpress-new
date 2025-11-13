@@ -2869,6 +2869,197 @@ add_action('acf/init', function () {
         ],
     ]);
 
+    acf_add_local_field_group([
+        'key' => 'group_service_details',
+        'title' => 'Service Details',
+        'fields' => array(
+            // Hero Section
+            array(
+                'key' => 'field_service_hero_description',
+                'label' => 'Hero Description',
+                'name' => 'hero_description',
+                'type' => 'textarea',
+                'instructions' => 'Description below the main title',
+                'required' => 0,
+                'default_value' => '',
+            ),
+            array(
+                'key' => 'field_service_button_text',
+                'label' => 'Button Text',
+                'name' => 'button_text',
+                'type' => 'text',
+                'default_value' => 'Add to list',
+            ),
+            array(
+                'key' => 'field_service_button_link',
+                'label' => 'Button Link',
+                'name' => 'button_link',
+                'type' => 'page_link',
+                'instructions' => 'Select the page to link to',
+            ),
+            
+            // Problems Section
+            array(
+                'key' => 'field_problems_title',
+                'label' => 'Problems Section Title',
+                'name' => 'problems_title',
+                'type' => 'text',
+                'default_value' => 'Tired of these?',
+                'instructions' => 'Title for the problems section',
+            ),
+            array(
+                'key' => 'field_service_problems',
+                'label' => 'Common Problems',
+                'name' => 'problems',
+                'type' => 'repeater',
+                'layout' => 'row',
+                'button_label' => 'Add Problem',
+                'sub_fields' => array(
+                    array(
+                        'key' => 'field_problem_title',
+                        'label' => 'Problem Title',
+                        'name' => 'title',
+                        'type' => 'text',
+                        'required' => 1,
+                    ),
+                    array(
+                        'key' => 'field_problem_icon',
+                        'label' => 'Icon Image',
+                        'name' => 'icon',
+                        'type' => 'image',
+                        'return_format' => 'url',
+                        'preview_size' => 'thumbnail',
+                        'mime_types' => 'webp,png,svg,jpg,jpeg',
+                        'instructions' => 'Upload custom icon image. Supported formats: webp, png, svg, jpg',
+                    ),
+                ),
+            ),
+            
+            // Services Included
+            array(
+                'key' => 'field_services_title',
+                'label' => 'Services Section Title',
+                'name' => 'services_title',
+                'type' => 'text',
+                'default_value' => "Here's what your car gets",
+                'instructions' => 'Title for the services section',
+            ),
+            array(
+                'key' => 'field_service_included',
+                'label' => 'Services Included',
+                'name' => 'services_included',
+                'type' => 'repeater',
+                'layout' => 'row',
+                'button_label' => 'Add Service',
+                'sub_fields' => array(
+                    array(
+                        'key' => 'field_service_title',
+                        'label' => 'Service Title',
+                        'name' => 'title',
+                        'type' => 'text',
+                        'required' => 1,
+                    ),
+                    array(
+                        'key' => 'field_service_description',
+                        'label' => 'Description',
+                        'name' => 'description',
+                        'type' => 'textarea',
+                        'default_value' => '',
+                    ),
+                    array(
+                        'key' => 'field_service_image',
+                        'label' => 'Image',
+                        'name' => 'image',
+                        'type' => 'image',
+                        'return_format' => 'id',
+                        'preview_size' => 'medium',
+                    ),
+                ),
+            ),
+            
+            // Savings Section
+            array(
+                'key' => 'field_savings_title',
+                'label' => 'Savings Section Title',
+                'name' => 'savings_title',
+                'type' => 'text',
+                'default_value' => '',
+            ),
+            array(
+                'key' => 'field_savings_description',
+                'label' => 'Savings Description',
+                'name' => 'savings_description',
+                'type' => 'textarea',
+                'default_value' => '',
+            ),
+            array(
+                'key' => 'field_savings_button_text',
+                'label' => 'Savings Button Text',
+                'name' => 'savings_button_text',
+                'type' => 'text',
+                'default_value' => 'Know More',
+            ),
+            array(
+                'key' => 'field_savings_button_link',
+                'label' => 'Savings Button Link',
+                'name' => 'savings_button_link',
+                'type' => 'page_link',
+                'instructions' => 'Select the page to link to',
+            ),
+            array(
+                'key' => 'field_savings_image',
+                'label' => 'Savings Image',
+                'name' => 'savings_image',
+                'type' => 'image',
+                'return_format' => 'id',
+                'preview_size' => 'medium',
+            ),
+            
+            // FAQ Section
+            array(
+                'key' => 'field_faq_title',
+                'label' => 'FAQ Section Title',
+                'name' => 'faq_title',
+                'type' => 'text',
+                'default_value' => 'It\'s best you know these.',
+                'instructions' => 'Title for the FAQ section',
+            ),
+            array(
+                'key' => 'field_service_faq',
+                'label' => 'FAQ Items',
+                'name' => 'faq_items',
+                'type' => 'repeater',
+                'layout' => 'row',
+                'button_label' => 'Add FAQ',
+                'sub_fields' => array(
+                    array(
+                        'key' => 'field_faq_question',
+                        'label' => 'Question',
+                        'name' => 'question',
+                        'type' => 'text',
+                        'required' => 1,
+                    ),
+                    array(
+                        'key' => 'field_faq_answer',
+                        'label' => 'Answer',
+                        'name' => 'answer',
+                        'type' => 'textarea',
+                        'required' => 1,
+                    ),
+                ),
+            ),
+        ),
+        'location' => array(
+            array(
+                array(
+                    'param' => 'post_type',
+                    'operator' => '==',
+                    'value' => 'service',
+                ),
+            ),
+        ),
+    ]);
+
 });
 
 
@@ -3064,3 +3255,150 @@ add_theme_support('post-thumbnails');
 
 // Add excerpt support
 add_post_type_support('post', 'excerpt');
+
+
+
+
+// Register Custom Post Type for Services
+function create_service_post_type() {
+    $labels = array(
+        'name'                  => 'Services',
+        'singular_name'         => 'Service',
+        'menu_name'             => 'Services',
+        'name_admin_bar'        => 'Service',
+        'archives'              => 'Service Archives',
+        'attributes'            => 'Service Attributes',
+        'parent_item_colon'     => 'Parent Service:',
+        'all_items'             => 'All Services',
+        'add_new_item'          => 'Add New Service',
+        'add_new'               => 'Add New',
+        'new_item'              => 'New Service',
+        'edit_item'             => 'Edit Service',
+        'update_item'           => 'Update Service',
+        'view_item'             => 'View Service',
+        'view_items'            => 'View Services',
+        'search_items'          => 'Search Service',
+        'not_found'             => 'Not found',
+        'not_found_in_trash'    => 'Not found in Trash',
+        'featured_image'        => 'Hero Image',
+        'set_featured_image'    => 'Set hero image',
+        'remove_featured_image' => 'Remove hero image',
+        'use_featured_image'    => 'Use as hero image',
+        'insert_into_item'      => 'Insert into service',
+        'uploaded_to_this_item' => 'Uploaded to this service',
+        'items_list'            => 'Services list',
+        'items_list_navigation' => 'Services list navigation',
+        'filter_items_list'     => 'Filter services list',
+    );
+    
+    $args = array(
+        'label'                 => 'Service',
+        'description'           => 'Car and Bike Services',
+        'labels'                => $labels,
+        'supports'              => array('title', 'editor', 'thumbnail', 'excerpt', 'revisions'),
+        'taxonomies'            => array('service_category'),
+        'hierarchical'          => false,
+        'public'                => true,
+        'show_ui'               => true,
+        'show_in_menu'          => true,
+        'menu_position'         => 5,
+        'menu_icon'             => 'dashicons-admin-tools',
+        'show_in_admin_bar'     => true,
+        'show_in_nav_menus'     => true,
+        'can_export'            => true,
+        'has_archive'           => true,
+        'exclude_from_search'   => false,
+        'publicly_queryable'    => true,
+        'capability_type'       => 'post',
+        'show_in_rest'          => true,
+        'rewrite'               => array(
+            'slug' => 'services',
+            'with_front' => false
+        ),
+    );
+    
+    register_post_type('service', $args);
+}
+add_action('init', 'create_service_post_type', 0);
+
+// Register Custom Taxonomy for Service Categories
+function create_service_taxonomy() {
+    $labels = array(
+        'name'                       => 'Service Categories',
+        'singular_name'              => 'Service Category',
+        'menu_name'                  => 'Categories',
+        'all_items'                  => 'All Categories',
+        'parent_item'                => 'Parent Category',
+        'parent_item_colon'          => 'Parent Category:',
+        'new_item_name'              => 'New Category Name',
+        'add_new_item'               => 'Add New Category',
+        'edit_item'                  => 'Edit Category',
+        'update_item'                => 'Update Category',
+        'view_item'                  => 'View Category',
+        'separate_items_with_commas' => 'Separate categories with commas',
+        'add_or_remove_items'        => 'Add or remove categories',
+        'choose_from_most_used'      => 'Choose from the most used',
+        'popular_items'              => 'Popular Categories',
+        'search_items'               => 'Search Categories',
+        'not_found'                  => 'Not Found',
+        'no_terms'                   => 'No categories',
+        'items_list'                 => 'Categories list',
+        'items_list_navigation'      => 'Categories list navigation',
+    );
+    
+    $args = array(
+        'labels'                     => $labels,
+        'hierarchical'               => true,
+        'public'                     => true,
+        'show_ui'                    => true,
+        'show_admin_column'          => true,
+        'show_in_nav_menus'          => true,
+        'show_tagcloud'              => true,
+        'show_in_rest'               => true,
+        'rewrite'                    => array('slug' => 'service-category'),
+    );
+    
+    register_taxonomy('service_category', array('service'), $args);
+}
+add_action('init', 'create_service_taxonomy', 0);
+
+// Flush rewrite rules on theme activation
+function flush_rewrite_rules_on_activation() {
+    create_service_post_type();
+    create_service_taxonomy();
+    flush_rewrite_rules();
+}
+add_action('after_switch_theme', 'flush_rewrite_rules_on_activation');
+
+
+
+
+
+
+
+// Disable services archive page
+function disable_services_archive($query) {
+    if (!is_admin() && is_post_type_archive('service') && $query->is_main_query()) {
+        $query->set('post_type', 'none');
+        $query->set_404();
+        status_header(404);
+    }
+}
+add_action('pre_get_posts', 'disable_services_archive');
+
+// Change services archive slug to avoid conflict
+function change_services_archive_slug($args, $post_type) {
+    if ($post_type === 'service') {
+        $args['has_archive'] = false; // Completely disable archive
+        // Or change archive slug if you want to keep it
+        // $args['has_archive'] = 'our-services';
+    }
+    return $args;
+}
+add_filter('register_post_type_args', 'change_services_archive_slug', 10, 2);
+
+// Flush rewrite rules again
+function reflush_rewrite_rules() {
+    flush_rewrite_rules();
+}
+add_action('init', 'reflush_rewrite_rules');
