@@ -398,7 +398,7 @@ $right_arrow_icon = $images_url . '/right_chev.svg';
     <div class="relative w-full h-full overflow-hidden">
         <?php if (!empty($hero_image_data)) : ?>
         <img fetchpriority="high" loading="eager" decoding="async" src="<?php echo esc_url($hero_image_data['url']); ?>"
-            class="size-full object-cover" alt="<?php echo esc_attr($hero_image_alt); ?>"
+            class="size-full object-cover aspect-[1279/322]" alt="<?php echo esc_attr($hero_image_alt); ?>"
             title="<?php echo esc_attr($hero_image_alt); ?>">
         <?php endif; ?>
 
@@ -422,7 +422,7 @@ $right_arrow_icon = $images_url . '/right_chev.svg';
             <span class="sticky top-32 ">
                 <?php if (!empty($sidebar_car['url'])) : ?>
                 <img fetchpriority="low" loading="lazy" src="<?php echo esc_url($sidebar_car['url']); ?>"
-                    class="w-full object-contain" alt="<?php echo esc_attr($sidebar_car['alt']); ?>">
+                    class="w-full object-contain aspect-[256/381]" alt="<?php echo esc_attr($sidebar_car['alt']); ?>">
                 <?php endif; ?>
             </span>
         </div>
@@ -453,7 +453,8 @@ $right_arrow_icon = $images_url . '/right_chev.svg';
                                 <img fetchpriority="low" loading="lazy"
                                     src="<?php echo esc_url($intro_image['url']); ?>"
                                     alt="<?php echo esc_attr($intro_image['alt']); ?>"
-                                    title="<?php echo esc_attr($intro_image['alt']); ?>" class="size-full">
+                                    title="<?php echo esc_attr($intro_image['alt']); ?>"
+                                    class="size-full aspect-[480/329]">
                                 <?php endif; ?>
                             </div>
                         </div>
@@ -820,7 +821,7 @@ $right_arrow_icon = $images_url . '/right_chev.svg';
                                         src="<?php echo esc_url($background['url']); ?>"
                                         alt="<?php echo esc_attr($background['alt']); ?>"
                                         title="<?php echo esc_attr($background['alt']); ?>"
-                                        class="size-full object-cover">
+                                        class="size-full object-cover aspect-[203/278]">
                                     <div
                                         class="absolute bottom-0 left-0 w-full h-1/4 bg-gradient-to-t from-[#CB122D] to-[#CB122D00]">
                                     </div>
@@ -869,7 +870,8 @@ $right_arrow_icon = $images_url . '/right_chev.svg';
                                 <?php if (!empty($card_image['url'])) : ?>
                                 <img fetchpriority="low" loading="lazy" src="<?php echo esc_url($card_image['url']); ?>"
                                     alt="<?php echo esc_attr($card_image['alt']); ?>"
-                                    title="<?php echo esc_attr($card_image['alt']); ?>" class="size-full object-cover">
+                                    title="<?php echo esc_attr($card_image['alt']); ?>"
+                                    class="size-full object-cover aspect-[437/334]">
                                 <?php endif; ?>
                                 <div class="absolute bottom-0 left-0 flex flex-col gap-y-3 duration-500">
                                     <div
@@ -915,7 +917,7 @@ $right_arrow_icon = $images_url . '/right_chev.svg';
                             <?php if (!empty($wheel_desktop_image['url'])) : ?>
                             <img src="<?php echo esc_url($wheel_desktop_image['url']); ?>"
                                 alt="<?php echo esc_attr($wheel_desktop_image['alt']); ?>"
-                                class="w-full h-full rounded-full object-contain" />
+                                class="w-full h-full rounded-full object-contain aspect-square" />
                             <?php endif; ?>
                         </div>
                         <div class="relative w-full h-full sm:hidden block">

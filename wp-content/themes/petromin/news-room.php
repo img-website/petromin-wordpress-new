@@ -188,9 +188,9 @@ foreach ($press_releases_items as $item) {
 <div class="hero_section w-full relative z-0 md:h-dvh h-[23rem]">
     <div class="relative w-full h-full overflow-hidden">
         <?php if (!empty($hero_image_data)) : ?>
-            <img fetchpriority="high" decoding="async" loading="eager" src="<?php echo esc_url($hero_image_data['url']); ?>"
-                class="size-full object-cover" alt="<?php echo esc_attr($hero_image_alt); ?>"
-                title="<?php echo esc_attr($hero_image_alt); ?>">
+        <img fetchpriority="high" decoding="async" loading="eager" src="<?php echo esc_url($hero_image_data['url']); ?>"
+            class="size-full object-cover aspect-[1279/551]" alt="<?php echo esc_attr($hero_image_alt); ?>"
+            title="<?php echo esc_attr($hero_image_alt); ?>">
         <?php endif; ?>
 
         <div
@@ -226,9 +226,9 @@ foreach ($press_releases_items as $item) {
                             $name = $category['name'] ?? '';
                             $slug = $category['slug'] ?? sanitize_title($name);
                         ?>
-                            <li class="text-[#637083] category-nav-item" data-target="<?php echo esc_attr($slug); ?>">
-                                <?php echo esc_html($name); ?>
-                            </li>
+                        <li class="text-[#637083] category-nav-item" data-target="<?php echo esc_attr($slug); ?>">
+                            <?php echo esc_html($name); ?>
+                        </li>
                         <?php endforeach; ?>
                     </ul>
                 </div>
@@ -239,12 +239,11 @@ foreach ($press_releases_items as $item) {
         <div class="w-full relative mt-8 mb-8 pb-4 border-b border-[#E0E5EB] md:hidden block">
             <div class="flex items-center gap-3 group/cat">
                 <!-- Prev Button -->
-                <div
-                    class="swiper-prev cursor-pointer transition-opacity duration-300">
+                <div class="swiper-prev cursor-pointer transition-opacity duration-300">
                     <span
                         class="border border-[#E0E5EB] bg-white shadow-[0_0_7px_0_#c5c2c2] size-7 rounded-full flex justify-center items-center">
-                        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24"
-                            width="16px" height="16px" xmlns="http://www.w3.org/2000/svg">
+                        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" width="16px"
+                            height="16px" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M15.28 5.22a.75.75 0 0 1 0 1.06L9.56 12l5.72 5.72a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215l-6.25-6.25a.75.75 0 0 1 0-1.06l6.25-6.25a.75.75 0 0 1 1.06 0Z">
                             </path>
@@ -259,11 +258,12 @@ foreach ($press_releases_items as $item) {
                             $name = $category['name'] ?? '';
                             $slug = $category['slug'] ?? sanitize_title($name);
                         ?>
-                            <div class="swiper-slide !w-auto">
-                                <div class="text-sm text-[#637083] mobile-category-nav" data-target="<?php echo esc_attr($slug); ?>">
-                                    <?php echo esc_html($name); ?>
-                                </div>
+                        <div class="swiper-slide !w-auto">
+                            <div class="text-sm text-[#637083] mobile-category-nav"
+                                data-target="<?php echo esc_attr($slug); ?>">
+                                <?php echo esc_html($name); ?>
                             </div>
+                        </div>
                         <?php endforeach; ?>
                     </div>
                 </div>
@@ -289,205 +289,242 @@ foreach ($press_releases_items as $item) {
 
                 <!-- Media Mentions Section -->
                 <section id="media-mentions" class="w-full relative flex flex-col gap-y-8 md:gap-y-6 news-section">
-                    <h2 class="lg:text-4xl md:text-3xl text-2xl font-bold text-[#121212] border-b-2 border-[#E0E5EB] group-hover:lg:text-[#D4111E] pb-4">
+                    <h2
+                        class="lg:text-4xl md:text-3xl text-2xl font-bold text-[#121212] border-b-2 border-[#E0E5EB] group-hover:lg:text-[#D4111E] pb-4">
                         <?php echo esc_html($media_mentions_heading); ?>
                     </h2>
 
                     <div class="grid md:grid-cols-3 grid-cols-1 gap-y-8 md:gap-x-[1.938rem] md:gap-y-[1.563rem]">
                         <?php foreach ($media_mentions_processed as $item) : ?>
-                            <div class="relative w-full flex flex-col gap-y-4 md:gap-y-3 group">
-                                <?php if (!empty($item['image']['url'])) : ?>
-                                    <div class="w-full relative overflow-hidden duration-300">
-                                        <img fetchpriority="low" loading="lazy" src="<?php echo esc_url($item['image']['url']); ?>"
-                                            class="size-full group-hover:lg:scale-125 duration-300" 
-                                            alt="<?php echo esc_attr($item['image']['alt']); ?>" 
-                                            title="<?php echo esc_attr($item['image']['alt']); ?>">
-                                    </div>
-                                <?php endif; ?>
-                                
-                                <h3 class="md:text-lg leading-7 text-base font-semibold text-[#121212] group-hover:lg:text-[#D4111E] duration-300">
-                                    <?php echo esc_html($item['title']); ?>
-                                </h3>
-                                
-                                <div class="flex justify-between items-center gap-2 w-full border-b-2 border-[#E0E5EB] pb-3 group-hover:lg:border-[#D4111E] duration-300">
-                                    <span class="text-[#637083] text-sm font-medium"><?php echo esc_html($item['source']); ?></span>
-                                    <span class="text-[#637083] text-sm font-medium"><?php echo esc_html($item['date']); ?></span>
-                                </div>
-                                
-                                <?php if (!empty($item['link'])) : ?>
-                                    <a href="<?php echo esc_url($item['link']); ?>" aria-label="<?php echo esc_attr($item['title']); ?>" class="absolute inset-0"></a>
-                                <?php endif; ?>
+                        <div class="relative w-full flex flex-col gap-y-4 md:gap-y-3 group">
+                            <?php if (!empty($item['image']['url'])) : ?>
+                            <div class="w-full relative overflow-hidden duration-300">
+                                <img fetchpriority="low" loading="lazy"
+                                    src="<?php echo esc_url($item['image']['url']); ?>"
+                                    class="size-full group-hover:lg:scale-125 duration-300 aspect-[269/168]"
+                                    alt="<?php echo esc_attr($item['image']['alt']); ?>"
+                                    title="<?php echo esc_attr($item['image']['alt']); ?>">
                             </div>
+                            <?php endif; ?>
+
+                            <h3
+                                class="md:text-lg leading-7 text-base font-semibold text-[#121212] group-hover:lg:text-[#D4111E] duration-300">
+                                <?php echo esc_html($item['title']); ?>
+                            </h3>
+
+                            <div
+                                class="flex justify-between items-center gap-2 w-full border-b-2 border-[#E0E5EB] pb-3 group-hover:lg:border-[#D4111E] duration-300">
+                                <span
+                                    class="text-[#637083] text-sm font-medium"><?php echo esc_html($item['source']); ?></span>
+                                <span
+                                    class="text-[#637083] text-sm font-medium"><?php echo esc_html($item['date']); ?></span>
+                            </div>
+
+                            <?php if (!empty($item['link'])) : ?>
+                            <a href="<?php echo esc_url($item['link']); ?>"
+                                aria-label="<?php echo esc_attr($item['title']); ?>" class="absolute inset-0"></a>
+                            <?php endif; ?>
+                        </div>
                         <?php endforeach; ?>
                     </div>
                 </section>
 
                 <!-- Press Releases Section -->
                 <section id="press-releases" class="w-full relative flex flex-col gap-y-8 news-section">
-                    <h2 class="lg:text-4xl md:text-3xl text-2xl font-bold text-[#121212] border-b-2 border-[#E0E5EB] pb-4">
+                    <h2
+                        class="lg:text-4xl md:text-3xl text-2xl font-bold text-[#121212] border-b-2 border-[#E0E5EB] pb-4">
                         <?php echo esc_html($press_releases_heading); ?>
                     </h2>
-                    
+
                     <div class="w-full flex flex-col gap-y-8">
                         <?php foreach ($press_releases_processed as $item) : ?>
-                            <div class="w-full border-b-2 border-[#E0E5EB] pb-11 md:pb-6">
-                                <div class="flex justify-between items-start gap-2">
-                                    <div class="flex flex-col gap-y-3">
-                                        <h3 class="lg:text-xl text-lg font-semibold text-[#121212]">
-                                            <?php echo esc_html($item['title']); ?>
-                                        </h3>
-                                        <p class="text-[#637083] text-sm font-normal"><?php echo esc_html($item['description']); ?></p>
-                                        <div class="flex justify-between items-center pt-1">
-                                            <?php if (!empty($item['read_more_link'])) : ?>
-                                                <a href="<?php echo esc_url($item['read_more_link']); ?>"
-                                                   class="text-[#D4111E] text-sm font-medium flex items-center gap-1"
-                                                   aria-label="Read more about <?php echo esc_attr($item['title']); ?>">
-                                                    Read More
-                                                    <span>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
-                                                            <path d="M3.5 11.0834L9.91667 7.00008L3.5 2.91675" stroke="#D4111E" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round" />
-                                                        </svg>
-                                                    </span>
-                                                </a>
-                                            <?php endif; ?>
-                                            <div class="text-[#637083] text-sm font-normal md:hidden block">
-                                                <?php echo esc_html($item['date']); ?>
-                                            </div>
+                        <div class="w-full border-b-2 border-[#E0E5EB] pb-11 md:pb-6">
+                            <div class="flex justify-between items-start gap-2">
+                                <div class="flex flex-col gap-y-3">
+                                    <h3 class="lg:text-xl text-lg font-semibold text-[#121212]">
+                                        <?php echo esc_html($item['title']); ?>
+                                    </h3>
+                                    <p class="text-[#637083] text-sm font-normal">
+                                        <?php echo esc_html($item['description']); ?></p>
+                                    <div class="flex justify-between items-center pt-1">
+                                        <?php if (!empty($item['read_more_link'])) : ?>
+                                        <a href="<?php echo esc_url($item['read_more_link']); ?>"
+                                            class="text-[#D4111E] text-sm font-medium flex items-center gap-1"
+                                            aria-label="Read more about <?php echo esc_attr($item['title']); ?>">
+                                            Read More
+                                            <span>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                                    viewBox="0 0 14 14" fill="none">
+                                                    <path d="M3.5 11.0834L9.91667 7.00008L3.5 2.91675" stroke="#D4111E"
+                                                        stroke-width="1.16667" stroke-linecap="round"
+                                                        stroke-linejoin="round" />
+                                                </svg>
+                                            </span>
+                                        </a>
+                                        <?php endif; ?>
+                                        <div class="text-[#637083] text-sm font-normal md:hidden block">
+                                            <?php echo esc_html($item['date']); ?>
                                         </div>
                                     </div>
-                                    <div class="text-[#637083] text-sm font-normal md:block hidden">
-                                        <?php echo esc_html($item['date']); ?>
-                                    </div>
+                                </div>
+                                <div class="text-[#637083] text-sm font-normal md:block hidden">
+                                    <?php echo esc_html($item['date']); ?>
                                 </div>
                             </div>
+                        </div>
                         <?php endforeach; ?>
                     </div>
                 </section>
 
                 <!-- Featured Section -->
                 <section id="featured" class="w-full relative flex flex-col gap-y-8 md:gap-y-6 news-section">
-                    <h2 class="lg:text-4xl md:text-3xl text-2xl font-bold text-[#121212] border-b-2 border-[#E0E5EB] pb-4">
+                    <h2
+                        class="lg:text-4xl md:text-3xl text-2xl font-bold text-[#121212] border-b-2 border-[#E0E5EB] pb-4">
                         <?php echo esc_html($featured_heading); ?>
                     </h2>
 
                     <div class="grid md:grid-cols-3 grid-cols-1 md:gap-x-[1.938rem] gap-y-8 md:gap-y-[1.563rem]">
                         <?php foreach ($featured_processed as $item) : ?>
-                            <div class="relative w-full flex flex-col gap-y-3 group">
-                                <?php if (!empty($item['image']['url'])) : ?>
-                                    <div class="w-full relative overflow-hidden duration-300">
-                                        <img fetchpriority="low" loading="lazy" src="<?php echo esc_url($item['image']['url']); ?>"
-                                            class="size-full group-hover:lg:scale-125 duration-300" 
-                                            alt="<?php echo esc_attr($item['image']['alt']); ?>" 
-                                            title="<?php echo esc_attr($item['image']['alt']); ?>">
-                                    </div>
-                                <?php endif; ?>
-                                
-                                <h3 class="md:text-lg leading-7 text-base font-semibold text-[#121212] group-hover:lg:text-[#D4111E] duration-300">
-                                    <?php echo esc_html($item['title']); ?>
-                                </h3>
-                                
-                                <div class="flex justify-between items-center gap-2 w-full border-b-2 border-[#E0E5EB] pb-3 group-hover:lg:border-[#D4111E] duration-300">
-                                    <span class="text-[#637083] text-sm font-medium"><?php echo esc_html($item['source']); ?></span>
-                                    <span class="text-[#637083] text-sm font-medium"><?php echo esc_html($item['date']); ?></span>
-                                </div>
-                                
-                                <?php if (!empty($item['link'])) : ?>
-                                    <a href="<?php echo esc_url($item['link']); ?>" aria-label="<?php echo esc_attr($item['title']); ?>" class="absolute inset-0"></a>
-                                <?php endif; ?>
+                        <div class="relative w-full flex flex-col gap-y-3 group">
+                            <?php if (!empty($item['image']['url'])) : ?>
+                            <div class="w-full relative overflow-hidden duration-300">
+                                <img fetchpriority="low" loading="lazy"
+                                    src="<?php echo esc_url($item['image']['url']); ?>"
+                                    class="size-full group-hover:lg:scale-125 duration-300 aspect-[269/168]"
+                                    alt="<?php echo esc_attr($item['image']['alt']); ?>"
+                                    title="<?php echo esc_attr($item['image']['alt']); ?>">
                             </div>
+                            <?php endif; ?>
+
+                            <h3
+                                class="md:text-lg leading-7 text-base font-semibold text-[#121212] group-hover:lg:text-[#D4111E] duration-300">
+                                <?php echo esc_html($item['title']); ?>
+                            </h3>
+
+                            <div
+                                class="flex justify-between items-center gap-2 w-full border-b-2 border-[#E0E5EB] pb-3 group-hover:lg:border-[#D4111E] duration-300">
+                                <span
+                                    class="text-[#637083] text-sm font-medium"><?php echo esc_html($item['source']); ?></span>
+                                <span
+                                    class="text-[#637083] text-sm font-medium"><?php echo esc_html($item['date']); ?></span>
+                            </div>
+
+                            <?php if (!empty($item['link'])) : ?>
+                            <a href="<?php echo esc_url($item['link']); ?>"
+                                aria-label="<?php echo esc_attr($item['title']); ?>" class="absolute inset-0"></a>
+                            <?php endif; ?>
+                        </div>
                         <?php endforeach; ?>
                     </div>
                 </section>
 
                 <!-- Events Section -->
                 <section id="events" class="w-full relative flex flex-col gap-y-8 md:gap-y-6 md:pt-0 pt-4 news-section">
-                    <h2 class="lg:text-4xl md:text-3xl text-2xl font-bold text-[#121212] border-b-2 border-[#E0E5EB] pb-4">
+                    <h2
+                        class="lg:text-4xl md:text-3xl text-2xl font-bold text-[#121212] border-b-2 border-[#E0E5EB] pb-4">
                         <?php echo esc_html($events_heading); ?>
                     </h2>
 
                     <div class="grid md:grid-cols-3 grid-cols-1 gap-y-8 md:gap-x-[1.938rem] md:gap-y-[1.563rem]">
                         <?php foreach ($events_processed as $item) : ?>
-                            <div class="relative w-full flex flex-col gap-y-3 group duration-300">
-                                <?php if (!empty($item['image']['url'])) : ?>
-                                    <div class="w-full relative overflow-hidden duration-300">
-                                        <img fetchpriority="low" loading="lazy" src="<?php echo esc_url($item['image']['url']); ?>"
-                                            class="group-hover:lg:scale-125 duration-300" 
-                                            alt="<?php echo esc_attr($item['image']['alt']); ?>" 
-                                            title="<?php echo esc_attr($item['image']['alt']); ?>">
-                                    </div>
-                                <?php endif; ?>
-                                
-                                <h3 class="md:text-lg leading-7 text-base font-semibold text-[#121212] group-hover:lg:text-[#D4111E] duration-300">
-                                    <?php echo esc_html($item['title']); ?>
-                                </h3>
-                                
-                                <p class="text-[#637083] text-sm font-normal"><?php echo esc_html($item['description']); ?></p>
-                                
-                                <div class="flex justify-between items-center gap-2 w-full border-b-2 border-[#E0E5EB] group-hover:lg:border-[#D4111E] duration-300 pb-3">
-                                    <div class="text-[#637083] text-sm font-medium flex items-center gap-1">
-                                        <span>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="md:size-4" viewBox="0 0 16 16" fill="none">
-                                                <path d="M13.3327 6.66683C13.3327 9.9955 9.64002 13.4622 8.40002 14.5328C8.2845 14.6197 8.14388 14.6667 7.99935 14.6667C7.85482 14.6667 7.7142 14.6197 7.59868 14.5328C6.35868 13.4622 2.66602 9.9955 2.66602 6.66683C2.66602 5.25234 3.22792 3.89579 4.22811 2.89559C5.22831 1.8954 6.58486 1.3335 7.99935 1.3335C9.41384 1.3335 10.7704 1.8954 11.7706 2.89559C12.7708 3.89579 13.3327 5.25234 13.3327 6.66683Z"
-                                                    stroke="#637083" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round" />
-                                                <path d="M8 8.66675C9.10457 8.66675 10 7.77132 10 6.66675C10 5.56218 9.10457 4.66675 8 4.66675C6.89543 4.66675 6 5.56218 6 6.66675C6 7.77132 6.89543 8.66675 8 8.66675Z"
-                                                    stroke="#637083" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </span>
-                                        <?php echo esc_html($item['location']); ?>
-                                    </div>
-                                    <div class="text-[#637083] text-sm font-medium"><?php echo esc_html($item['date']); ?></div>
-                                </div>
-                                
+                        <div class="relative w-full flex flex-col gap-y-3 group duration-300">
+                            <?php if (!empty($item['image']['url'])) : ?>
+                            <div class="w-full relative overflow-hidden duration-300">
+                                <img fetchpriority="low" loading="lazy"
+                                    src="<?php echo esc_url($item['image']['url']); ?>"
+                                    class="group-hover:lg:scale-125 duration-300 aspect-[269/170]"
+                                    alt="<?php echo esc_attr($item['image']['alt']); ?>"
+                                    title="<?php echo esc_attr($item['image']['alt']); ?>">
                             </div>
+                            <?php endif; ?>
+
+                            <h3
+                                class="md:text-lg leading-7 text-base font-semibold text-[#121212] group-hover:lg:text-[#D4111E] duration-300">
+                                <?php echo esc_html($item['title']); ?>
+                            </h3>
+
+                            <p class="text-[#637083] text-sm font-normal"><?php echo esc_html($item['description']); ?>
+                            </p>
+
+                            <div
+                                class="flex justify-between items-center gap-2 w-full border-b-2 border-[#E0E5EB] group-hover:lg:border-[#D4111E] duration-300 pb-3">
+                                <div class="text-[#637083] text-sm font-medium flex items-center gap-1">
+                                    <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="md:size-4"
+                                            viewBox="0 0 16 16" fill="none">
+                                            <path
+                                                d="M13.3327 6.66683C13.3327 9.9955 9.64002 13.4622 8.40002 14.5328C8.2845 14.6197 8.14388 14.6667 7.99935 14.6667C7.85482 14.6667 7.7142 14.6197 7.59868 14.5328C6.35868 13.4622 2.66602 9.9955 2.66602 6.66683C2.66602 5.25234 3.22792 3.89579 4.22811 2.89559C5.22831 1.8954 6.58486 1.3335 7.99935 1.3335C9.41384 1.3335 10.7704 1.8954 11.7706 2.89559C12.7708 3.89579 13.3327 5.25234 13.3327 6.66683Z"
+                                                stroke="#637083" stroke-width="1.33333" stroke-linecap="round"
+                                                stroke-linejoin="round" />
+                                            <path
+                                                d="M8 8.66675C9.10457 8.66675 10 7.77132 10 6.66675C10 5.56218 9.10457 4.66675 8 4.66675C6.89543 4.66675 6 5.56218 6 6.66675C6 7.77132 6.89543 8.66675 8 8.66675Z"
+                                                stroke="#637083" stroke-width="1.33333" stroke-linecap="round"
+                                                stroke-linejoin="round" />
+                                        </svg>
+                                    </span>
+                                    <?php echo esc_html($item['location']); ?>
+                                </div>
+                                <div class="text-[#637083] text-sm font-medium"><?php echo esc_html($item['date']); ?>
+                                </div>
+                            </div>
+
+                        </div>
                         <?php endforeach; ?>
                     </div>
                 </section>
 
                 <?php if ($show_podcasts_section && !empty($podcasts_processed)) : ?>
-                    <!-- Podcasts Section -->
-                    <section id="podcasts" class="w-full relative flex flex-col gap-y-8 md:gap-y-6 news-section">
-                        <h2 class="lg:text-4xl md:text-3xl text-2xl font-bold text-[#121212] border-b-2 border-[#E0E5EB] pb-4 md:pb-3">
-                            <?php echo esc_html($podcasts_heading); ?>
-                        </h2>
+                <!-- Podcasts Section -->
+                <section id="podcasts" class="w-full relative flex flex-col gap-y-8 md:gap-y-6 news-section">
+                    <h2
+                        class="lg:text-4xl md:text-3xl text-2xl font-bold text-[#121212] border-b-2 border-[#E0E5EB] pb-4 md:pb-3">
+                        <?php echo esc_html($podcasts_heading); ?>
+                    </h2>
 
-                        <div class="grid md:grid-cols-2 grid-cols-1 gap-6 md:gap-[1.625rem]">
-                            <?php foreach ($podcasts_processed as $item) : ?>
-                                <div class="relative w-full flex flex-col gap-y-3 group duration-300">
-                                    <div class="w-full relative overflow-hidden duration-300">
-                                        <!-- Video -->
-                                        <?php if (!empty($item['video_url'])) : ?>
-                                            <iframe class="w-full"
-                                                src="<?php echo esc_url($item['video_url']); ?>?rel=0&modestbranding=1&controls=0&showinfo=0&enablejsapi=1"
-                                                title="<?php echo esc_attr($item['title']); ?>" frameborder="0" height="269"
-                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
-                                            </iframe>
+                    <div class="grid md:grid-cols-2 grid-cols-1 gap-6 md:gap-[1.625rem]">
+                        <?php foreach ($podcasts_processed as $item) : ?>
+                        <div class="relative w-full flex flex-col gap-y-3 group duration-300">
+                            <div class="w-full relative overflow-hidden duration-300">
+                                <!-- Video -->
+                                <?php if (!empty($item['video_url'])) : ?>
+                                <iframe class="w-full"
+                                    src="<?php echo esc_url($item['video_url']); ?>?rel=0&modestbranding=1&controls=0&showinfo=0&enablejsapi=1"
+                                    title="<?php echo esc_attr($item['title']); ?>" frameborder="0" height="269"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+                                </iframe>
 
-                                            <!-- Custom Play Button Overlay -->
-                                            <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 cursor-pointer transition-opacity hover:bg-opacity-50">
-                                                <svg width="80" height="70" viewBox="0 0 120 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <!-- Rounded Rectangle -->
-                                                    <rect x="2" y="2" width="116" height="76" rx="12" fill="#FF0000" stroke="#FF0000" stroke-width="3" />
-                                                    <!-- Play Triangle -->
-                                                    <path d="M48 28L48 52L68 40L48 28Z" fill="white" />
-                                                </svg>
-                                            </div>
-                                        <?php endif; ?>
-                                    </div>
-
-                                    <h3 class="md:text-lg text-base font-semibold text-[#121212] group-hover:lg:text-[#D4111E] duration-300">
-                                        <?php echo esc_html($item['title']); ?>
-                                    </h3>
-
-                                    <p class="text-[#637083] text-sm font-normal"><?php echo esc_html($item['description']); ?></p>
-
-                                    <?php if (!empty($item['link'])) : ?>
-                                        <a href="<?php echo esc_url($item['link']); ?>" class="cursor-pointer absolute inset-0" aria-label="<?php echo esc_attr($item['title']); ?>"></a>
-                                    <?php endif; ?>
+                                <!-- Custom Play Button Overlay -->
+                                <div
+                                    class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 cursor-pointer transition-opacity hover:bg-opacity-50">
+                                    <svg width="80" height="70" viewBox="0 0 120 80" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <!-- Rounded Rectangle -->
+                                        <rect x="2" y="2" width="116" height="76" rx="12" fill="#FF0000"
+                                            stroke="#FF0000" stroke-width="3" />
+                                        <!-- Play Triangle -->
+                                        <path d="M48 28L48 52L68 40L48 28Z" fill="white" />
+                                    </svg>
                                 </div>
-                            <?php endforeach; ?>
+                                <?php endif; ?>
+                            </div>
+
+                            <h3
+                                class="md:text-lg text-base font-semibold text-[#121212] group-hover:lg:text-[#D4111E] duration-300">
+                                <?php echo esc_html($item['title']); ?>
+                            </h3>
+
+                            <p class="text-[#637083] text-sm font-normal"><?php echo esc_html($item['description']); ?>
+                            </p>
+
+                            <?php if (!empty($item['link'])) : ?>
+                            <a href="<?php echo esc_url($item['link']); ?>" class="cursor-pointer absolute inset-0"
+                                aria-label="<?php echo esc_attr($item['title']); ?>"></a>
+                            <?php endif; ?>
                         </div>
-                    </section>
+                        <?php endforeach; ?>
+                    </div>
+                </section>
                 <?php endif; ?>
 
             </div>
@@ -501,15 +538,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const sections = document.querySelectorAll('.news-section');
     const navItems = document.querySelectorAll('.category-nav-item');
     const mobileNavItems = document.querySelectorAll('.mobile-category-nav');
-    
+
     function setActiveCategory() {
         let current = '';
-        
+
         sections.forEach(section => {
             const sectionTop = section.offsetTop - 100;
             const sectionHeight = section.clientHeight;
             const sectionId = section.getAttribute('id');
-            
+
             if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
                 current = sectionId;
             }

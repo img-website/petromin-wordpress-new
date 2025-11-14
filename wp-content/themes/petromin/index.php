@@ -1549,7 +1549,7 @@ $faq_second_column_items = array_slice($faq_processed_items, $faq_first_column_c
                 $inner_classes = 'block text-lg';
 
                 if ($is_active) {
-                    $button_classes .= 'active relative lg:px-4 py-5 px-3 -my-5 lg:font-bold font-semibold bg-gradient-to-l h-20 from-[#CB122D] via-[#9b2133] to-[#CB122D] text-white -skew-x-[18deg]';
+                    $button_classes .= 'tab-btn active relative lg:px-4 py-5 px-3 -my-5 lg:font-bold font-semibold bg-gradient-to-l h-20 from-[#CB122D] via-[#9b2133] to-[#CB122D] text-white -skew-x-[18deg]';
                     $inner_classes = 'skew-x-[18deg] block text-lg';
                 }
                 ?>
@@ -1643,66 +1643,26 @@ $faq_second_column_items = array_slice($faq_processed_items, $faq_first_column_c
                 </div>
                 <?php endif; ?>
             </div>
-            <?php if (!empty($tab['description'])): ?>
-            <p class="text-black text-base font-normal mb-4 -ms-3">
-                <?php echo nl2br(esc_html($tab['description'])); ?>
-            </p>
-            <?php endif; ?>
-            <?php if (!empty($tab['highlight'])): ?>
-            <p class="text-[1.375rem] font-bold text-black mb-5 -ms-3">
-                <?php echo esc_html($tab['highlight']); ?>
-            </p>
-            <?php endif; ?>
-            <?php if ($has_primary || $has_secondary): ?>
-            <div class="flex items-center lg:pb-10 space-x-4 -ms-3">
-                <?php if ($has_primary): ?>
-                <a href="<?php echo esc_url($primary_button['url'] ?? '#'); ?>"
-                    target="<?php echo esc_attr($primary_button['target'] ?? '_self'); ?>"
-                    class="bg-[#CB122D] flex items-center text-base hover:bg-red-800 text-white font-semibold py-[0.625rem] px-[0.625rem] transition duration-200">
-                    <?php echo esc_html($primary_button['label']); ?>
-                    <svg class="size-4 text-white ms-2" stroke="currentColor" fill="none" stroke-width="0"
-                        viewBox="0 0 24 24" height="200" width="200" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M10.5858 6.34317L12 4.92896L19.0711 12L12 19.0711L10.5858 17.6569L16.2427 12L10.5858 6.34317Z"
-                            fill="currentColor"></path>
-                    </svg>
-                </a>
-                <?php endif; ?>
-                <?php if ($has_secondary): ?>
-                <a href="<?php echo esc_url($secondary_button['url'] ?? '#'); ?>"
-                    target="<?php echo esc_attr($secondary_button['target'] ?? '_self'); ?>"
-                    class="bg-[#FF8300] hover:bg-orange-600 flex items-center text-base text-white font-semibold py-[0.625rem] px-[0.625rem] transition duration-200">
-                    <?php echo esc_html($secondary_button['label']); ?>
-                    <svg class="size-4 text-white ms-2" stroke="currentColor" fill="none" stroke-width="0"
-                        viewBox="0 0 24 24" height="200" width="200" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M10.5858 6.34317L12 4.92896L19.0711 12L12 19.0711L10.5858 17.6569L16.2427 12L10.5858 6.34317Z"
-                            fill="currentColor"></path>
-                    </svg>
-                </a>
+            <div class="lg:w-3/5 w-full flex relative z-10">
+                <?php if ($image_url !== ''): ?>
+                <img src="<?php echo esc_url($image_url); ?>" width="730" height="475"
+                    class="object-contain md:object-bottom object-center lg:aspect-[730/475] aspect-[700/475] py-5"
+                    loading="lazy" fetchpriority="low" alt="<?php echo esc_attr($image_alt); ?>"
+                    title="<?php echo esc_attr($image_alt); ?>">
                 <?php endif; ?>
             </div>
-            <?php endif; ?>
         </div>
-        <div class="lg:w-3/5 w-full flex relative z-10">
-            <?php if ($image_url !== ''): ?>
-            <img src="<?php echo esc_url($image_url); ?>" width="730" height="475"
-                class="object-contain md:object-bottom object-center lg:aspect-[730/475] aspect-[700/475] py-5"
-                loading="lazy" fetchpriority="low" alt="<?php echo esc_attr($image_alt); ?>"
-                title="<?php echo esc_attr($image_alt); ?>">
-            <?php endif; ?>
+        <?php endforeach; ?>
+        <div class="absolute right-0 bottom-0 top-0 w-full md:flex flex-col hidden">
+            <img loading="eager" fetchpriority="high" decoding="async"
+                src="<?php echo $assets_url ?>img/Group-64-1-scaled.webp" width="730" height="475"
+                class="absolute w-full object-cover object-center lg:-top-6 bottom-0 lg:h-full h-72">
         </div>
-    </div>
-    <?php endforeach; ?>
-    <div class="absolute right-0 bottom-0 top-0 w-full md:flex flex-col hidden">
-        <img loading="eager" fetchpriority="high" decoding="async"
-            src="<?php echo $assets_url ?>img/Group-64-1-scaled.webp" width="730" height="475"
-            class="absolute w-full object-cover object-center lg:-top-6 bottom-0 lg:h-full h-72">
-    </div>
-    <div class="absolute flex flex-col left-0 md:bottom-0 max-sm:top-0 md:hidden">
-        <img loading="eager" fetchpriority="high" decoding="async" src="<?php echo $assets_url ?>img/Frame-24-1.webp"
-            width="730" height="475" alt="Background" class="w-full h-full object-cover object-right">
-    </div>
+        <div class="absolute flex flex-col left-0 md:bottom-0 max-sm:top-0 md:hidden">
+            <img loading="eager" fetchpriority="high" decoding="async"
+                src="<?php echo $assets_url ?>img/Frame-24-1.webp" width="730" height="475" alt="Background"
+                class="w-full h-full object-cover object-right">
+        </div>
     </div>
 </section>
 <?php endif; ?>
@@ -1765,7 +1725,7 @@ $faq_second_column_items = array_slice($faq_processed_items, $faq_first_column_c
                 <div class="flex flex-col items-start lg:mb-5 mb-2">
                     <?php if ($icon_url !== ''): ?>
                     <span
-                        class="bg-gradient-to-l from-[#CB122D] to-[#650916] -skew-x-[18deg] mb-5 flex items-center justify-center h-[3.75rem] w-[4.9rem]">
+                        class="bg-gradient-to-l from-[#CB122D] to-[#650916] -skew-x-[18deg] mb-5 flex items-center justify-center w-[4.9rem] h-[3.75rem]">
                         <img src="<?php echo esc_url($icon_url); ?>" alt="<?php echo esc_attr($icon_alt); ?>"
                             title="<?php echo esc_attr($icon_alt); ?>" class="size-[2.688rem] skew-x-[18deg]"
                             loading="lazy" fetchpriority="low">
@@ -1777,9 +1737,9 @@ $faq_second_column_items = array_slice($faq_processed_items, $faq_first_column_c
                     </h3>
                     <?php endif; ?>
                 </div>
-                <?php if (!empty($tab['description'])): ?>
-                <p class="text-black text-base font-normal mb-[2.25rem] -ms-3">
-                    <?php echo nl2br(esc_html($tab['description'])); ?>
+                <?php if (!empty($tab['hero_description'])): ?>
+                <p class="text-[#475467] text-base mb-2 -ms-3">
+                    <?php echo nl2br(esc_html($tab['hero_description'])); ?>
                 </p>
                 <?php endif; ?>
                 <?php if (!empty($tab['highlight'])): ?>
@@ -1877,56 +1837,9 @@ $faq_second_column_items = array_slice($faq_processed_items, $faq_first_column_c
                         <div
                             class="absolute -top-8 -left-4 lg:py-3 lg:px-10 py-3 px-7 font-bold bg-gradient-to-l from-[#CB122D] to-[#650916] text-white lg:-skew-x-[6deg] skew-x-[6deg]">
                             <span
-                                class="bg-gradient-to-l from-[#CB122D] to-[#650916] -skew-x-[18deg] mb-5 flex items-center justify-center w-[4.9rem] h-[3.75rem]">
-                                <img src="<?php echo esc_url($icon_url); ?>" alt="<?php echo esc_attr($icon_alt); ?>"
-                                    title="<?php echo esc_attr($icon_alt); ?>" class="size-[2.688rem] skew-x-[18deg]"
-                                    loading="lazy" fetchpriority="low">
+                                class="lg:skew-x-[20deg] skew-x-[10deg] block 2xl:text-[1.5rem] xl:text-2xl lg:text-2xl text-xl 2xl:!leading-[3.063rem]">
+                                <?php echo esc_html($slide['year']); ?>
                             </span>
-                            <?php endif; ?>
-                            <?php if (!empty($tab['heading'])): ?>
-                            <h3 class="text-2xl md:text-3xl lg:text-[2.5rem] font-bold text-black -ms-3">
-                                <?php echo esc_html($tab['heading']); ?>
-                            </h3>
-                            <?php endif; ?>
-                        </div>
-                        <?php if (!empty($tab['hero_description'])): ?>
-                        <p class="text-[#475467] text-base mb-2 -ms-3">
-                            <?php echo nl2br(esc_html($tab['hero_description'])); ?>
-                        </p>
-                        <?php endif; ?>
-                        <?php if (!empty($tab['highlight'])): ?>
-                        <p class="text-[1.375rem] font-bold text-black mb-[2.25rem] -ms-3">
-                            <?php echo esc_html($tab['highlight']); ?>
-                        </p>
-                        <?php endif; ?>
-                        <?php if ($has_primary || $has_secondary): ?>
-                        <div class="flex items-center lg:pb-10 space-x-4 -ms-3">
-                            <?php if ($has_primary): ?>
-                            <a href="<?php echo esc_url($primary_button['url'] ?? '#'); ?>"
-                                target="<?php echo esc_attr($primary_button['target'] ?? '_self'); ?>"
-                                class="bg-[#CB122D] flex items-center text-base hover:bg-red-800 text-white font-semibold py-[0.625rem] px-[0.625rem] transition duration-200">
-                                <?php echo esc_html($primary_button['label']); ?>
-                                <svg class="size-4 text-white ms-2" stroke="currentColor" fill="none" stroke-width="0"
-                                    viewBox="0 0 24 24" height="200" width="200" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M10.5858 6.34317L12 4.92896L19.0711 12L12 19.0711L10.5858 17.6569L16.2427 12L10.5858 6.34317Z"
-                                        fill="currentColor"></path>
-                                </svg>
-                            </a>
-                            <?php endif; ?>
-                            <?php if ($has_secondary): ?>
-                            <a href="<?php echo esc_url($secondary_button['url'] ?? '#'); ?>"
-                                target="<?php echo esc_attr($secondary_button['target'] ?? '_self'); ?>"
-                                class="bg-[#FF8300] hover:bg-orange-600 flex items-center text-base text-white font-semibold py-[0.625rem] px-[0.625rem] transition duration-200">
-                                <?php echo esc_html($secondary_button['label']); ?>
-                                <svg class="size-4 text-white ms-2" stroke="currentColor" fill="none" stroke-width="0"
-                                    viewBox="0 0 24 24" height="200" width="200" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M10.5858 6.34317L12 4.92896L19.0711 12L12 19.0711L10.5858 17.6569L16.2427 12L10.5858 6.34317Z"
-                                        fill="currentColor"></path>
-                                </svg>
-                            </a>
-                            <?php endif; ?>
                         </div>
                         <?php endif; ?>
 

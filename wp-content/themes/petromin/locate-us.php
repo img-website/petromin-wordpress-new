@@ -359,9 +359,9 @@ if (empty($processed_faq_categories)) {
 <div class="hero_section w-full relative z-0 md:h-dvh max-sm:h-dvh">
     <div class="relative w-full h-full overflow-hidden">
         <?php if (!empty($hero_image_data)) : ?>
-            <img fetchpriority="high" decoding="async" loading="eager" src="<?php echo esc_url($hero_image_data['url']); ?>"
-                class="size-full object-cover" alt="<?php echo esc_attr($hero_image_data['alt']); ?>"
-                title="<?php echo esc_attr($hero_image_data['alt']); ?>">
+        <img fetchpriority="high" decoding="async" loading="eager" src="<?php echo esc_url($hero_image_data['url']); ?>"
+            class="size-full object-cover aspect-[1279/551]" alt="<?php echo esc_attr($hero_image_data['alt']); ?>"
+            title="<?php echo esc_attr($hero_image_data['alt']); ?>">
         <?php endif; ?>
 
         <div
@@ -378,7 +378,8 @@ if (empty($processed_faq_categories)) {
     <div class="view flex w-full h-full flex-col md:flex-row lg:flex-row gap-[2rem] md:gap-[6.75rem]">
         <div class="flex flex-col pb-2 md:pb-0 w-full md:w-1/3 gap-y-8">
             <div class="flex gap-3 md:gap-5 flex-col">
-                <h3 class="lg:text-4xl md:text-3xl text-2xl text-black font-bold"><?php echo esc_html($registered_office_title); ?></h3>
+                <h3 class="lg:text-4xl md:text-3xl text-2xl text-black font-bold">
+                    <?php echo esc_html($registered_office_title); ?></h3>
                 <div
                     class="relative pb-4 after:absolute after:bg-gradient-to-l from-[#CB122D] via-[#CB122D] to-[#650916] after:w-[6.75rem] lg:after:h-3 after:h-[10px] after:-skew-x-[18deg] after:left-0">
                 </div>
@@ -387,7 +388,8 @@ if (empty($processed_faq_categories)) {
                 </p>
             </div>
             <div class="flex gap-3 md:gap-5 flex-col">
-                <h3 class="lg:text-4xl md:text-3xl text-2xl text-black font-bold"><?php echo esc_html($head_office_title); ?></h3>
+                <h3 class="lg:text-4xl md:text-3xl text-2xl text-black font-bold">
+                    <?php echo esc_html($head_office_title); ?></h3>
                 <div
                     class="relative pb-4 after:absolute after:bg-gradient-to-l from-[#CB122D] via-[#CB122D] to-[#650916] after:w-[6.75rem] lg:after:h-3 after:h-[10px] after:-skew-x-[18deg] after:left-0">
                 </div>
@@ -396,16 +398,17 @@ if (empty($processed_faq_categories)) {
                 </p>
             </div>
             <div class="flex gap-3 md:gap-5 flex-col">
-                <h3 class="lg:text-4xl md:text-3xl text-2xl text-black font-bold"><?php echo esc_html($station_hours_title); ?></h3>
+                <h3 class="lg:text-4xl md:text-3xl text-2xl text-black font-bold">
+                    <?php echo esc_html($station_hours_title); ?></h3>
                 <div
                     class="relative pb-4 after:absolute after:bg-gradient-to-l from-[#CB122D] via-[#CB122D] to-[#650916] after:w-[6.75rem] lg:after:h-3 after:h-[10px] after:-skew-x-[18deg] after:left-0">
                 </div>
 
                 <div class="">
                     <?php foreach ($station_hours_items as $hour_item) : ?>
-                        <p class="text-black text-balance font-medium text-base">
-                            <?php echo esc_html($hour_item); ?>
-                        </p>
+                    <p class="text-black text-balance font-medium text-base">
+                        <?php echo esc_html($hour_item); ?>
+                    </p>
                     <?php endforeach; ?>
                     <div class="flex items-center pt-3 md:pt-0 pb-1 gap-2">
                         <svg class="" width="16" height="17" viewBox="0 0 16 17" fill="none"
@@ -417,8 +420,7 @@ if (empty($processed_faq_categories)) {
                         <span class="text-black font-medium text-base"><?php echo esc_html($contact_phone); ?></span>
                     </div>
                     <div class="flex items-center gap-2">
-                        <svg width="16" height="17" viewBox="0 0 16 17" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
+                        <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g clip-path="url(#clip0_2808_1945)">
                                 <path d="M14 4.06152L8 9.56152L2 4.06152" stroke="#CB122D" stroke-width="1.2"
                                     stroke-linecap="round" stroke-linejoin="round" />
@@ -445,14 +447,16 @@ if (empty($processed_faq_categories)) {
 
         <div class="md:w-2/3 w-full  md:h-[41.813rem] overflow-hidden">
             <?php if (!empty($map_desktop_image['url'])) : ?>
-                <img fetchpriority="low" loading="lazy" src="<?php echo esc_url($map_desktop_image['url']); ?>" 
-                    alt="<?php echo esc_attr($map_desktop_image['alt']); ?>" title="<?php echo esc_attr($map_desktop_image['alt']); ?>"
-                    class="w-full h-full object-cover md:block hidden">
+            <img fetchpriority="low" loading="lazy" src="<?php echo esc_url($map_desktop_image['url']); ?>"
+                alt="<?php echo esc_attr($map_desktop_image['alt']); ?>"
+                title="<?php echo esc_attr($map_desktop_image['alt']); ?>"
+                class="w-full h-full object-cover md:block hidden aspect-[142/107]">
             <?php endif; ?>
             <?php if (!empty($map_mobile_image['url'])) : ?>
-                <img fetchpriority="low" loading="lazy" src="<?php echo esc_url($map_mobile_image['url']); ?>" 
-                    alt="<?php echo esc_attr($map_mobile_image['alt']); ?>" title="<?php echo esc_attr($map_mobile_image['alt']); ?>"
-                    class="w-full h-full object-cover md:hidden block">
+            <img fetchpriority="low" loading="lazy" src="<?php echo esc_url($map_mobile_image['url']); ?>"
+                alt="<?php echo esc_attr($map_mobile_image['alt']); ?>"
+                title="<?php echo esc_attr($map_mobile_image['alt']); ?>"
+                class="w-full h-full object-cover md:hidden block">
             <?php endif; ?>
         </div>
     </div>
@@ -461,7 +465,8 @@ if (empty($processed_faq_categories)) {
 <section class="Service_centre bg-white  md:pt-[7.25rem] pt-[3.75rem] pb-10 md:pb-[4.625rem]  relative w-full ">
     <div class="view flex flex-col md:gap-y-12 gap-y-7">
         <div class="w-full relative">
-            <h2 class="xl:text-[3.125rem] lg:-[3rem] md:text-[3rem] text-2xl text-black font-bold"><?php echo esc_html($service_centers_heading); ?></h2>
+            <h2 class="xl:text-[3.125rem] lg:-[3rem] md:text-[3rem] text-2xl text-black font-bold">
+                <?php echo esc_html($service_centers_heading); ?></h2>
             <div
                 class="relative pt-[0.563rem] md:pt-[1.25rem] after:absolute after:bg-gradient-to-l from-[#CB122D] via-[#CB122D] to-[#650916] after:w-[6.75rem] lg:after:h-3 after:h-[10px] after:-skew-x-[18deg] after:left-0">
             </div>
@@ -471,25 +476,25 @@ if (empty($processed_faq_categories)) {
                 <div
                     class="md:sticky md:border-0 border-b border-[#E0E5EB] flex flex-col gap-4 top-0 z-20 bg-white pt-3 pb-5 md:pb-2 px-0">
                     <?php if (!empty($city_options)) : ?>
-                        <div class="flex flex-col gap-2">
-                            <div class="relative">
-                                <label class="sr-only" for="service-center-city">Select your city</label>
-                                <select id="service-center-city" aria-label="Select your city" data-city-filter
-                                    class="w-full appearance-none bg-white md:text-base text-sm font-medium text-[#000000] focus:outline-none focus:ring-0 border border-[#DCDFE6] px-3 md:px-5 h-[3.313rem] transition-colors">
-                                    <option value="">Select your City</option>
-                                    <?php foreach ($city_options as $city_option) : ?>
-                                        <option value="<?php echo esc_attr($city_option); ?>">
-                                            <?php echo esc_html($city_option); ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
-                                <svg class="pointer-events-none absolute right-4 md:right-8 top-1/2 size-4 md:size-6 -translate-y-1/2 text-[#000000]"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke="currentColor" stroke-width="2" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                                </svg>
-                            </div>
+                    <div class="flex flex-col gap-2">
+                        <div class="relative">
+                            <label class="sr-only" for="service-center-city">Select your city</label>
+                            <select id="service-center-city" aria-label="Select your city" data-city-filter
+                                class="w-full appearance-none bg-white md:text-base text-sm font-medium text-[#000000] focus:outline-none focus:ring-0 border border-[#DCDFE6] px-3 md:px-5 h-[3.313rem] transition-colors">
+                                <option value="">Select your City</option>
+                                <?php foreach ($city_options as $city_option) : ?>
+                                <option value="<?php echo esc_attr($city_option); ?>">
+                                    <?php echo esc_html($city_option); ?>
+                                </option>
+                                <?php endforeach; ?>
+                            </select>
+                            <svg class="pointer-events-none absolute right-4 md:right-8 top-1/2 size-4 md:size-6 -translate-y-1/2 text-[#000000]"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                stroke-width="2" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                            </svg>
                         </div>
+                    </div>
                     <?php endif; ?>
                 </div>
 
@@ -503,48 +508,52 @@ if (empty($processed_faq_categories)) {
                         $center_city = trim($center['city'] ?? '');
                         $center_map_src = petromin_locate_get_map_src($center['map_location'] ?? null);
                         ?>
-                        <div class="group bg-white border border-[#DCDFE6] hover:border-[#CB122D] pt-4 px-5 pb-8 md:p-4 overflow-hidden h-full duration-300"
-                            data-service-center data-city="<?php echo esc_attr($center_city); ?>" 
-                            data-map-src="<?php echo esc_url($center_map_src); ?>"
-                            data-center-name="<?php echo esc_attr($center['name']); ?>">
-                            <div class="w-full">
-                                <?php if (!empty($center['image']['url'])) : ?>
-                                    <img fetchpriority="low" loading="lazy" src="<?php echo esc_url($center['image']['url']); ?>"
-                                        alt="<?php echo esc_attr($center['image']['alt']); ?>" title="<?php echo esc_attr($center['image']['alt']); ?>"
-                                        class="w-full h-full object-cover" />
-                                <?php endif; ?>
-                            </div>
-                            <div class="py-4 space-y-2">
-                                <h3 class="md:text-base text-lg font-semibold md:font-medium text-black"><?php echo esc_html($center['name']); ?></h3>
-                                <div class="flex flex-col space-y-[0.688rem]">
-                                    <div class="flex items-start justify-center gap-2">
-                                        <svg class="size-4 shrink-0" width="16" height="16" viewBox="0 0 16 16"
-                                            fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M13.3346 6.66634C13.3346 9.99501 9.64197 13.4617 8.40197 14.5323C8.28645 14.6192 8.14583 14.6662 8.0013 14.6662C7.85677 14.6662 7.71615 14.6192 7.60064 14.5323C6.36064 13.4617 2.66797 9.99501 2.66797 6.66634C2.66797 5.25185 3.22987 3.8953 4.23007 2.89511C5.23026 1.89491 6.58681 1.33301 8.0013 1.33301C9.41579 1.33301 10.7723 1.89491 11.7725 2.89511C12.7727 3.8953 13.3346 5.25185 13.3346 6.66634Z"
-                                                stroke="#637083" stroke-linecap="round" stroke-linejoin="round" />
-                                            <path
-                                                d="M8 8.66699C9.10457 8.66699 10 7.77156 10 6.66699C10 5.56242 9.10457 4.66699 8 4.66699C6.89543 4.66699 6 5.56242 6 6.66699C6 7.77156 6.89543 8.66699 8 8.66699Z"
-                                                stroke="#637083" stroke-linecap="round" stroke-linejoin="round" />
-                                        </svg>
-                                        <p class="text-sm font-normal text-[#637083]">
-                                            <?php echo esc_html($center['address']); ?>
-                                        </p>
-                                    </div>
+                    <div class="group bg-white border border-[#DCDFE6] hover:border-[#CB122D] pt-4 px-5 pb-8 md:p-4 overflow-hidden h-full duration-300"
+                        data-service-center data-city="<?php echo esc_attr($center_city); ?>"
+                        data-map-src="<?php echo esc_url($center_map_src); ?>"
+                        data-center-name="<?php echo esc_attr($center['name']); ?>">
+                        <div class="w-full">
+                            <?php if (!empty($center['image']['url'])) : ?>
+                            <img fetchpriority="low" loading="lazy"
+                                src="<?php echo esc_url($center['image']['url']); ?>"
+                                alt="<?php echo esc_attr($center['image']['alt']); ?>"
+                                title="<?php echo esc_attr($center['image']['alt']); ?>"
+                                class="w-full h-full object-cover aspect-[166/63]" />
+                            <?php endif; ?>
+                        </div>
+                        <div class="py-4 space-y-2">
+                            <h3 class="md:text-base text-lg font-semibold md:font-medium text-black">
+                                <?php echo esc_html($center['name']); ?></h3>
+                            <div class="flex flex-col space-y-[0.688rem]">
+                                <div class="flex items-start justify-center gap-2">
+                                    <svg class="size-4 shrink-0" width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M13.3346 6.66634C13.3346 9.99501 9.64197 13.4617 8.40197 14.5323C8.28645 14.6192 8.14583 14.6662 8.0013 14.6662C7.85677 14.6662 7.71615 14.6192 7.60064 14.5323C6.36064 13.4617 2.66797 9.99501 2.66797 6.66634C2.66797 5.25185 3.22987 3.8953 4.23007 2.89511C5.23026 1.89491 6.58681 1.33301 8.0013 1.33301C9.41579 1.33301 10.7723 1.89491 11.7725 2.89511C12.7727 3.8953 13.3346 5.25185 13.3346 6.66634Z"
+                                            stroke="#637083" stroke-linecap="round" stroke-linejoin="round" />
+                                        <path
+                                            d="M8 8.66699C9.10457 8.66699 10 7.77156 10 6.66699C10 5.56242 9.10457 4.66699 8 4.66699C6.89543 4.66699 6 5.56242 6 6.66699C6 7.77156 6.89543 8.66699 8 8.66699Z"
+                                            stroke="#637083" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                    <p class="text-sm font-normal text-[#637083]">
+                                        <?php echo esc_html($center['address']); ?>
+                                    </p>
                                 </div>
                             </div>
-                            <button type="button" data-locate-btn aria-label="Locate <?php echo esc_attr($center['name']); ?> on map"
-                                class="px-3 cursor-pointer  flex h-10 md:h-[1.563rem] w-[7.5rem] justify-center space-x-3 items-center bg-[#CB122D] md:bg-gradient-to-r md:from-[#CB122D] md:via-[#980D22] md:to-[#CB122D] md:-skew-x-[18deg]">
-                                <span
-                                    class="flex items-center gap-2 text-base font-semibold md:skew-x-[18deg] text-white">Locate
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="8" height="13" viewBox="0 0 8 13"
-                                        fill="none">
-                                        <path
-                                            d="M7.91132 6.24682L3.44235 12.4887H0L1.28861 10.5558L4.18797 6.24682L1.28861 1.85772L0 0L3.44235 0L7.91132 6.24682Z"
-                                            fill="white" />
-                                    </svg></span>
-                            </button>
                         </div>
+                        <button type="button" data-locate-btn
+                            aria-label="Locate <?php echo esc_attr($center['name']); ?> on map"
+                            class="px-3 cursor-pointer  flex h-10 md:h-[1.563rem] w-[7.5rem] justify-center space-x-3 items-center bg-[#CB122D] md:bg-gradient-to-r md:from-[#CB122D] md:via-[#980D22] md:to-[#CB122D] md:-skew-x-[18deg]">
+                            <span
+                                class="flex items-center gap-2 text-base font-semibold md:skew-x-[18deg] text-white">Locate
+                                <svg xmlns="http://www.w3.org/2000/svg" width="8" height="13" viewBox="0 0 8 13"
+                                    fill="none">
+                                    <path
+                                        d="M7.91132 6.24682L3.44235 12.4887H0L1.28861 10.5558L4.18797 6.24682L1.28861 1.85772L0 0L3.44235 0L7.91132 6.24682Z"
+                                        fill="white" />
+                                </svg></span>
+                        </button>
+                    </div>
                     <?php endforeach; ?>
                 </div>
             </div>
@@ -561,170 +570,172 @@ if (empty($processed_faq_categories)) {
     </div>
 </section>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const citySelect = document.querySelector('[data-city-filter]');
-        const centerCards = Array.from(document.querySelectorAll('[data-service-center]'));
-        const mapFrame = document.querySelector('[data-map-frame]');
-        const countElement = document.querySelector('[data-center-count]');
-        const rawDefaultMapSrc = mapFrame ? mapFrame.getAttribute('src') : '';
+document.addEventListener('DOMContentLoaded', function() {
+    const citySelect = document.querySelector('[data-city-filter]');
+    const centerCards = Array.from(document.querySelectorAll('[data-service-center]'));
+    const mapFrame = document.querySelector('[data-map-frame]');
+    const countElement = document.querySelector('[data-center-count]');
+    const rawDefaultMapSrc = mapFrame ? mapFrame.getAttribute('src') : '';
 
-        if (!centerCards.length) {
+    if (!centerCards.length) {
+        return;
+    }
+
+    function isValidMapSrc(src) {
+        if (typeof src !== 'string') {
+            return false;
+        }
+
+        const trimmedSrc = src.trim();
+        return trimmedSrc !== '' && /^https?:\/\//.test(trimmedSrc);
+    }
+
+    const defaultMapSrc = isValidMapSrc(rawDefaultMapSrc) ? rawDefaultMapSrc.trim() : '';
+
+    function updateMap(src) {
+        if (!mapFrame || !isValidMapSrc(src)) {
             return;
         }
 
-        function isValidMapSrc(src) {
-            if (typeof src !== 'string') {
-                return false;
-            }
+        const trimmedSrc = src.trim();
 
-            const trimmedSrc = src.trim();
-            return trimmedSrc !== '' && /^https?:\/\//.test(trimmedSrc);
+        if (mapFrame.getAttribute('src') !== trimmedSrc) {
+            mapFrame.setAttribute('src', trimmedSrc);
         }
+    }
 
-        const defaultMapSrc = isValidMapSrc(rawDefaultMapSrc) ? rawDefaultMapSrc.trim() : '';
+    function setActiveCard(activeCard) {
+        centerCards.forEach(function(card) {
+            const isActive = card === activeCard;
+            card.classList.toggle('border-[#CB122D]', isActive);
+            card.classList.toggle('border-[#DCDFE6]', !isActive);
+            card.setAttribute('data-active', isActive ? 'true' : 'false');
 
-        function updateMap(src) {
-            if (!mapFrame || !isValidMapSrc(src)) {
-                return;
-            }
-
-            const trimmedSrc = src.trim();
-
-            if (mapFrame.getAttribute('src') !== trimmedSrc) {
-                mapFrame.setAttribute('src', trimmedSrc);
-            }
-        }
-
-        function setActiveCard(activeCard) {
-            centerCards.forEach(function (card) {
-                const isActive = card === activeCard;
-                card.classList.toggle('border-[#CB122D]', isActive);
-                card.classList.toggle('border-[#DCDFE6]', !isActive);
-                card.setAttribute('data-active', isActive ? 'true' : 'false');
-                
-                // Update map when card becomes active
-                if (isActive) {
-                    const mapSrc = card.dataset.mapSrc || '';
-                    if (isValidMapSrc(mapSrc)) {
-                        updateMap(mapSrc);
-                    }
-                }
-            });
-        }
-
-        function updateCountText(selectedCity) {
-            if (!countElement) {
-                return;
-            }
-
-            const visibleCards = centerCards.filter(function (card) {
-                return !card.classList.contains('hidden');
-            });
-            const visibleCount = visibleCards.length;
-
-            if (!visibleCount) {
-                countElement.textContent = selectedCity ? `No service centers available in ${selectedCity}` : 'No service centers available';
-                return;
-            }
-
-            const pluralSuffix = visibleCount === 1 ? '' : 's';
-
-            if (selectedCity) {
-                countElement.textContent = `Found ${visibleCount} service center${pluralSuffix} in ${selectedCity}`;
-            } else {
-                countElement.textContent = `Found ${visibleCount} service center${pluralSuffix}`;
-            }
-        }
-
-        function showCardsForCity(selectedCity) {
-            let firstVisibleCard = null;
-
-            centerCards.forEach(function (card) {
-                const cardCity = (card.dataset.city || '').trim();
-                const isMatch = !selectedCity || cardCity === selectedCity;
-
-                card.classList.toggle('hidden', !isMatch);
-                card.setAttribute('aria-hidden', isMatch ? 'false' : 'true');
-
-                if (isMatch && !firstVisibleCard) {
-                    firstVisibleCard = card;
-                }
-            });
-
-            updateCountText(selectedCity);
-
-            if (firstVisibleCard) {
-                setActiveCard(firstVisibleCard);
-                const cardMapSrc = firstVisibleCard.dataset.mapSrc || '';
-                if (isValidMapSrc(cardMapSrc)) {
-                    updateMap(cardMapSrc);
-                } else if (defaultMapSrc) {
-                    updateMap(defaultMapSrc);
-                }
-            } else {
-                setActiveCard(null);
-                if (defaultMapSrc) {
-                    updateMap(defaultMapSrc);
+            // Update map when card becomes active
+            if (isActive) {
+                const mapSrc = card.dataset.mapSrc || '';
+                if (isValidMapSrc(mapSrc)) {
+                    updateMap(mapSrc);
                 }
             }
+        });
+    }
+
+    function updateCountText(selectedCity) {
+        if (!countElement) {
+            return;
         }
 
-        // Add click event listeners to all locate buttons
-        centerCards.forEach(function (card) {
-            const locateButton = card.querySelector('[data-locate-btn]');
+        const visibleCards = centerCards.filter(function(card) {
+            return !card.classList.contains('hidden');
+        });
+        const visibleCount = visibleCards.length;
 
-            if (locateButton) {
-                locateButton.addEventListener('click', function () {
-                    if (card.classList.contains('hidden')) {
-                        return;
-                    }
+        if (!visibleCount) {
+            countElement.textContent = selectedCity ? `No service centers available in ${selectedCity}` :
+                'No service centers available';
+            return;
+        }
 
-                    setActiveCard(card);
+        const pluralSuffix = visibleCount === 1 ? '' : 's';
 
-                    const mapSrc = card.dataset.mapSrc || '';
-                    if (isValidMapSrc(mapSrc)) {
-                        updateMap(mapSrc);
-                    } else if (defaultMapSrc) {
-                        updateMap(defaultMapSrc);
-                    }
-                });
+        if (selectedCity) {
+            countElement.textContent = `Found ${visibleCount} service center${pluralSuffix} in ${selectedCity}`;
+        } else {
+            countElement.textContent = `Found ${visibleCount} service center${pluralSuffix}`;
+        }
+    }
+
+    function showCardsForCity(selectedCity) {
+        let firstVisibleCard = null;
+
+        centerCards.forEach(function(card) {
+            const cardCity = (card.dataset.city || '').trim();
+            const isMatch = !selectedCity || cardCity === selectedCity;
+
+            card.classList.toggle('hidden', !isMatch);
+            card.setAttribute('aria-hidden', isMatch ? 'false' : 'true');
+
+            if (isMatch && !firstVisibleCard) {
+                firstVisibleCard = card;
             }
         });
 
-        if (citySelect) {
-            citySelect.addEventListener('change', function (event) {
-                const selectedCity = event.target.value.trim();
-                showCardsForCity(selectedCity);
-            });
+        updateCountText(selectedCity);
 
-            // Initialize with no city selected (show all centers)
-            showCardsForCity('');
-            
-            // Set first card as active by default
-            if (centerCards.length > 0) {
-                setActiveCard(centerCards[0]);
+        if (firstVisibleCard) {
+            setActiveCard(firstVisibleCard);
+            const cardMapSrc = firstVisibleCard.dataset.mapSrc || '';
+            if (isValidMapSrc(cardMapSrc)) {
+                updateMap(cardMapSrc);
+            } else if (defaultMapSrc) {
+                updateMap(defaultMapSrc);
             }
         } else {
-            // If no city select, set first card as active
-            const firstCard = centerCards[0];
-            if (firstCard) {
-                setActiveCard(firstCard);
-                const mapSrc = firstCard.dataset.mapSrc || '';
+            setActiveCard(null);
+            if (defaultMapSrc) {
+                updateMap(defaultMapSrc);
+            }
+        }
+    }
+
+    // Add click event listeners to all locate buttons
+    centerCards.forEach(function(card) {
+        const locateButton = card.querySelector('[data-locate-btn]');
+
+        if (locateButton) {
+            locateButton.addEventListener('click', function() {
+                if (card.classList.contains('hidden')) {
+                    return;
+                }
+
+                setActiveCard(card);
+
+                const mapSrc = card.dataset.mapSrc || '';
                 if (isValidMapSrc(mapSrc)) {
                     updateMap(mapSrc);
                 } else if (defaultMapSrc) {
                     updateMap(defaultMapSrc);
                 }
-            }
-            updateCountText('');
+            });
         }
     });
+
+    if (citySelect) {
+        citySelect.addEventListener('change', function(event) {
+            const selectedCity = event.target.value.trim();
+            showCardsForCity(selectedCity);
+        });
+
+        // Initialize with no city selected (show all centers)
+        showCardsForCity('');
+
+        // Set first card as active by default
+        if (centerCards.length > 0) {
+            setActiveCard(centerCards[0]);
+        }
+    } else {
+        // If no city select, set first card as active
+        const firstCard = centerCards[0];
+        if (firstCard) {
+            setActiveCard(firstCard);
+            const mapSrc = firstCard.dataset.mapSrc || '';
+            if (isValidMapSrc(mapSrc)) {
+                updateMap(mapSrc);
+            } else if (defaultMapSrc) {
+                updateMap(defaultMapSrc);
+            }
+        }
+        updateCountText('');
+    }
+});
 </script>
 
 <section class="faq bg-white relative w-full pb-20">
     <div class="view flex flex-col md:gap-y-12 gap-y-8" id="faqAccordion">
         <div class="w-full relative">
-            <h2 class="xl:text-[3.125rem] lg:-[3rem] md:text-[3rem] text-[1.75rem] text-black font-bold"><?php echo esc_html($faq_heading); ?></h2>
+            <h2 class="xl:text-[3.125rem] lg:-[3rem] md:text-[3rem] text-[1.75rem] text-black font-bold">
+                <?php echo esc_html($faq_heading); ?></h2>
             <div
                 class="relative pt-1.5 after:absolute after:bg-gradient-to-l from-[#CB122D] via-[#CB122D] to-[#650916] after:w-[6.75rem] lg:after:h-3 after:h-[10px] after:-skew-x-[18deg] after:left-0">
             </div>
@@ -732,62 +743,66 @@ if (empty($processed_faq_categories)) {
 
         <div class="w-full relative flex flex-col md:gap-y-16 gap-y-12 mt-6">
             <?php foreach ($processed_faq_categories as $category) : ?>
-                <div class="flex flex-col gap-6 md:gap-y-5 w-full">
-                    <h3 class="lg:text-4xl md:text-3xl text-2xl text-[#000000] font-bold"><?php echo esc_html($category['title']); ?></h3>
-                    <div class="grid md:grid-cols-2 gap-4 md:gap-5">
-                        <?php foreach ($category['items'] as $item) : 
+            <div class="flex flex-col gap-6 md:gap-y-5 w-full">
+                <h3 class="lg:text-4xl md:text-3xl text-2xl text-[#000000] font-bold">
+                    <?php echo esc_html($category['title']); ?></h3>
+                <div class="grid md:grid-cols-2 gap-4 md:gap-5">
+                    <?php foreach ($category['items'] as $item) : 
                             $is_active = $item['active'] ?? false;
                             $active_class = $is_active ? 'text-[#CB122D]' : 'text-gray-800';
                             $body_class = $is_active ? '' : 'hidden';
                             $icon_text = $is_active ? '−' : '+';
                         ?>
-                            <div class="accordion-item border border-black">
-                                <button
-                                    class="accordion-header w-full px-6 py-4 flex justify-between items-center text-left font-semibold <?php echo $active_class; ?>">
-                                    <span class="md:text-xl text-base font-semibold "><?php echo esc_html($item['question']); ?></span>
-                                    <span
-                                        class="shirnk-0 accordion-icon text-white bg-[#CB122D] size-6 flex items-center justify-center"><?php echo $icon_text; ?></span>
-                                </button>
-                                <div class="accordion-body px-6 pb-4 pt-2 text-base md:text-sm text-[#010101] font-normal <?php echo $body_class; ?>">
-                                    <?php echo wp_kses_post(nl2br($item['answer'])); ?>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
+                    <div class="accordion-item border border-black">
+                        <button
+                            class="accordion-header w-full px-6 py-4 flex justify-between items-center text-left font-semibold <?php echo $active_class; ?>">
+                            <span
+                                class="md:text-xl text-base font-semibold "><?php echo esc_html($item['question']); ?></span>
+                            <span
+                                class="shirnk-0 accordion-icon text-white bg-[#CB122D] size-6 flex items-center justify-center"><?php echo $icon_text; ?></span>
+                        </button>
+                        <div
+                            class="accordion-body px-6 pb-4 pt-2 text-base md:text-sm text-[#010101] font-normal <?php echo $body_class; ?>">
+                            <?php echo wp_kses_post(nl2br($item['answer'])); ?>
+                        </div>
                     </div>
+                    <?php endforeach; ?>
                 </div>
+            </div>
             <?php endforeach; ?>
         </div>
     </div>
 </section>
 
 <script>
-    const headers = document.querySelectorAll('#faqAccordion .accordion-header');
+const headers = document.querySelectorAll('#faqAccordion .accordion-header');
 
-    headers.forEach(header => {
-        header.addEventListener('click', () => {
-            const item = header.parentElement;
-            const body = item.querySelector('.accordion-body');
-            const icon = header.querySelector('.accordion-icon');
+headers.forEach(header => {
+    header.addEventListener('click', () => {
+        const item = header.parentElement;
+        const body = item.querySelector('.accordion-body');
+        const icon = header.querySelector('.accordion-icon');
 
-            const isActive = !body.classList.contains('hidden');
+        const isActive = !body.classList.contains('hidden');
 
-            // Close all
-            document.querySelectorAll('#faqAccordion .accordion-body').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('#faqAccordion .accordion-icon').forEach(el => el.textContent = '+');
-            document.querySelectorAll('#faqAccordion .accordion-header').forEach(el => {
-                el.classList.remove('text-[#CB122D]');
-                el.classList.add('text-gray-800');
-            });
-
-            // Reopen only if it was not active
-            if (!isActive) {
-                body.classList.remove('hidden');
-                icon.textContent = '−';
-                header.classList.add('text-[#CB122D]');
-                header.classList.remove('text-gray-800');
-            }
+        // Close all
+        document.querySelectorAll('#faqAccordion .accordion-body').forEach(el => el.classList.add(
+            'hidden'));
+        document.querySelectorAll('#faqAccordion .accordion-icon').forEach(el => el.textContent = '+');
+        document.querySelectorAll('#faqAccordion .accordion-header').forEach(el => {
+            el.classList.remove('text-[#CB122D]');
+            el.classList.add('text-gray-800');
         });
+
+        // Reopen only if it was not active
+        if (!isActive) {
+            body.classList.remove('hidden');
+            icon.textContent = '−';
+            header.classList.add('text-[#CB122D]');
+            header.classList.remove('text-gray-800');
+        }
     });
+});
 </script>
 
 <?php get_footer(); ?>
