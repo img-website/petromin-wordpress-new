@@ -625,182 +625,72 @@ if ($services_heading === '') {
     $services_heading = $services_defaults['heading'];
 }
 
-$build_services_tabs = static function (array $source, array $default_tabs) use ($services_defaults, $services_heading) {
-    $tabs = [];
+$services_tabs = []; // ACF tabs repeater removed; tabs are populated from 'service' posts only.
 
-    foreach ($source as $index => $tab_field) {
-        $default_tab = $default_tabs[$index] ?? ($services_defaults['tabs'][$index] ?? [
-            'label' => '',
-            'icon' => [
-                'url' => '',
-                'alt' => '',
-            ],
-            'heading' => '',
-            'description' => '',
-            'highlight' => '',
-            'primary_button' => [
-                'label' => '',
-                'url' => '#',
-                'target' => '_self',
-            ],
-            'secondary_button' => [
-                'label' => '',
-                'url' => '#',
-                'target' => '_self',
-            ],
-            'image' => [
-                'url' => '',
-                'alt' => '',
-            ],
-        ]);
+// Prefer sourcing services from published 'service' posts (if any) so the home page reflects Service posts.
+// We use the ACF fields stored on each service post: 'service_icon' and 'home_page_service_image'.
+$service_posts_query = new WP_Query([
+    'post_type' => 'service',
+    'posts_per_page' => 12,
+    'post_status' => 'publish',
+    'orderby' => 'menu_order',
+    'order' => 'ASC',
+]);
 
-        $label = trim($tab_field['tab_label'] ?? ($tab_field['label'] ?? ''));
-        if ($label === '') {
-            $label = $default_tab['label'] ?? '';
+$service_posts = $service_posts_query->posts;
+if (!empty($service_posts)) {
+    $posts_tabs = [];
+    foreach ($service_posts as $sp) {
+        setup_postdata($sp);
+        $post_id = $sp->ID;
+        $label = get_the_title($post_id);
+        $heading = $label;
+        // Prefer the full post content for home page display; fallback to excerpt/trimmed content.
+        $raw_content = get_post_field('post_content', $post_id);
+        if (!empty($raw_content)) {
+            // Apply content filters so shortcodes and autop are handled.
+            $description = apply_filters('the_content', $raw_content);
+        } else {
+            $description = get_the_excerpt($post_id) ?: wp_trim_words($raw_content, 20);
         }
 
-        $heading = trim($tab_field['tab_heading'] ?? ($tab_field['heading'] ?? ''));
-        if ($heading === '') {
-            $heading = $default_tab['heading'] ?? $label;
+        // Hero description (ACF field on service post) - show under the title/heading on the home page
+        $hero_description_field = get_field('hero_description', $post_id);
+        $hero_description = '';
+        if (is_string($hero_description_field) && trim($hero_description_field) !== '') {
+            $hero_description = trim($hero_description_field);
         }
 
-        $description = trim($tab_field['tab_description'] ?? ($tab_field['description'] ?? ''));
-        if ($description === '') {
-            $description = $default_tab['description'] ?? '';
-        }
+        // Resolve service icon and home page image (ACF fields added to service post)
+        $icon_data = petromin_get_acf_image_data(get_field('service_icon', $post_id), 'thumbnail', '', $label);
+        $home_image_data = petromin_get_acf_image_data(get_field('home_page_service_image', $post_id), 'full', '', $label);
 
-        $highlight = trim($tab_field['tab_highlight'] ?? ($tab_field['highlight'] ?? ''));
-        if ($highlight === '') {
-            $highlight = $default_tab['highlight'] ?? '';
-        }
-
-        $icon_default = $default_tab['icon'] ?? ['url' => '', 'alt' => $heading ?: $label];
-        $icon_alt_fallback = $icon_default['alt'] ?? ($heading ?: $label ?: $services_heading);
-        $icon_data = petromin_get_acf_image_data($tab_field['tab_icon'] ?? ($tab_field['icon'] ?? null), 'full', $icon_default['url'], $icon_alt_fallback);
-        if (!$icon_data && !empty($icon_default['url'])) {
-            $icon_data = $icon_default;
-        }
-
-        $image_default = $default_tab['image'] ?? ['url' => '', 'alt' => $heading ?: $label];
-        $image_alt_fallback = $image_default['alt'] ?? ($heading ?: $label ?: $services_heading);
-        $image_data = petromin_get_acf_image_data($tab_field['tab_image'] ?? ($tab_field['image'] ?? null), 'full', $image_default['url'], $image_alt_fallback);
-        if (!$image_data && !empty($image_default['url'])) {
-            $image_data = $image_default;
-        }
-
-        $primary_default = $default_tab['primary_button'] ?? ['label' => '', 'url' => '#', 'target' => '_self'];
-        $primary_group = $tab_field['primary_button'] ?? [];
-        $primary_label = $primary_default['label'] ?? '';
-        $primary_url = $primary_default['url'] ?? '#';
-        $primary_target = $primary_default['target'] ?? '_self';
-
-        if (is_array($primary_group)) {
-            $primary_label_candidate = trim($primary_group['label'] ?? '');
-            if ($primary_label_candidate !== '') {
-                $primary_label = $primary_label_candidate;
-            }
-
-            $primary_link_field = $primary_group['link'] ?? ($primary_group['url'] ?? null);
-            if ($primary_link_field !== null) {
-                $normalized_primary = petromin_normalize_link($primary_link_field, $primary_url);
-                if ($normalized_primary !== '') {
-                    $primary_url = $normalized_primary;
-                }
-
-                if (is_array($primary_link_field) && !empty($primary_link_field['target'])) {
-                    $primary_target = $primary_link_field['target'];
-                } elseif (!empty($primary_group['target'])) {
-                    $primary_target = $primary_group['target'];
-                }
-
-                if ($primary_label === '' && is_array($primary_link_field) && !empty($primary_link_field['title'])) {
-                    $primary_label = trim($primary_link_field['title']);
-                }
-            }
-        } elseif ($primary_group !== null && $primary_group !== '' && $primary_group !== []) {
-            $normalized_primary = petromin_normalize_link($primary_group, $primary_url);
-            if ($normalized_primary !== '') {
-                $primary_url = $normalized_primary;
-            }
-        }
-
-        $secondary_default = $default_tab['secondary_button'] ?? ['label' => '', 'url' => '#', 'target' => '_self'];
-        $secondary_group = $tab_field['secondary_button'] ?? [];
-        $secondary_label = $secondary_default['label'] ?? '';
-        $secondary_url = $secondary_default['url'] ?? '#';
-        $secondary_target = $secondary_default['target'] ?? '_self';
-
-        if (is_array($secondary_group)) {
-            $secondary_label_candidate = trim($secondary_group['label'] ?? '');
-            if ($secondary_label_candidate !== '') {
-                $secondary_label = $secondary_label_candidate;
-            }
-
-            $secondary_link_field = $secondary_group['link'] ?? ($secondary_group['url'] ?? null);
-            if ($secondary_link_field !== null) {
-                $normalized_secondary = petromin_normalize_link($secondary_link_field, $secondary_url);
-                if ($normalized_secondary !== '') {
-                    $secondary_url = $normalized_secondary;
-                }
-
-                if (is_array($secondary_link_field) && !empty($secondary_link_field['target'])) {
-                    $secondary_target = $secondary_link_field['target'];
-                } elseif (!empty($secondary_group['target'])) {
-                    $secondary_target = $secondary_group['target'];
-                }
-
-                if ($secondary_label === '' && is_array($secondary_link_field) && !empty($secondary_link_field['title'])) {
-                    $secondary_label = trim($secondary_link_field['title']);
-                }
-            }
-        } elseif ($secondary_group !== null && $secondary_group !== '' && $secondary_group !== []) {
-            $normalized_secondary = petromin_normalize_link($secondary_group, $secondary_url);
-            if ($normalized_secondary !== '') {
-                $secondary_url = $normalized_secondary;
-            }
-        }
-
-        if (
-            $label === '' &&
-            $heading === '' &&
-            $description === '' &&
-            $highlight === '' &&
-            !$icon_data &&
-            !$image_data &&
-            $primary_label === '' &&
-            $secondary_label === ''
-        ) {
-            continue;
-        }
-
-        $tabs[] = [
+        // Build a tab entry similar to existing structure
+        $posts_tabs[] = [
             'label' => $label,
             'heading' => $heading,
+            'hero_description' => $hero_description,
             'description' => $description,
-            'highlight' => $highlight,
-            'icon' => $icon_data,
-            'image' => $image_data,
+            'highlight' => '',
+            'icon' => $icon_data ?: ['url' => '', 'alt' => $label],
+            'image' => $home_image_data ?: ['url' => '', 'alt' => $label],
             'primary_button' => [
-                'label' => $primary_label,
-                'url' => $primary_url,
-                'target' => $primary_target ?: '_self',
+                'label' => 'Book Now',
+                'url' => get_permalink($post_id),
+                'target' => '_self',
             ],
             'secondary_button' => [
-                'label' => $secondary_label,
-                'url' => $secondary_url,
-                'target' => $secondary_target ?: '_self',
+                'label' => 'Know More',
+                'url' => get_permalink($post_id),
+                'target' => '_self',
             ],
         ];
     }
+    wp_reset_postdata();
 
-    return $tabs;
-};
-
-$services_tabs_input = is_array($services_field['tabs'] ?? null) ? $services_field['tabs'] : [];
-$services_tabs = $build_services_tabs($services_tabs_input, $services_defaults['tabs']);
-
-if (empty($services_tabs)) {
-    $services_tabs = $build_services_tabs($services_defaults['tabs'], $services_defaults['tabs']);
+    if (!empty($posts_tabs)) {
+        $services_tabs = $posts_tabs;
+    }
 }
 
 $timeline_heading = trim($timeline_field['heading'] ?? '');
@@ -1707,10 +1597,15 @@ $faq_second_column_items = array_slice($faq_processed_items, $faq_first_column_c
                     </h3>
                     <?php endif; ?>
                 </div>
-                <?php if (!empty($tab['description'])): ?>
-                <p class="text-black text-base font-normal mb-4 -ms-3">
-                    <?php echo nl2br(esc_html($tab['description'])); ?>
+                <?php if (!empty($tab['hero_description'])): ?>
+                <p class="text-black text-base font-normal mb-5 -ms-3">
+                    <?php echo nl2br(esc_html($tab['hero_description'])); ?>
                 </p>
+                <?php endif; ?>
+                <?php if (!empty($tab['description'])): ?>
+                <div class="text-black text-base font-normal mb-4 -ms-3">
+                    <?php echo wp_kses_post($tab['description']); ?>
+                </div>
                 <?php endif; ?>
                 <?php if (!empty($tab['highlight'])): ?>
                 <p class="text-[1.375rem] font-bold text-black mb-5 -ms-3">
@@ -1748,26 +1643,66 @@ $faq_second_column_items = array_slice($faq_processed_items, $faq_first_column_c
                 </div>
                 <?php endif; ?>
             </div>
-            <div class="lg:w-3/5 w-full flex relative z-10">
-                <?php if ($image_url !== ''): ?>
-                <img src="<?php echo esc_url($image_url); ?>" width="730" height="475"
-                    class="object-contain md:object-bottom object-center lg:aspect-[730/475] aspect-[700/475] py-5"
-                    loading="lazy" fetchpriority="low" alt="<?php echo esc_attr($image_alt); ?>"
-                    title="<?php echo esc_attr($image_alt); ?>">
+            <?php if (!empty($tab['description'])): ?>
+            <p class="text-black text-base font-normal mb-4 -ms-3">
+                <?php echo nl2br(esc_html($tab['description'])); ?>
+            </p>
+            <?php endif; ?>
+            <?php if (!empty($tab['highlight'])): ?>
+            <p class="text-[1.375rem] font-bold text-black mb-5 -ms-3">
+                <?php echo esc_html($tab['highlight']); ?>
+            </p>
+            <?php endif; ?>
+            <?php if ($has_primary || $has_secondary): ?>
+            <div class="flex items-center lg:pb-10 space-x-4 -ms-3">
+                <?php if ($has_primary): ?>
+                <a href="<?php echo esc_url($primary_button['url'] ?? '#'); ?>"
+                    target="<?php echo esc_attr($primary_button['target'] ?? '_self'); ?>"
+                    class="bg-[#CB122D] flex items-center text-base hover:bg-red-800 text-white font-semibold py-[0.625rem] px-[0.625rem] transition duration-200">
+                    <?php echo esc_html($primary_button['label']); ?>
+                    <svg class="size-4 text-white ms-2" stroke="currentColor" fill="none" stroke-width="0"
+                        viewBox="0 0 24 24" height="200" width="200" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M10.5858 6.34317L12 4.92896L19.0711 12L12 19.0711L10.5858 17.6569L16.2427 12L10.5858 6.34317Z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+                <?php endif; ?>
+                <?php if ($has_secondary): ?>
+                <a href="<?php echo esc_url($secondary_button['url'] ?? '#'); ?>"
+                    target="<?php echo esc_attr($secondary_button['target'] ?? '_self'); ?>"
+                    class="bg-[#FF8300] hover:bg-orange-600 flex items-center text-base text-white font-semibold py-[0.625rem] px-[0.625rem] transition duration-200">
+                    <?php echo esc_html($secondary_button['label']); ?>
+                    <svg class="size-4 text-white ms-2" stroke="currentColor" fill="none" stroke-width="0"
+                        viewBox="0 0 24 24" height="200" width="200" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M10.5858 6.34317L12 4.92896L19.0711 12L12 19.0711L10.5858 17.6569L16.2427 12L10.5858 6.34317Z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
                 <?php endif; ?>
             </div>
+            <?php endif; ?>
         </div>
-        <?php endforeach; ?>
-        <div class="absolute right-0 bottom-0 top-0 w-full md:flex flex-col hidden">
-            <img loading="eager" fetchpriority="high" decoding="async"
-                src="<?php echo $assets_url ?>img/Group-64-1-scaled.webp" width="730" height="475"
-                class="absolute w-full object-cover object-center lg:-top-6 bottom-0 lg:h-full h-72">
+        <div class="lg:w-3/5 w-full flex relative z-10">
+            <?php if ($image_url !== ''): ?>
+            <img src="<?php echo esc_url($image_url); ?>" width="730" height="475"
+                class="object-contain md:object-bottom object-center lg:aspect-[730/475] aspect-[700/475] py-5"
+                loading="lazy" fetchpriority="low" alt="<?php echo esc_attr($image_alt); ?>"
+                title="<?php echo esc_attr($image_alt); ?>">
+            <?php endif; ?>
         </div>
-        <div class="absolute flex flex-col left-0 md:bottom-0 max-sm:top-0 md:hidden">
-            <img loading="eager" fetchpriority="high" decoding="async"
-                src="<?php echo $assets_url ?>img/Frame-24-1.webp" width="730" height="475" alt="Background"
-                class="w-full h-full object-cover object-right">
-        </div>
+    </div>
+    <?php endforeach; ?>
+    <div class="absolute right-0 bottom-0 top-0 w-full md:flex flex-col hidden">
+        <img loading="eager" fetchpriority="high" decoding="async"
+            src="<?php echo $assets_url ?>img/Group-64-1-scaled.webp" width="730" height="475"
+            class="absolute w-full object-cover object-center lg:-top-6 bottom-0 lg:h-full h-72">
+    </div>
+    <div class="absolute flex flex-col left-0 md:bottom-0 max-sm:top-0 md:hidden">
+        <img loading="eager" fetchpriority="high" decoding="async" src="<?php echo $assets_url ?>img/Frame-24-1.webp"
+            width="730" height="475" alt="Background" class="w-full h-full object-cover object-right">
+    </div>
     </div>
 </section>
 <?php endif; ?>
@@ -1942,9 +1877,56 @@ $faq_second_column_items = array_slice($faq_processed_items, $faq_first_column_c
                         <div
                             class="absolute -top-8 -left-4 lg:py-3 lg:px-10 py-3 px-7 font-bold bg-gradient-to-l from-[#CB122D] to-[#650916] text-white lg:-skew-x-[6deg] skew-x-[6deg]">
                             <span
-                                class="lg:skew-x-[20deg] skew-x-[10deg] block 2xl:text-[1.5rem] xl:text-2xl lg:text-2xl text-xl 2xl:!leading-[3.063rem]">
-                                <?php echo esc_html($slide['year']); ?>
+                                class="bg-gradient-to-l from-[#CB122D] to-[#650916] -skew-x-[18deg] mb-5 flex items-center justify-center w-[4.9rem] h-[3.75rem]">
+                                <img src="<?php echo esc_url($icon_url); ?>" alt="<?php echo esc_attr($icon_alt); ?>"
+                                    title="<?php echo esc_attr($icon_alt); ?>" class="size-[2.688rem] skew-x-[18deg]"
+                                    loading="lazy" fetchpriority="low">
                             </span>
+                            <?php endif; ?>
+                            <?php if (!empty($tab['heading'])): ?>
+                            <h3 class="text-2xl md:text-3xl lg:text-[2.5rem] font-bold text-black -ms-3">
+                                <?php echo esc_html($tab['heading']); ?>
+                            </h3>
+                            <?php endif; ?>
+                        </div>
+                        <?php if (!empty($tab['hero_description'])): ?>
+                        <p class="text-[#475467] text-base mb-2 -ms-3">
+                            <?php echo nl2br(esc_html($tab['hero_description'])); ?>
+                        </p>
+                        <?php endif; ?>
+                        <?php if (!empty($tab['highlight'])): ?>
+                        <p class="text-[1.375rem] font-bold text-black mb-[2.25rem] -ms-3">
+                            <?php echo esc_html($tab['highlight']); ?>
+                        </p>
+                        <?php endif; ?>
+                        <?php if ($has_primary || $has_secondary): ?>
+                        <div class="flex items-center lg:pb-10 space-x-4 -ms-3">
+                            <?php if ($has_primary): ?>
+                            <a href="<?php echo esc_url($primary_button['url'] ?? '#'); ?>"
+                                target="<?php echo esc_attr($primary_button['target'] ?? '_self'); ?>"
+                                class="bg-[#CB122D] flex items-center text-base hover:bg-red-800 text-white font-semibold py-[0.625rem] px-[0.625rem] transition duration-200">
+                                <?php echo esc_html($primary_button['label']); ?>
+                                <svg class="size-4 text-white ms-2" stroke="currentColor" fill="none" stroke-width="0"
+                                    viewBox="0 0 24 24" height="200" width="200" xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M10.5858 6.34317L12 4.92896L19.0711 12L12 19.0711L10.5858 17.6569L16.2427 12L10.5858 6.34317Z"
+                                        fill="currentColor"></path>
+                                </svg>
+                            </a>
+                            <?php endif; ?>
+                            <?php if ($has_secondary): ?>
+                            <a href="<?php echo esc_url($secondary_button['url'] ?? '#'); ?>"
+                                target="<?php echo esc_attr($secondary_button['target'] ?? '_self'); ?>"
+                                class="bg-[#FF8300] hover:bg-orange-600 flex items-center text-base text-white font-semibold py-[0.625rem] px-[0.625rem] transition duration-200">
+                                <?php echo esc_html($secondary_button['label']); ?>
+                                <svg class="size-4 text-white ms-2" stroke="currentColor" fill="none" stroke-width="0"
+                                    viewBox="0 0 24 24" height="200" width="200" xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M10.5858 6.34317L12 4.92896L19.0711 12L12 19.0711L10.5858 17.6569L16.2427 12L10.5858 6.34317Z"
+                                        fill="currentColor"></path>
+                                </svg>
+                            </a>
+                            <?php endif; ?>
                         </div>
                         <?php endif; ?>
 
