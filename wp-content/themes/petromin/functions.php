@@ -134,18 +134,6 @@ if (!function_exists('petromin_normalize_link')) {
             $relative_path = '/';
         }
 
-        // Remove the site path from the URL if WordPress is installed in a subdirectory.
-        // if (!empty($site_url_parts['path'])) {
-        //     $site_path = rtrim($site_url_parts['path'], '/');
-
-        //     if ($site_path !== '' && strpos($relative_path, $site_path) === 0) {
-        //         $relative_path = substr($relative_path, strlen($site_path));
-        //         if ($relative_path === '') {
-        //             $relative_path = '/';
-        //         }
-        //     }
-        // }
-
         $query = isset($parsed_link['query']) ? '?' . $parsed_link['query'] : '';
         $fragment = isset($parsed_link['fragment']) ? '#' . $parsed_link['fragment'] : '';
 
@@ -154,7 +142,6 @@ if (!function_exists('petromin_normalize_link')) {
         return $normalized !== '' ? $normalized : $fallback;
     }
 }
-
 
 if (!function_exists('petromin_get_social_icon_svg')) {
     function petromin_get_social_icon_svg($platform)
@@ -508,7 +495,7 @@ add_action('acf/init', function () {
                                 'key' => 'field_footer_primary_link_url',
                                 'label' => 'Link URL',
                                 'name' => 'link_url',
-                                'type' => 'url',
+                                'type' => 'page_link',
                                 'wrapper' => [
                                     'width' => '40%',
                                 ],
@@ -547,7 +534,7 @@ add_action('acf/init', function () {
                                 'key' => 'field_footer_secondary_link_url',
                                 'label' => 'Link URL',
                                 'name' => 'link_url',
-                                'type' => 'url',
+                                'type' => 'page_link',
                                 'wrapper' => [
                                     'width' => '40%',
                                 ],
@@ -588,7 +575,7 @@ add_action('acf/init', function () {
                         'key' => 'field_footer_store_badge_link',
                         'label' => 'Badge Link',
                         'name' => 'badge_link',
-                        'type' => 'url',
+                        'type' => 'page_link',
                     ],
                 ],
             ],
@@ -620,7 +607,7 @@ add_action('acf/init', function () {
                         'key' => 'field_footer_social_url',
                         'label' => 'Profile URL',
                         'name' => 'url',
-                        'type' => 'url',
+                        'type' => 'page_link',
                     ],
                     [
                         'key' => 'field_footer_social_new_tab',
@@ -808,99 +795,6 @@ add_action('acf/init', function () {
                         'name' => 'heading',
                         'type' => 'text',
                     ],
-                    [
-                        'key' => 'field_home_services_tabs_repeater',
-                        'label' => 'Tabs',
-                        'name' => 'tabs',
-                        'type' => 'repeater',
-                        'layout' => 'row',
-                        'button_label' => 'Add Service Tab',
-                        'sub_fields' => [
-                            [
-                                'key' => 'field_home_services_tab_label',
-                                'label' => 'Tab Label',
-                                'name' => 'tab_label',
-                                'type' => 'text',
-                            ],
-                            [
-                                'key' => 'field_home_services_tab_icon',
-                                'label' => 'Tab Icon',
-                                'name' => 'tab_icon',
-                                'type' => 'image',
-                                'return_format' => 'id',
-                                'preview_size' => 'medium',
-                            ],
-                            [
-                                'key' => 'field_home_services_tab_heading',
-                                'label' => 'Heading',
-                                'name' => 'tab_heading',
-                                'type' => 'text',
-                            ],
-                            [
-                                'key' => 'field_home_services_tab_description',
-                                'label' => 'Description',
-                                'name' => 'tab_description',
-                                'type' => 'textarea',
-                                'new_lines' => 'br',
-                            ],
-                            [
-                                'key' => 'field_home_services_tab_highlight',
-                                'label' => 'Highlight',
-                                'name' => 'tab_highlight',
-                                'type' => 'text',
-                            ],
-                            [
-                                'key' => 'field_home_services_tab_primary_button',
-                                'label' => 'Primary Button',
-                                'name' => 'primary_button',
-                                'type' => 'group',
-                                'layout' => 'block',
-                                'sub_fields' => [
-                                    [
-                                        'key' => 'field_home_services_tab_primary_label',
-                                        'label' => 'Label',
-                                        'name' => 'label',
-                                        'type' => 'text',
-                                    ],
-                                    [
-                                        'key' => 'field_home_services_tab_primary_link',
-                                        'label' => 'Link',
-                                        'name' => 'link',
-                                        'type' => 'link',
-                                    ],
-                                ],
-                            ],
-                            [
-                                'key' => 'field_home_services_tab_secondary_button',
-                                'label' => 'Secondary Button',
-                                'name' => 'secondary_button',
-                                'type' => 'group',
-                                'layout' => 'block',
-                                'sub_fields' => [
-                                    [
-                                        'key' => 'field_home_services_tab_secondary_label',
-                                        'label' => 'Label',
-                                        'name' => 'label',
-                                        'type' => 'text',
-                                    ],
-                                    [
-                                        'key' => 'field_home_services_tab_secondary_link',
-                                        'label' => 'Link',
-                                        'name' => 'link',
-                                        'type' => 'link',
-                                    ],
-                                ],
-                            ],
-                            [
-                                'key' => 'field_home_services_tab_image',
-                                'label' => 'Tab Image',
-                                'name' => 'tab_image',
-                                'type' => 'image',
-                                'return_format' => 'id',
-                                'preview_size' => 'medium',
-                            ],
-                        ],
-                    ],
                 ],
             ],
             [
@@ -1029,7 +923,7 @@ add_action('acf/init', function () {
                         'key' => 'field_digital_checkup_button_link',
                         'label' => 'Button Link',
                         'name' => 'button_link',
-                        'type' => 'url',
+                        'type' => 'page_link',
                         'default_value' => '#',
                     ],
                     [
@@ -1234,7 +1128,7 @@ add_action('acf/init', function () {
                         'key' => 'field_app_play_store_link',
                         'label' => 'Play Store Link',
                         'name' => 'play_store_link',
-                        'type' => 'url',
+                        'type' => 'page_link',
                         'default_value' => '#',
                     ],
                     [
@@ -1249,7 +1143,7 @@ add_action('acf/init', function () {
                         'key' => 'field_app_app_store_link',
                         'label' => 'App Store Link',
                         'name' => 'app_store_link',
-                        'type' => 'url',
+                        'type' => 'page_link',
                         'default_value' => '#',
                     ],
                     [
@@ -1399,7 +1293,7 @@ add_action('acf/init', function () {
                                 'key' => 'field_testimonial_video_url',
                                 'label' => 'Video URL',
                                 'name' => 'video_url',
-                                'type' => 'url',
+                                'type' => 'page_link',
                                 'conditional_logic' => [
                                     [
                                         [
@@ -2160,7 +2054,7 @@ add_action('acf/init', function () {
                                 'key' => 'field_news_media_mention_link',
                                 'label' => 'Link',
                                 'name' => 'link',
-                                'type' => 'url',
+                                'type' => 'page_link',
                             ],
                         ],
                     ],
@@ -2212,7 +2106,7 @@ add_action('acf/init', function () {
                                 'key' => 'field_news_press_release_pdf_link',
                                 'label' => 'Read More Link',
                                 'name' => 'pdf_link',
-                                'type' => 'url',
+                                'type' => 'page_link',
                                 'instructions' => 'Provide the destination for the Read More button.',
                             ],
                         ],
@@ -2273,7 +2167,7 @@ add_action('acf/init', function () {
                                 'key' => 'field_news_featured_link',
                                 'label' => 'Link',
                                 'name' => 'link',
-                                'type' => 'url',
+                                'type' => 'page_link',
                             ],
                         ],
                     ],
@@ -2339,7 +2233,7 @@ add_action('acf/init', function () {
                                 'key' => 'field_news_event_link',
                                 'label' => 'Link',
                                 'name' => 'link',
-                                'type' => 'url',
+                                'type' => 'page_link',
                             ],
                         ],
                     ],
@@ -2391,13 +2285,13 @@ add_action('acf/init', function () {
                                 'key' => 'field_news_podcast_video_url',
                                 'label' => 'YouTube Video URL',
                                 'name' => 'video_url',
-                                'type' => 'url',
+                                'type' => 'page_link',
                             ],
                             [
                                 'key' => 'field_news_podcast_link',
                                 'label' => 'Link',
                                 'name' => 'link',
-                                'type' => 'url',
+                                'type' => 'page_link',
                             ],
                         ],
                     ],
@@ -2424,7 +2318,7 @@ add_action('acf/init', function () {
                 'key' => 'field_login_redirect_url',
                 'label' => 'External Login Redirect URL',
                 'name' => 'redirect_url',
-                'type' => 'url',
+                'type' => 'page_link',
                 'instructions' => 'When provided, visitors are automatically redirected to this URL instead of the on-page form.',
             ],
             [
@@ -2523,6 +2417,510 @@ add_action('acf/init', function () {
             ],
         ],
     ]);
+    
+    // Services Page ACF Fields
+    acf_add_local_field_group([
+        'key' => 'group_services_page',
+        'title' => 'Services Page',
+        'fields' => [
+            [
+                'key' => 'field_services_hero_section',
+                'label' => 'Hero Section',
+                'name' => 'hero_section',
+                'type' => 'group',
+                'layout' => 'block',
+                'sub_fields' => [
+                    [
+                        'key' => 'field_services_hero_image',
+                        'label' => 'Background Image',
+                        'name' => 'background_image',
+                        'type' => 'image',
+                        'return_format' => 'id',
+                        'preview_size' => 'medium',
+                        'instructions' => 'Recommended dimensions: 1920x1080px. Allowed file type: .webp'
+                    ],
+                    [
+                        'key' => 'field_services_hero_heading_prefix',
+                        'label' => 'Heading Prefix',
+                        'name' => 'heading_prefix',
+                        'type' => 'text',
+                        'default_value' => 'All-round expert'
+                    ],
+                    [
+                        'key' => 'field_services_hero_heading_highlight',
+                        'label' => 'Heading Highlight Text',
+                        'name' => 'heading_highlight',
+                        'type' => 'text',
+                        'default_value' => 'car care'
+                    ],
+                    [
+                        'key' => 'field_services_hero_heading_suffix',
+                        'label' => 'Heading Suffix',
+                        'name' => 'heading_suffix',
+                        'type' => 'text',
+                        'default_value' => 'all at one place.'
+                    ],
+                    [
+                        'key' => 'field_services_hero_description',
+                        'label' => 'Description',
+                        'name' => 'description',
+                        'type' => 'textarea',
+                        'new_lines' => 'br',
+                        'default_value' => 'Choose your services to get started.<br>We\'ll adapt the care plan to your car\'s real-time condition.'
+                    ]
+                ],
+            ],
+            [
+                'key' => 'field_services_our_services_section',
+                'label' => 'Our Services Section',
+                'name' => 'our_services_section',
+                'type' => 'group',
+                'layout' => 'block',
+                'sub_fields' => [
+                    [
+                        'key' => 'field_services_section_heading',
+                        'label' => 'Section Heading',
+                        'name' => 'section_heading',
+                        'type' => 'text',
+                        'default_value' => 'Our Services'
+                    ],
+                    [
+                        'key' => 'field_services_navigation_icons',
+                        'label' => 'Navigation Icons',
+                        'name' => 'navigation_icons',
+                        'type' => 'group',
+                        'layout' => 'block',
+                        'sub_fields' => [
+                            [
+                                'key' => 'field_services_left_arrow_icon',
+                                'label' => 'Left Arrow Icon',
+                                'name' => 'left_arrow_icon',
+                                'type' => 'image',
+                                'return_format' => 'id',
+                                'preview_size' => 'medium',
+                            ],
+                            [
+                                'key' => 'field_services_right_arrow_icon',
+                                'label' => 'Right Arrow Icon',
+                                'name' => 'right_arrow_icon',
+                                'type' => 'image',
+                                'return_format' => 'id',
+                                'preview_size' => 'medium',
+                            ]
+                        ]
+                    ],
+                ],
+            ],
+            [
+                'key' => 'field_services_features_section',
+                'label' => 'Features Section',
+                'name' => 'features_section',
+                'type' => 'group',
+                'layout' => 'block',
+                'sub_fields' => [
+                    [
+                        'key' => 'field_services_features_heading',
+                        'label' => 'Heading',
+                        'name' => 'heading',
+                        'type' => 'text',
+                        'default_value' => 'Feel the Petromin Express difference.'
+                    ],
+                    [
+                        'key' => 'field_services_features_list',
+                        'label' => 'Features List',
+                        'name' => 'features_list',
+                        'type' => 'repeater',
+                        'layout' => 'block',
+                        'button_label' => 'Add Feature',
+                        'sub_fields' => [
+                            [
+                                'key' => 'field_service_feature_text',
+                                'label' => 'Feature Text',
+                                'name' => 'feature_text',
+                                'type' => 'text',
+                            ]
+                        ]
+                    ],
+                    [
+                        'key' => 'field_services_features_image',
+                        'label' => 'Right Side Image',
+                        'name' => 'features_image',
+                        'type' => 'image',
+                        'return_format' => 'id',
+                        'preview_size' => 'medium',
+                        'instructions' => 'Recommended dimensions: 600x400px. Allowed file type: .webp'
+                    ]
+                ],
+            ],
+            [
+                'key' => 'field_services_app_section',
+                'label' => 'App Promotion Section',
+                'name' => 'app_section',
+                'type' => 'group',
+                'layout' => 'block',
+                'sub_fields' => [
+                    [
+                        'key' => 'field_services_app_trusted_text',
+                        'label' => 'Trusted By Text',
+                        'name' => 'trusted_text',
+                        'type' => 'text',
+                        'default_value' => 'Trusted by 1 lakh+ car owners across India'
+                    ],
+                    [
+                        'key' => 'field_services_app_user_images',
+                        'label' => 'User Profile Images',
+                        'name' => 'user_images',
+                        'type' => 'repeater',
+                        'layout' => 'table',
+                        'button_label' => 'Add User Image',
+                        'sub_fields' => [
+                            [
+                                'key' => 'field_service_user_image',
+                                'label' => 'User Image',
+                                'name' => 'user_image',
+                                'type' => 'image',
+                                'return_format' => 'id',
+                                'preview_size' => 'thumbnail',
+                            ]
+                        ],
+                        'max' => 3
+                    ],
+                    [
+                        'key' => 'field_services_app_heading_line1',
+                        'label' => 'Heading Line 1',
+                        'name' => 'heading_line1',
+                        'type' => 'text',
+                        'default_value' => 'Tap.'
+                    ],
+                    [
+                        'key' => 'field_services_app_heading_line2',
+                        'label' => 'Heading Line 2',
+                        'name' => 'heading_line2',
+                        'type' => 'text',
+                        'default_value' => 'Track.'
+                    ],
+                    [
+                        'key' => 'field_services_app_heading_line3',
+                        'label' => 'Heading Line 3',
+                        'name' => 'heading_line3',
+                        'type' => 'text',
+                        'default_value' => 'Take control.'
+                    ],
+                    [
+                        'key' => 'field_services_app_description',
+                        'label' => 'Description',
+                        'name' => 'description',
+                        'type' => 'text',
+                        'default_value' => 'Install now and enjoy exclusive servicing offers and discounts.'
+                    ],
+                    [
+                        'key' => 'field_services_app_store_badges',
+                        'label' => 'App Store Badges',
+                        'name' => 'app_store_badges',
+                        'type' => 'group',
+                        'layout' => 'block',
+                        'sub_fields' => [
+                            [
+                                'key' => 'field_services_play_store_image',
+                                'label' => 'Play Store Badge',
+                                'name' => 'play_store_image',
+                                'type' => 'image',
+                                'return_format' => 'id',
+                                'preview_size' => 'medium',
+                            ],
+                            [
+                                'key' => 'field_services_play_store_link',
+                                'label' => 'Play Store Link',
+                                'name' => 'play_store_link',
+                                'type' => 'page_link',
+                                'default_value' => '#'
+                            ],
+                            [
+                                'key' => 'field_services_app_store_image',
+                                'label' => 'App Store Badge',
+                                'name' => 'app_store_image',
+                                'type' => 'image',
+                                'return_format' => 'id',
+                                'preview_size' => 'medium',
+                            ],
+                            [
+                                'key' => 'field_services_app_store_link',
+                                'label' => 'App Store Link',
+                                'name' => 'app_store_link',
+                                'type' => 'page_link',
+                                'default_value' => '#'
+                            ]
+                        ]
+                    ],
+                    [
+                        'key' => 'field_services_app_phone_image',
+                        'label' => 'Phone Hand Image',
+                        'name' => 'phone_image',
+                        'type' => 'image',
+                        'return_format' => 'id',
+                        'preview_size' => 'medium',
+                        'instructions' => 'Image of hand holding phone with app'
+                    ]
+                ],
+            ],
+            [
+                'key' => 'field_services_faq_section',
+                'label' => 'FAQ Section',
+                'name' => 'faq_section',
+                'type' => 'group',
+                'layout' => 'block',
+                'sub_fields' => [
+                    [
+                        'key' => 'field_services_faq_heading',
+                        'label' => 'Section Heading',
+                        'name' => 'section_heading',
+                        'type' => 'text',
+                        'default_value' => 'Commonly Asked Questions'
+                    ],
+                    [
+                        'key' => 'field_services_faq_items',
+                        'label' => 'FAQ Items',
+                        'name' => 'faq_items',
+                        'type' => 'repeater',
+                        'layout' => 'block',
+                        'button_label' => 'Add FAQ Item',
+                        'sub_fields' => [
+                            [
+                                'key' => 'field_service_faq_question',
+                                'label' => 'Question',
+                                'name' => 'question',
+                                'type' => 'text',
+                            ],
+                            [
+                                'key' => 'field_service_faq_answer',
+                                'label' => 'Answer',
+                                'name' => 'answer',
+                                'type' => 'textarea',
+                                'new_lines' => 'br',
+                            ],
+                            [
+                                'key' => 'field_service_faq_is_active',
+                                'label' => 'Open by Default',
+                                'name' => 'is_active',
+                                'type' => 'true_false',
+                                'ui' => 1,
+                                'default_value' => 0,
+                                'instructions' => 'If enabled, this FAQ will be open when the page loads'
+                            ]
+                        ]
+                    ]
+                ],
+            ],
+        ],
+        'location' => [
+            [
+                [
+                    'param' => 'page_template',
+                    'operator' => '==',
+                    'value' => 'services.php',
+                ],
+            ],
+        ],
+    ]);
+
+    acf_add_local_field_group([
+        'key' => 'group_service_details',
+        'title' => 'Service Details',
+        'fields' => array(
+            // Hero Section
+            array(
+                'key' => 'field_service_hero_description',
+                'label' => 'Hero Description',
+                'name' => 'hero_description',
+                'type' => 'textarea',
+                'instructions' => 'Description below the main title',
+                'required' => 0,
+                'default_value' => '',
+            ),
+            array(
+                'key' => 'field_service_button_text',
+                'label' => 'Button Text',
+                'name' => 'button_text',
+                'type' => 'text',
+                'default_value' => 'Add to list',
+            ),
+            array(
+                'key' => 'field_service_button_link',
+                'label' => 'Button Link',
+                'name' => 'button_link',
+                'type' => 'page_link',
+                'instructions' => 'Select the page to link to',
+            ),
+            
+            // Problems Section
+            array(
+                'key' => 'field_problems_title',
+                'label' => 'Problems Section Title',
+                'name' => 'problems_title',
+                'type' => 'text',
+                'default_value' => 'Tired of these?',
+                'instructions' => 'Title for the problems section',
+            ),
+            array(
+                'key' => 'field_service_problems',
+                'label' => 'Common Problems',
+                'name' => 'problems',
+                'type' => 'repeater',
+                'layout' => 'row',
+                'button_label' => 'Add Problem',
+                'sub_fields' => array(
+                    array(
+                        'key' => 'field_problem_title',
+                        'label' => 'Problem Title',
+                        'name' => 'title',
+                        'type' => 'text',
+                        'required' => 1,
+                    ),
+                    array(
+                        'key' => 'field_problem_icon',
+                        'label' => 'Icon Image',
+                        'name' => 'icon',
+                        'type' => 'image',
+                        'return_format' => 'url',
+                        'preview_size' => 'thumbnail',
+                        'mime_types' => 'webp,png,svg,jpg,jpeg',
+                        'instructions' => 'Upload custom icon image. Supported formats: webp, png, svg, jpg',
+                    ),
+                ),
+            ),
+            
+            // Services Included
+            array(
+                'key' => 'field_services_title',
+                'label' => 'Services Section Title',
+                'name' => 'services_title',
+                'type' => 'text',
+                'default_value' => "Here's what your car gets",
+                'instructions' => 'Title for the services section',
+            ),
+            array(
+                'key' => 'field_service_included',
+                'label' => 'Services Included',
+                'name' => 'services_included',
+                'type' => 'repeater',
+                'layout' => 'row',
+                'button_label' => 'Add Service',
+                'sub_fields' => array(
+                    array(
+                        'key' => 'field_service_title',
+                        'label' => 'Service Title',
+                        'name' => 'title',
+                        'type' => 'text',
+                        'required' => 1,
+                    ),
+                    array(
+                        'key' => 'field_service_description',
+                        'label' => 'Description',
+                        'name' => 'description',
+                        'type' => 'textarea',
+                        'default_value' => '',
+                    ),
+                    array(
+                        'key' => 'field_service_image',
+                        'label' => 'Image',
+                        'name' => 'image',
+                        'type' => 'image',
+                        'return_format' => 'id',
+                        'preview_size' => 'medium',
+                    ),
+                ),
+            ),
+            
+            // Savings Section
+            array(
+                'key' => 'field_savings_title',
+                'label' => 'Savings Section Title',
+                'name' => 'savings_title',
+                'type' => 'text',
+                'default_value' => '',
+            ),
+            array(
+                'key' => 'field_savings_description',
+                'label' => 'Savings Description',
+                'name' => 'savings_description',
+                'type' => 'textarea',
+                'default_value' => '',
+            ),
+            array(
+                'key' => 'field_savings_button_text',
+                'label' => 'Savings Button Text',
+                'name' => 'savings_button_text',
+                'type' => 'text',
+                'default_value' => 'Know More',
+            ),
+            array(
+                'key' => 'field_savings_button_link',
+                'label' => 'Savings Button Link',
+                'name' => 'savings_button_link',
+                'type' => 'page_link',
+                'instructions' => 'Select the page to link to',
+            ),
+            array(
+                'key' => 'field_savings_image',
+                'label' => 'Savings Image',
+                'name' => 'savings_image',
+                'type' => 'image',
+                'return_format' => 'id',
+                'preview_size' => 'medium',
+            ),
+            // Additional backend-only images for cross-site service usage
+            array(
+                'key' => 'field_for_services_page_image',
+                'label' => "For Services Page Section's",
+                'name' => 'for_services_page_image',
+                'type' => 'image',
+                'return_format' => 'id',
+                'preview_size' => 'medium',
+                'instructions' => 'Upload a .webp image (recommended / minimum size: 352x478). This image is stored as post meta for reuse on other pages. It will not be shown on the single service frontend.',
+                'mime_types' => 'webp',
+            ),
+            array(
+                'key' => 'field_service_icon',
+                'label' => 'Service Icon',
+                'name' => 'service_icon',
+                'type' => 'image',
+                'return_format' => 'id',
+                'preview_size' => 'thumbnail',
+                'instructions' => 'Upload a .webp icon image (minimum size: 100x100). This is intended for use in lists/cards on other pages. It will not be displayed on the single service page.',
+                'mime_types' => 'webp',
+            ),
+            array(
+                'key' => 'field_home_page_service_image',
+                'label' => "Home Page Service Section's",
+                'name' => 'home_page_service_image',
+                'type' => 'image',
+                'return_format' => 'id',
+                'preview_size' => 'medium',
+                'instructions' => 'Upload a .webp image (recommended / minimum size: 730x437). This image is stored for display in the home page service sections. It will not be shown on the single service page.',
+                'mime_types' => 'webp',
+            ),
+            
+            // FAQ Section
+            array(
+                'key' => 'field_faq_title',
+                'label' => 'Blog Section Title',
+                'name' => 'faq_title',
+                'type' => 'text',
+                'default_value' => 'It\'s best you know these.',
+                'instructions' => 'Title for the blog section',
+            ),
+        ),
+        'location' => array(
+            array(
+                array(
+                    'param' => 'post_type',
+                    'operator' => '==',
+                    'value' => 'service',
+                ),
+            ),
+        ),
+    ]);
+
 });
 
 
@@ -2718,3 +3116,150 @@ add_theme_support('post-thumbnails');
 
 // Add excerpt support
 add_post_type_support('post', 'excerpt');
+
+
+
+
+// Register Custom Post Type for Services
+function create_service_post_type() {
+    $labels = array(
+        'name'                  => 'Services',
+        'singular_name'         => 'Service',
+        'menu_name'             => 'Services',
+        'name_admin_bar'        => 'Service',
+        'archives'              => 'Service Archives',
+        'attributes'            => 'Service Attributes',
+        'parent_item_colon'     => 'Parent Service:',
+        'all_items'             => 'All Services',
+        'add_new_item'          => 'Add New Service',
+        'add_new'               => 'Add New',
+        'new_item'              => 'New Service',
+        'edit_item'             => 'Edit Service',
+        'update_item'           => 'Update Service',
+        'view_item'             => 'View Service',
+        'view_items'            => 'View Services',
+        'search_items'          => 'Search Service',
+        'not_found'             => 'Not found',
+        'not_found_in_trash'    => 'Not found in Trash',
+        'featured_image'        => 'Hero Image',
+        'set_featured_image'    => 'Set hero image',
+        'remove_featured_image' => 'Remove hero image',
+        'use_featured_image'    => 'Use as hero image',
+        'insert_into_item'      => 'Insert into service',
+        'uploaded_to_this_item' => 'Uploaded to this service',
+        'items_list'            => 'Services list',
+        'items_list_navigation' => 'Services list navigation',
+        'filter_items_list'     => 'Filter services list',
+    );
+    
+    $args = array(
+        'label'                 => 'Service',
+        'description'           => 'Car and Bike Services',
+        'labels'                => $labels,
+        'supports'              => array('title', 'editor', 'thumbnail', 'excerpt', 'revisions'),
+        'taxonomies'            => array('service_category'),
+        'hierarchical'          => false,
+        'public'                => true,
+        'show_ui'               => true,
+        'show_in_menu'          => true,
+        'menu_position'         => 5,
+        'menu_icon'             => 'dashicons-admin-tools',
+        'show_in_admin_bar'     => true,
+        'show_in_nav_menus'     => true,
+        'can_export'            => true,
+        'has_archive'           => true,
+        'exclude_from_search'   => false,
+        'publicly_queryable'    => true,
+        'capability_type'       => 'post',
+        'show_in_rest'          => true,
+        'rewrite'               => array(
+            'slug' => 'services',
+            'with_front' => false
+        ),
+    );
+    
+    register_post_type('service', $args);
+}
+add_action('init', 'create_service_post_type', 0);
+
+// Register Custom Taxonomy for Service Categories
+function create_service_taxonomy() {
+    $labels = array(
+        'name'                       => 'Service Categories',
+        'singular_name'              => 'Service Category',
+        'menu_name'                  => 'Categories',
+        'all_items'                  => 'All Categories',
+        'parent_item'                => 'Parent Category',
+        'parent_item_colon'          => 'Parent Category:',
+        'new_item_name'              => 'New Category Name',
+        'add_new_item'               => 'Add New Category',
+        'edit_item'                  => 'Edit Category',
+        'update_item'                => 'Update Category',
+        'view_item'                  => 'View Category',
+        'separate_items_with_commas' => 'Separate categories with commas',
+        'add_or_remove_items'        => 'Add or remove categories',
+        'choose_from_most_used'      => 'Choose from the most used',
+        'popular_items'              => 'Popular Categories',
+        'search_items'               => 'Search Categories',
+        'not_found'                  => 'Not Found',
+        'no_terms'                   => 'No categories',
+        'items_list'                 => 'Categories list',
+        'items_list_navigation'      => 'Categories list navigation',
+    );
+    
+    $args = array(
+        'labels'                     => $labels,
+        'hierarchical'               => true,
+        'public'                     => true,
+        'show_ui'                    => true,
+        'show_admin_column'          => true,
+        'show_in_nav_menus'          => true,
+        'show_tagcloud'              => true,
+        'show_in_rest'               => true,
+        'rewrite'                    => array('slug' => 'service-category'),
+    );
+    
+    register_taxonomy('service_category', array('service'), $args);
+}
+add_action('init', 'create_service_taxonomy', 0);
+
+// Flush rewrite rules on theme activation
+function flush_rewrite_rules_on_activation() {
+    create_service_post_type();
+    create_service_taxonomy();
+    flush_rewrite_rules();
+}
+add_action('after_switch_theme', 'flush_rewrite_rules_on_activation');
+
+
+
+
+
+
+
+// Disable services archive page
+function disable_services_archive($query) {
+    if (!is_admin() && is_post_type_archive('service') && $query->is_main_query()) {
+        $query->set('post_type', 'none');
+        $query->set_404();
+        status_header(404);
+    }
+}
+add_action('pre_get_posts', 'disable_services_archive');
+
+// Change services archive slug to avoid conflict
+function change_services_archive_slug($args, $post_type) {
+    if ($post_type === 'service') {
+        $args['has_archive'] = false; // Completely disable archive
+        // Or change archive slug if you want to keep it
+        // $args['has_archive'] = 'our-services';
+    }
+    return $args;
+}
+add_filter('register_post_type_args', 'change_services_archive_slug', 10, 2);
+
+// Flush rewrite rules again
+function reflush_rewrite_rules() {
+    flush_rewrite_rules();
+}
+add_action('init', 'reflush_rewrite_rules');
