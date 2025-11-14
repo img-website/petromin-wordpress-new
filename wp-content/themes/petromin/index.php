@@ -803,6 +803,72 @@ if (empty($services_tabs)) {
     $services_tabs = $build_services_tabs($services_defaults['tabs'], $services_defaults['tabs']);
 }
 
+// Prefer sourcing services from published 'service' posts (if any) so the home page reflects Service posts.
+// We use the ACF fields stored on each service post: 'service_icon' and 'home_page_service_image'.
+$service_posts_query = new WP_Query([
+    'post_type' => 'service',
+    'posts_per_page' => 12,
+    'post_status' => 'publish',
+    'orderby' => 'menu_order',
+    'order' => 'ASC',
+]);
+
+$service_posts = $service_posts_query->posts;
+if (!empty($service_posts)) {
+    $posts_tabs = [];
+    foreach ($service_posts as $sp) {
+        setup_postdata($sp);
+        $post_id = $sp->ID;
+        $label = get_the_title($post_id);
+        $heading = $label;
+        // Prefer the full post content for home page display; fallback to excerpt/trimmed content.
+        $raw_content = get_post_field('post_content', $post_id);
+        if (!empty($raw_content)) {
+            // Apply content filters so shortcodes and autop are handled.
+            $description = apply_filters('the_content', $raw_content);
+        } else {
+            $description = get_the_excerpt($post_id) ?: wp_trim_words($raw_content, 20);
+        }
+
+        // Hero description (ACF field on service post) - show under the title/heading on the home page
+        $hero_description_field = get_field('hero_description', $post_id);
+        $hero_description = '';
+        if (is_string($hero_description_field) && trim($hero_description_field) !== '') {
+            $hero_description = trim($hero_description_field);
+        }
+
+        // Resolve service icon and home page image (ACF fields added to service post)
+        $icon_data = petromin_get_acf_image_data(get_field('service_icon', $post_id), 'thumbnail', '', $label);
+        $home_image_data = petromin_get_acf_image_data(get_field('home_page_service_image', $post_id), 'full', '', $label);
+
+        // Build a tab entry similar to existing structure
+        $posts_tabs[] = [
+            'label' => $label,
+            'heading' => $heading,
+            'hero_description' => $hero_description,
+            'description' => $description,
+            'highlight' => '',
+            'icon' => $icon_data ?: ['url' => '', 'alt' => $label],
+            'image' => $home_image_data ?: ['url' => '', 'alt' => $label],
+            'primary_button' => [
+                'label' => 'Book Now',
+                'url' => get_permalink($post_id),
+                'target' => '_self',
+            ],
+            'secondary_button' => [
+                'label' => 'Know More',
+                'url' => get_permalink($post_id),
+                'target' => '_self',
+            ],
+        ];
+    }
+    wp_reset_postdata();
+
+    if (!empty($posts_tabs)) {
+        $services_tabs = $posts_tabs;
+    }
+}
+
 $timeline_heading = trim($timeline_field['heading'] ?? '');
 if ($timeline_heading === '') {
     $timeline_heading = $timeline_defaults['heading'];
@@ -1708,11 +1774,16 @@ $faq_second_column_items = array_slice($faq_processed_items, $faq_first_column_c
                         </h3>
                         <?php endif; ?>
                     </div>
-                    <?php if (!empty($tab['description'])): ?>
-                    <p class="text-black text-base font-normal mb-4 -ms-3">
-                        <?php echo nl2br(esc_html($tab['description'])); ?>
+                    <?php if (!empty($tab['hero_description'])): ?>
+                    <p class="text-black text-base font-normal mb-5 -ms-3">
+                        <?php echo nl2br(esc_html($tab['hero_description'])); ?>
                     </p>
                     <?php endif; ?>
+                                    <?php if (!empty($tab['description'])): ?>
+                                    <div class="text-black text-base font-normal mb-4 -ms-3">
+                                        <?php echo wp_kses_post($tab['description']); ?>
+                                    </div>
+                                    <?php endif; ?>
                     <?php if (!empty($tab['highlight'])): ?>
                     <p class="text-[1.375rem] font-bold text-black mb-5 -ms-3">
                         <?php echo esc_html($tab['highlight']); ?>
@@ -1830,7 +1901,7 @@ $faq_second_column_items = array_slice($faq_processed_items, $faq_first_column_c
                         <div class="flex flex-col items-start lg:mb-5 mb-2">
                             <?php if ($icon_url !== ''): ?>
                             <span
-                                class="bg-gradient-to-l from-[#CB122D] to-[#650916] -skew-x-[18deg] mb-5 flex items-center justify-center h-[3.75rem] w-[4.9rem]">
+                                class="bg-gradient-to-l from-[#CB122D] to-[#650916] -skew-x-[18deg] mb-5 flex items-center justify-center w-[4.9rem] h-[3.75rem]">
                                 <img src="<?php echo esc_url($icon_url); ?>"
                                     alt="<?php echo esc_attr($icon_alt); ?>"
                                     title="<?php echo esc_attr($icon_alt); ?>"
@@ -1843,9 +1914,9 @@ $faq_second_column_items = array_slice($faq_processed_items, $faq_first_column_c
                             </h3>
                             <?php endif; ?>
                         </div>
-                        <?php if (!empty($tab['description'])): ?>
-                        <p class="text-black text-base font-normal mb-[2.25rem] -ms-3">
-                            <?php echo nl2br(esc_html($tab['description'])); ?>
+                        <?php if (!empty($tab['hero_description'])): ?>
+                        <p class="text-[#475467] text-base mb-2 -ms-3">
+                            <?php echo nl2br(esc_html($tab['hero_description'])); ?>
                         </p>
                         <?php endif; ?>
                         <?php if (!empty($tab['highlight'])): ?>
