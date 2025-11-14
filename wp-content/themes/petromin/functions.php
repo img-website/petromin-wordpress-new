@@ -134,18 +134,6 @@ if (!function_exists('petromin_normalize_link')) {
             $relative_path = '/';
         }
 
-        // Remove the site path from the URL if WordPress is installed in a subdirectory.
-        // if (!empty($site_url_parts['path'])) {
-        //     $site_path = rtrim($site_url_parts['path'], '/');
-
-        //     if ($site_path !== '' && strpos($relative_path, $site_path) === 0) {
-        //         $relative_path = substr($relative_path, strlen($site_path));
-        //         if ($relative_path === '') {
-        //             $relative_path = '/';
-        //         }
-        //     }
-        // }
-
         $query = isset($parsed_link['query']) ? '?' . $parsed_link['query'] : '';
         $fragment = isset($parsed_link['fragment']) ? '#' . $parsed_link['fragment'] : '';
 
@@ -154,7 +142,6 @@ if (!function_exists('petromin_normalize_link')) {
         return $normalized !== '' ? $normalized : $fallback;
     }
 }
-
 
 if (!function_exists('petromin_get_social_icon_svg')) {
     function petromin_get_social_icon_svg($platform)
@@ -807,99 +794,6 @@ add_action('acf/init', function () {
                         'label' => 'Heading',
                         'name' => 'heading',
                         'type' => 'text',
-                    ],
-                    [
-                        'key' => 'field_home_services_tabs_repeater',
-                        'label' => 'Tabs',
-                        'name' => 'tabs',
-                        'type' => 'repeater',
-                        'layout' => 'row',
-                        'button_label' => 'Add Service Tab',
-                        'sub_fields' => [
-                            [
-                                'key' => 'field_home_services_tab_label',
-                                'label' => 'Tab Label',
-                                'name' => 'tab_label',
-                                'type' => 'text',
-                            ],
-                            [
-                                'key' => 'field_home_services_tab_icon',
-                                'label' => 'Tab Icon',
-                                'name' => 'tab_icon',
-                                'type' => 'image',
-                                'return_format' => 'id',
-                                'preview_size' => 'medium',
-                            ],
-                            [
-                                'key' => 'field_home_services_tab_heading',
-                                'label' => 'Heading',
-                                'name' => 'tab_heading',
-                                'type' => 'text',
-                            ],
-                            [
-                                'key' => 'field_home_services_tab_description',
-                                'label' => 'Description',
-                                'name' => 'tab_description',
-                                'type' => 'textarea',
-                                'new_lines' => 'br',
-                            ],
-                            [
-                                'key' => 'field_home_services_tab_highlight',
-                                'label' => 'Highlight',
-                                'name' => 'tab_highlight',
-                                'type' => 'text',
-                            ],
-                            [
-                                'key' => 'field_home_services_tab_primary_button',
-                                'label' => 'Primary Button',
-                                'name' => 'primary_button',
-                                'type' => 'group',
-                                'layout' => 'block',
-                                'sub_fields' => [
-                                    [
-                                        'key' => 'field_home_services_tab_primary_label',
-                                        'label' => 'Label',
-                                        'name' => 'label',
-                                        'type' => 'text',
-                                    ],
-                                    [
-                                        'key' => 'field_home_services_tab_primary_link',
-                                        'label' => 'Link',
-                                        'name' => 'link',
-                                        'type' => 'link',
-                                    ],
-                                ],
-                            ],
-                            [
-                                'key' => 'field_home_services_tab_secondary_button',
-                                'label' => 'Secondary Button',
-                                'name' => 'secondary_button',
-                                'type' => 'group',
-                                'layout' => 'block',
-                                'sub_fields' => [
-                                    [
-                                        'key' => 'field_home_services_tab_secondary_label',
-                                        'label' => 'Label',
-                                        'name' => 'label',
-                                        'type' => 'text',
-                                    ],
-                                    [
-                                        'key' => 'field_home_services_tab_secondary_link',
-                                        'label' => 'Link',
-                                        'name' => 'link',
-                                        'type' => 'link',
-                                    ],
-                                ],
-                            ],
-                            [
-                                'key' => 'field_home_services_tab_image',
-                                'label' => 'Tab Image',
-                                'name' => 'tab_image',
-                                'type' => 'image',
-                                'return_format' => 'id',
-                                'preview_size' => 'medium',
-                            ],
-                        ],
                     ],
                 ],
             ],
@@ -2524,6 +2418,7 @@ add_action('acf/init', function () {
         ],
     ]);
     
+    // Services Page ACF Fields
     acf_add_local_field_group([
         'key' => 'group_services_page',
         'title' => 'Services Page',
@@ -2614,47 +2509,6 @@ add_action('acf/init', function () {
                             ]
                         ]
                     ],
-                    [
-                        'key' => 'field_services_slides',
-                        'label' => 'Service Slides',
-                        'name' => 'slides',
-                        'type' => 'repeater',
-                        'layout' => 'block',
-                        'button_label' => 'Add Service Slide',
-                        'sub_fields' => [
-                            [
-                                'key' => 'field_service_slide_image',
-                                'label' => 'Slide Image',
-                                'name' => 'slide_image',
-                                'type' => 'image',
-                                'return_format' => 'id',
-                                'preview_size' => 'medium',
-                                'instructions' => 'Recommended dimensions: 400x300px. Allowed file type: .webp'
-                            ],
-                            [
-                                'key' => 'field_service_slide_icon',
-                                'label' => 'Service Icon',
-                                'name' => 'service_icon',
-                                'type' => 'image',
-                                'return_format' => 'id',
-                                'preview_size' => 'medium',
-                                'instructions' => 'SVG or PNG icon for the service'
-                            ],
-                            [
-                                'key' => 'field_service_slide_title',
-                                'label' => 'Service Title',
-                                'name' => 'service_title',
-                                'type' => 'text',
-                            ],
-                            [
-                                'key' => 'field_service_slide_link',
-                                'label' => 'Service Link',
-                                'name' => 'service_link',
-                                'type' => 'page_link',
-                                'default_value' => '#'
-                            ]
-                        ]
-                    ]
                 ],
             ],
             [

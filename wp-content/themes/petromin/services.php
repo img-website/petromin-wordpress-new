@@ -121,21 +121,8 @@ $our_services_data = [
         'left_arrow_icon' => petromin_get_acf_image_data($our_services_field['navigation_icons']['left_arrow_icon'] ?? null, 'full', $defaults['our_services']['navigation_icons']['left_arrow_icon']['url'], $defaults['our_services']['navigation_icons']['left_arrow_icon']['alt']),
         'right_arrow_icon' => petromin_get_acf_image_data($our_services_field['navigation_icons']['right_arrow_icon'] ?? null, 'full', $defaults['our_services']['navigation_icons']['right_arrow_icon']['url'], $defaults['our_services']['navigation_icons']['right_arrow_icon']['alt']),
     ],
-    'slides' => [],
+    'slides' => $defaults['our_services']['slides'],
 ];
-
-// Process service slides
-$service_slides = !empty($our_services_field['slides']) ? $our_services_field['slides'] : $defaults['our_services']['slides'];
-foreach ($service_slides as $index => $slide) {
-    $default_slide = $defaults['our_services']['slides'][$index] ?? $defaults['our_services']['slides'][0];
-    
-    $our_services_data['slides'][] = [
-        'slide_image' => petromin_get_acf_image_data($slide['slide_image'] ?? null, 'full', $default_slide['slide_image']['url'], $default_slide['slide_image']['alt']),
-        'service_icon' => petromin_get_acf_image_data($slide['service_icon'] ?? null, 'full', $default_slide['service_icon']['url'], $default_slide['service_icon']['alt']),
-        'service_title' => $slide['service_title'] ?? $default_slide['service_title'],
-        'service_link' => $slide['service_link'] ?? $default_slide['service_link'],
-    ];
-}
 
 // Prefer sourcing slides from published 'service' posts so this section reflects Service posts
 $service_posts_query = new WP_Query([
