@@ -35,70 +35,70 @@ $intro_defaults = [
 ];
 
 $journey_defaults = [
-    [
-        'slide_year_label' => '2022',
-        'slide_description' => 'Four Petromin Express stations launched in Chennai – OMR, Central, T. Nagar, and Whites Road',
-        'slide_image' => [
-            'url' => $images_url . '/image-42.webp',
-            'alt' => 'Four Petromin Express stations launched in Chennai – OMR, Central, T. Nagar, and Whites Road',
-        ],
-    ],
-    [
-        'slide_year_label' => 'August 2023',
-        'slide_description' => 'Petromin Express stations launched at Kattankulathur, Sholinganallur, and Tambaram',
-        'slide_image' => [
-            'url' => $images_url . '/image-2.webp',
-            'alt' => 'Petromin Express stations launched at Kattankulathur, Sholinganallur, and Tambaram',
-        ],
-    ],
-    [
-        'slide_year_label' => 'September 2023',
-        'slide_description' => 'HP Petromin Express stations launched in Avadi, Kattupakkam, Kilpauk, and Pallikaranai',
-        'slide_image' => [
-            'url' => $images_url . '/image-42.webp',
-            'alt' => 'HP Petromin Express stations launched in Avadi, Kattupakkam, Kilpauk, and Pallikaranai',
-        ],
-    ],
-    [
-        'slide_year_label' => 'October 2023',
-        'slide_description' => 'First HP Petromin Express station launched in Bangalore – Peenya',
-        'slide_image' => [
-            'url' => $images_url . '/image-2.webp',
-            'alt' => 'First HP Petromin Express station launched in Bangalore – Peenya',
-        ],
-    ],
-    [
-        'slide_year_label' => 'November 2023',
-        'slide_description' => 'Six HP Petromin Express stations launched across Bangalore',
-        'slide_image' => [
-            'url' => $images_url . '/image-42.webp',
-            'alt' => 'Six HP Petromin Express stations launched across Bangalore',
-        ],
-    ],
-    [
-        'slide_year_label' => 'December 2023',
-        'slide_description' => 'HP Petromin Express station launched in Madhavaram, Chennai',
-        'slide_image' => [
-            'url' => $images_url . '/image-2.webp',
-            'alt' => 'HP Petromin Express station launched in Madhavaram, Chennai',
-        ],
-    ],
-    [
-        'slide_year_label' => 'January 2024',
-        'slide_description' => 'HP Petromin Express station launched in Kasturba Road, Bangalore',
-        'slide_image' => [
-            'url' => $images_url . '/image-42.webp',
-            'alt' => 'HP Petromin Express station launched in Kasturba Road, Bangalore',
-        ],
-    ],
-    [
-        'slide_year_label' => 'October 2025',
-        'slide_description' => 'Two new Petromin Express stations launched in Kovur and Pallavaram',
-        'slide_image' => [
-            'url' => $images_url . '/image-2.webp',
-            'alt' => 'Two new Petromin Express stations launched in Kovur and Pallavaram',
-        ],
-    ],
+    // [
+    //     'slide_year_label' => '2022',
+    //     'slide_description' => 'Four Petromin Express stations launched in Chennai – OMR, Central, T. Nagar, and Whites Road',
+    //     'slide_image' => [
+    //         'url' => $images_url . '/image-42.webp',
+    //         'alt' => 'Four Petromin Express stations launched in Chennai – OMR, Central, T. Nagar, and Whites Road',
+    //     ],
+    // ],
+    // [
+    //     'slide_year_label' => 'August 2023',
+    //     'slide_description' => 'Petromin Express stations launched at Kattankulathur, Sholinganallur, and Tambaram',
+    //     'slide_image' => [
+    //         'url' => $images_url . '/image-2.webp',
+    //         'alt' => 'Petromin Express stations launched at Kattankulathur, Sholinganallur, and Tambaram',
+    //     ],
+    // ],
+    // [
+    //     'slide_year_label' => 'September 2023',
+    //     'slide_description' => 'HP Petromin Express stations launched in Avadi, Kattupakkam, Kilpauk, and Pallikaranai',
+    //     'slide_image' => [
+    //         'url' => $images_url . '/image-42.webp',
+    //         'alt' => 'HP Petromin Express stations launched in Avadi, Kattupakkam, Kilpauk, and Pallikaranai',
+    //     ],
+    // ],
+    // [
+    //     'slide_year_label' => 'October 2023',
+    //     'slide_description' => 'First HP Petromin Express station launched in Bangalore – Peenya',
+    //     'slide_image' => [
+    //         'url' => $images_url . '/image-2.webp',
+    //         'alt' => 'First HP Petromin Express station launched in Bangalore – Peenya',
+    //     ],
+    // ],
+    // [
+    //     'slide_year_label' => 'November 2023',
+    //     'slide_description' => 'Six HP Petromin Express stations launched across Bangalore',
+    //     'slide_image' => [
+    //         'url' => $images_url . '/image-42.webp',
+    //         'alt' => 'Six HP Petromin Express stations launched across Bangalore',
+    //     ],
+    // ],
+    // [
+    //     'slide_year_label' => 'December 2023',
+    //     'slide_description' => 'HP Petromin Express station launched in Madhavaram, Chennai',
+    //     'slide_image' => [
+    //         'url' => $images_url . '/image-2.webp',
+    //         'alt' => 'HP Petromin Express station launched in Madhavaram, Chennai',
+    //     ],
+    // ],
+    // [
+    //     'slide_year_label' => 'January 2024',
+    //     'slide_description' => 'HP Petromin Express station launched in Kasturba Road, Bangalore',
+    //     'slide_image' => [
+    //         'url' => $images_url . '/image-42.webp',
+    //         'alt' => 'HP Petromin Express station launched in Kasturba Road, Bangalore',
+    //     ],
+    // ],
+    // [
+    //     'slide_year_label' => 'October 2025',
+    //     'slide_description' => 'Two new Petromin Express stations launched in Kovur and Pallavaram',
+    //     'slide_image' => [
+    //         'url' => $images_url . '/image-2.webp',
+    //         'alt' => 'Two new Petromin Express stations launched in Kovur and Pallavaram',
+    //     ],
+    // ],
 ];
 
 $mvv_defaults = [
@@ -258,29 +258,40 @@ $intro_image = petromin_get_acf_image_data($intro_field['intro_image'] ?? null, 
 
 $journey_field = function_exists('get_field') ? (get_field('journey_section') ?: []) : [];
 $journey_heading = trim($journey_field['journey_heading'] ?? '') ?: 'A standard of quality throughout history.';
-$journey_rows = !empty($journey_field['slides']) && is_array($journey_field['slides']) ? $journey_field['slides'] : [];
-$journey_count = max(count($journey_rows), count($journey_defaults));
-if ($journey_count === 0) {
-    $journey_count = count($journey_defaults);
-}
-$journey_slides = [];
-for ($i = 0; $i < $journey_count; $i++) {
-    $fallback = $journey_defaults[$i] ?? [];
-    $row = $journey_rows[$i] ?? [];
-    $year = trim($row['slide_year_label'] ?? '') ?: ($fallback['slide_year_label'] ?? '');
-    $description = trim($row['slide_description'] ?? '') ?: ($fallback['slide_description'] ?? '');
-    $image_default = $fallback['slide_image'] ?? [];
-    $image = petromin_get_acf_image_data($row['slide_image'] ?? null, 'full', $image_default['url'] ?? '', $image_default['alt'] ?? '');
+$journey_slides = function_exists('petromin_get_milestones') ? petromin_get_milestones() : [];
 
-    if (!$year && !$description && !$image) {
-        continue;
+// Fallback to ACF-based page content if no milestone CPT entries exist (keeps UI unchanged).
+if (empty($journey_slides)) {
+    $journey_rows = !empty($journey_field['slides']) && is_array($journey_field['slides']) ? $journey_field['slides'] : [];
+    $journey_count = max(count($journey_rows), count($journey_defaults));
+    if ($journey_count === 0) {
+        $journey_count = count($journey_defaults);
+    }
+    $journey_slides = [];
+    for ($i = 0; $i < $journey_count; $i++) {
+        $fallback = $journey_defaults[$i] ?? [];
+        $row = $journey_rows[$i] ?? [];
+        $year = trim($row['slide_year_label'] ?? '') ?: ($fallback['slide_year_label'] ?? '');
+        $description = trim($row['slide_description'] ?? '') ?: ($fallback['slide_description'] ?? '');
+        $image_default = $fallback['slide_image'] ?? [];
+        $image = petromin_get_acf_image_data($row['slide_image'] ?? null, 'full', $image_default['url'] ?? '', $image_default['alt'] ?? '');
+
+        if (!$year && !$description && !$image) {
+            continue;
+        }
+
+        $journey_slides[] = [
+            'year' => $year,
+            'description' => $description,
+            'image' => $image,
+        ];
     }
 
-    $journey_slides[] = [
-        'year' => $year,
-        'description' => $description,
-        'image' => $image,
-    ];
+    // Prefer CPT-based milestones if available. Keep ACF-built slides as fallback so UI doesn't break.
+    $cpt_journey = function_exists('petromin_get_milestones') ? petromin_get_milestones() : [];
+    if (!empty($cpt_journey)) {
+        $journey_slides = $cpt_journey;
+    }
 }
 
 $mvv_field = function_exists('get_field') ? (get_field('mission_vision_values') ?: []) : [];

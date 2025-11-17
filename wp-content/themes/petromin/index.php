@@ -307,102 +307,30 @@ $timeline_defaults = [
         'alt' => 'Navigation arrow icon',
     ],
     'slides' => [
-        [
-            'year' => '1968',
-            'image' => [
-                'url' => $images_url . 'image-42.webp',
-                'alt' => 'JV incorporated (G.M., Mobil/Mobil Petromin); Petrolube brand launched',
-            ],
-            'description' => 'JV incorporated (G.M., Mobil/Mobil Petromin); Petrolube brand launched',
-        ],
-        [
-            'year' => '1969',
-            'image' => [
-                'url' => $images_url . 'image-2.webp',
-                'alt' => 'Petrolube brand continued its expansion',
-            ],
-            'description' => 'Petrolube brand continued its expansion',
-        ],
-        [
-            'year' => '1992',
-            'image' => [
-                'url' => $images_url . 'image-42.webp',
-                'alt' => 'Entered the Egypt market',
-            ],
-            'description' => 'Entered the Egypt market',
-        ],
-        [
-            'year' => '2007',
-            'image' => [
-                'url' => $images_url . 'image-2.webp',
-                'alt' => 'ADG acquired Petrolube in JV with Gulf Oil Al-Dabbagh',
-            ],
-            'description' => 'ADG acquired Petrolube in JV with Gulf Oil Al-Dabbagh',
-        ],
-        [
-            'year' => '2012',
-            'image' => [
-                'url' => $images_url . 'image-42.webp',
-                'alt' => 'Opened first fuel station in KSA',
-            ],
-            'description' => 'Opened first fuel station in KSA',
-        ],
-        [
-            'year' => '2013',
-            'image' => [
-                'url' => $images_url . 'image-2.webp',
-                'alt' => 'Launched first workshop in KSA; ADG acquired full ownership from Gulf Oil Al-Dabbagh',
-            ],
-            'description' => 'Launched first workshop in KSA; ADG acquired full ownership from Gulf Oil Al-Dabbagh',
-        ],
-        [
-            'year' => '2015',
-            'image' => [
-                'url' => $images_url . 'image-42.webp',
-                'alt' => 'Opened first Petromin Express in Egypt',
-            ],
-            'description' => 'Opened first Petromin Express in Egypt',
-        ],
-        [
-            'year' => '2016',
-            'image' => [
-                'url' => $images_url . 'image-2.webp',
-                'alt' => 'Acquired Emirates Lubricants Company in UAE and a nationwide Nissan dealership in Saudi Arabia',
-            ],
-            'description' => 'Acquired Emirates Lubricants Company in UAE and a nationwide Nissan dealership in Saudi Arabia',
-        ],
-        [
-            'year' => '2018',
-            'image' => [
-                'url' => $images_url . 'image-42.webp',
-                'alt' => 'Expanded with first Petromin Express centres in UAE and Pakistan',
-            ],
-            'description' => 'Expanded with first Petromin Express centres in UAE and Pakistan',
-        ],
-        [
-            'year' => '2020',
-            'image' => [
-                'url' => $images_url . 'image-2.webp',
-                'alt' => 'Established Electromin; reached 100 fuel stations in Egypt',
-            ],
-            'description' => 'Established Electromin; reached 100 fuel stations in Egypt',
-        ],
-        [
-            'year' => '2021',
-            'image' => [
-                'url' => $images_url . 'image-42.webp',
-                'alt' => 'Formed National Transport Solutions Company (NTSC); gained Stellantis distribution in Saudi Arabia; added Volvo and Polestar dealerships under STELLANT EPOT',
-            ],
-            'description' => 'Formed National Transport Solutions Company (NTSC); gained Stellantis distribution in Saudi Arabia; added Volvo and Polestar dealerships under STELLANT EPOT',
-        ],
-        [
-            'year' => '2022',
-            'image' => [
-                'url' => $images_url . 'image-2.webp',
-                'alt' => 'Egypt fuel stations surpassed 200; launched first Petromin Express in India (JV with DRB-HICOM); expanded operations in OnFoton Malaysia',
-            ],
-            'description' => 'Egypt fuel stations surpassed 200; launched first Petromin Express in India (JV with DRB-HICOM); expanded operations in OnFoton Malaysia',
-        ],
+        // [
+        //     'year' => '1968',
+        //     'image' => [
+        //         'url' => $images_url . 'image-42.webp',
+        //         'alt' => 'JV incorporated (G.M., Mobil/Mobil Petromin); Petrolube brand launched',
+        //     ],
+        //     'description' => 'JV incorporated (G.M., Mobil/Mobil Petromin); Petrolube brand launched',
+        // ],
+        // [
+        //     'year' => '1969',
+        //     'image' => [
+        //         'url' => $images_url . 'image-2.webp',
+        //         'alt' => 'Petrolube brand continued its expansion',
+        //     ],
+        //     'description' => 'Petrolube brand continued its expansion',
+        // ],
+        // [
+        //     'year' => '1992',
+        //     'image' => [
+        //         'url' => $images_url . 'image-42.webp',
+        //         'alt' => 'Entered the Egypt market',
+        //     ],
+        //     'description' => 'Entered the Egypt market',
+        // ]
     ],
 ];
 
@@ -703,55 +631,36 @@ if (!$timeline_nav_icon_data) {
     $timeline_nav_icon_data = $timeline_defaults['navigation_icon'];
 }
 
-$build_timeline_slides = static function (array $source, array $default_slides) use ($timeline_defaults, $timeline_heading) {
-    $slides = [];
+$timeline_slides = function_exists('petromin_get_milestones') ? petromin_get_milestones() : [];
 
-    foreach ($source as $index => $slide_field) {
-        $default_slide = $default_slides[$index] ?? ($timeline_defaults['slides'][$index] ?? [
-            'year' => '',
-            'image' => [
-                'url' => '',
-                'alt' => '',
-            ],
-            'description' => '',
-        ]);
-
-        $year = trim($slide_field['year'] ?? ($slide_field['timeline_year'] ?? ''));
-        if ($year === '') {
-            $year = $default_slide['year'] ?? '';
-        }
-
-        $description = trim($slide_field['description'] ?? ($slide_field['slide_description'] ?? ''));
-        if ($description === '') {
-            $description = $default_slide['description'] ?? '';
-        }
-
-        $image_default = $default_slide['image'] ?? ['url' => '', 'alt' => $description ?: $year];
-        $image_alt_fallback = $image_default['alt'] ?? ($description ?: $year ?: $timeline_heading);
-        $image_data = petromin_get_acf_image_data($slide_field['image'] ?? null, 'full', $image_default['url'], $image_alt_fallback);
-        if (!$image_data && !empty($image_default['url'])) {
-            $image_data = $image_default;
-        }
-
-        if ($year === '' && !$image_data && $description === '') {
-            continue;
-        }
-
-        $slides[] = [
-            'year' => $year,
-            'image' => $image_data,
-            'description' => $description,
-        ];
-    }
-
-    return $slides;
-};
-
-$timeline_slides_input = is_array($timeline_field['slides'] ?? null) ? $timeline_field['slides'] : [];
-$timeline_slides = $build_timeline_slides($timeline_slides_input, $timeline_defaults['slides']);
-
+// Fallback: if no milestone CPT entries exist, keep existing ACF-based defaults (if present).
 if (empty($timeline_slides)) {
-    $timeline_slides = $build_timeline_slides($timeline_defaults['slides'], $timeline_defaults['slides']);
+    $timeline_slides_input = is_array($timeline_field['slides'] ?? null) ? $timeline_field['slides'] : [];
+    // Reuse the old builder logic locally as a small fallback (keeps UI unchanged).
+    $build_timeline_slides = static function (array $source, array $default_slides) use ($timeline_defaults, $timeline_heading) {
+        $slides = [];
+        foreach ($source as $index => $slide_field) {
+            $default_slide = $default_slides[$index] ?? ($timeline_defaults['slides'][$index] ?? ['year' => '', 'image' => ['url' => '', 'alt' => ''], 'description' => '']);
+            $year = trim($slide_field['year'] ?? ($slide_field['timeline_year'] ?? '')) ?: ($default_slide['year'] ?? '');
+            $description = trim($slide_field['description'] ?? ($slide_field['slide_description'] ?? '')) ?: ($default_slide['description'] ?? '');
+            $image_default = $default_slide['image'] ?? ['url' => '', 'alt' => $description ?: $year];
+            $image_alt_fallback = $image_default['alt'] ?? ($description ?: $year ?: $timeline_heading);
+            $image_data = petromin_get_acf_image_data($slide_field['image'] ?? null, 'full', $image_default['url'], $image_alt_fallback);
+            if (!$image_data && !empty($image_default['url'])) {
+                $image_data = $image_default;
+            }
+            if ($year === '' && !$image_data && $description === '') {
+                continue;
+            }
+            $slides[] = ['year' => $year, 'image' => $image_data, 'description' => $description];
+        }
+        return $slides;
+    };
+
+    $timeline_slides = $build_timeline_slides($timeline_slides_input, $timeline_defaults['slides']);
+    if (empty($timeline_slides)) {
+        $timeline_slides = $build_timeline_slides($timeline_defaults['slides'], $timeline_defaults['slides']);
+    }
 }
 
 $partner_highlights_icon = petromin_get_acf_image_data($partner_highlights_field['icon'] ?? null, 'full', $partner_highlights_defaults['icon']['url'], $partner_highlights_defaults['icon']['alt']);

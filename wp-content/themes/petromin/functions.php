@@ -797,6 +797,7 @@ add_action('acf/init', function () {
                     ],
                 ],
             ],
+            // Timeline Section: keep editable heading and navigation icon in ACF (slides moved to CPT 'milestone')
             [
                 'key' => 'field_home_timeline_section',
                 'label' => 'Timeline Section',
@@ -817,37 +818,6 @@ add_action('acf/init', function () {
                         'type' => 'image',
                         'return_format' => 'id',
                         'preview_size' => 'medium',
-                    ],
-                    [
-                        'key' => 'field_home_timeline_slides',
-                        'label' => 'Milestones',
-                        'name' => 'slides',
-                        'type' => 'repeater',
-                        'layout' => 'row',
-                        'button_label' => 'Add Milestone',
-                        'sub_fields' => [
-                            [
-                                'key' => 'field_home_timeline_year',
-                                'label' => 'Year',
-                                'name' => 'timeline_year',
-                                'type' => 'text',
-                            ],
-                            [
-                                'key' => 'field_home_timeline_description',
-                                'label' => 'Description',
-                                'name' => 'slide_description',
-                                'type' => 'textarea',
-                                'new_lines' => 'br',
-                            ],
-                            [
-                                'key' => 'field_home_timeline_image',
-                                'label' => 'Image',
-                                'name' => 'image',
-                                'type' => 'image',
-                                'return_format' => 'id',
-                                'preview_size' => 'medium',
-                            ],
-                        ],
                     ],
                 ],
             ],
@@ -1451,6 +1421,7 @@ add_action('acf/init', function () {
                     ],
                 ],
             ],
+            // Journey Section: keep editable heading in ACF (slides moved to CPT 'milestone')
             [
                 'key' => 'field_about_journey',
                 'label' => 'Journey Section',
@@ -1463,37 +1434,6 @@ add_action('acf/init', function () {
                         'label' => 'Heading',
                         'name' => 'journey_heading',
                         'type' => 'text',
-                    ],
-                    [
-                        'key' => 'field_about_journey_slides',
-                        'label' => 'Milestones',
-                        'name' => 'slides',
-                        'type' => 'repeater',
-                        'layout' => 'row',
-                        'button_label' => 'Add Milestone',
-                        'sub_fields' => [
-                            [
-                                'key' => 'field_about_journey_slide_year',
-                                'label' => 'Year Label',
-                                'name' => 'slide_year_label',
-                                'type' => 'text',
-                            ],
-                            [
-                                'key' => 'field_about_journey_slide_description',
-                                'label' => 'Description',
-                                'name' => 'slide_description',
-                                'type' => 'textarea',
-                                'new_lines' => 'br',
-                            ],
-                            [
-                                'key' => 'field_about_journey_slide_image',
-                                'label' => 'Image',
-                                'name' => 'slide_image',
-                                'type' => 'image',
-                                'return_format' => 'id',
-                                'preview_size' => 'medium',
-                            ],
-                        ],
                     ],
                 ],
             ],
@@ -2921,6 +2861,46 @@ add_action('acf/init', function () {
         ),
     ]);
 
+    // ACF fields for Milestone CPT - small editor fields to manage year and image for each milestone.
+    acf_add_local_field_group([
+        'key' => 'group_milestone_fields',
+        'title' => 'Milestone Fields',
+        'fields' => [
+            [
+                'key' => 'field_milestone_year',
+                'label' => 'Year / Label',
+                'name' => 'milestone_year',
+                'type' => 'text',
+                'instructions' => 'Optional year or short label for the milestone (falls back to post title).',
+            ],
+            [
+                'key' => 'field_milestone_description',
+                'label' => 'Milestone Description',
+                'name' => 'milestone_description',
+                'type' => 'textarea',
+                'new_lines' => 'br',
+                'instructions' => 'Short description shown under the year in the slider. You can also use the post content; this field takes precedence.',
+            ],
+            [
+                'key' => 'field_milestone_image',
+                'label' => 'Milestone Image',
+                'name' => 'milestone_image',
+                'type' => 'image',
+                'return_format' => 'array',
+                'preview_size' => 'medium',
+            ],
+        ],
+        'location' => [
+            [
+                [
+                    'param' => 'post_type',
+                    'operator' => '==',
+                    'value' => 'milestone',
+                ],
+            ],
+        ],
+    ]);
+
 });
 
 
@@ -3263,3 +3243,88 @@ function reflush_rewrite_rules() {
     flush_rewrite_rules();
 }
 add_action('init', 'reflush_rewrite_rules');
+
+// Register a simple CPT to store timeline/journey milestones so both home and about pages
+// can source the same content for their swipers.
+function create_milestone_post_type() {
+    $labels = array(
+        'name' => 'Milestones',
+        'singular_name' => 'Milestone',
+        'menu_name' => 'Milestones',
+        'name_admin_bar' => 'Milestone',
+        'add_new' => 'Add New',
+        'add_new_item' => 'Add New Milestone',
+        'new_item' => 'New Milestone',
+        'edit_item' => 'Edit Milestone',
+        'view_item' => 'View Milestone',
+        'all_items' => 'All Milestones',
+    );
+
+    $args = array(
+        'labels' => $labels,
+        'public' => true,
+        'show_ui' => true,
+        'show_in_menu' => true,
+        'supports' => array('title','editor','thumbnail','page-attributes','custom-fields'),
+        'has_archive' => false,
+        'rewrite' => array('slug' => 'milestones', 'with_front' => false),
+        'show_in_rest' => true,
+    );
+
+    register_post_type('milestone', $args);
+}
+add_action('init', 'create_milestone_post_type', 0);
+
+/**
+ * Helper to fetch milestone posts and return normalized slide array used by the swipers.
+ * Each item: ['year'=>string, 'description'=>string, 'image'=>['url'=>..., 'alt'=>...]]
+ */
+function petromin_get_milestones(array $args = []) {
+    $defaults = [
+        'post_type' => 'milestone',
+        'posts_per_page' => -1,
+        'post_status' => 'publish',
+        'orderby' => 'menu_order date',
+        'order' => 'ASC',
+    ];
+
+    $query_args = array_merge($defaults, $args);
+    $q = new WP_Query($query_args);
+    $slides = [];
+    if (!empty($q->posts)) {
+        foreach ($q->posts as $p) {
+            $post_id = $p->ID;
+            // Allow an optional ACF field 'milestone_year' or fallback to title
+            $year = function_exists('get_field') ? trim((string) get_field('milestone_year', $post_id) ?: '') : '';
+            if ($year === '') {
+                $year = get_the_title($post_id);
+            }
+
+            // Prefer ACF 'milestone_description' (allows controlled editor input). Fallback to post content.
+            $acf_description = function_exists('get_field') ? get_field('milestone_description', $post_id) : null;
+            if ($acf_description !== null && $acf_description !== '') {
+                $description = trim((string) $acf_description);
+            } else {
+                $description_raw = get_post_field('post_content', $post_id) ?: '';
+                $description = trim($description_raw);
+            }
+
+            // Prefer ACF image field 'milestone_image' if present, otherwise use featured image
+            $acf_image_field = function_exists('get_field') ? get_field('milestone_image', $post_id) : null;
+            if ($acf_image_field) {
+                $image = petromin_get_acf_image_data($acf_image_field, 'full', '', $year ?: '');
+            } else {
+                $image = petromin_get_acf_image_data(get_post_thumbnail_id($post_id), 'full', '', $year ?: '');
+            }
+
+            $slides[] = [
+                'year' => $year,
+                'description' => $description,
+                'image' => $image ?: ['url' => '', 'alt' => ''],
+            ];
+        }
+        wp_reset_postdata();
+    }
+
+    return $slides;
+}
