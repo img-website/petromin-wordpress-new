@@ -3265,7 +3265,7 @@ function create_milestone_post_type() {
         'public' => true,
         'show_ui' => true,
         'show_in_menu' => true,
-        'supports' => array('title','editor','thumbnail','page-attributes','custom-fields'),
+        'supports' => array('thumbnail','page-attributes','custom-fields'),
         'has_archive' => false,
         'rewrite' => array('slug' => 'milestones', 'with_front' => false),
         'show_in_rest' => true,
@@ -3328,3 +3328,74 @@ function petromin_get_milestones(array $args = []) {
 
     return $slides;
 }
+
+/**
+ * Customize admin list columns for Milestone CPT
+ * Replace the default Title column with a Milestone Year column
+ */
+add_filter('manage_milestone_posts_columns', function ($columns) {
+    $new = [];
+    // keep the checkbox
+    if (isset($columns['cb'])) {
+        $new['cb'] = $columns['cb'];
+    }
+
+    // Add our Milestone Year column (shows ACF 'milestone_year' or fallbacks)
+    $new['milestone_year'] = 'Milestone Year';
+
+    // preserve the date column if present
+    if (isset($columns['date'])) {
+        $new['date'] = $columns['date'];
+    }
+
+    return $new;
+}, 10, 1);
+
+add_action('manage_milestone_posts_custom_column', function ($column, $post_id) {
+    if ($column === 'milestone_year') {
+        $year = '';
+
+        // Prefer ACF field if available
+        if (function_exists('get_field')) {
+            $acf_year = get_field('milestone_year', $post_id);
+            if (!empty($acf_year)) {
+                $year = trim((string) $acf_year);
+            }
+        }
+
+        // Fallback to post title (if any)
+        if ($year === '') {
+            $title = get_the_title($post_id);
+            if (!empty($title)) {
+                $year = $title;
+            }
+        }
+
+        // Final fallback: use post date
+        if ($year === '') {
+            $year = get_post_field('post_date', $post_id);
+        }
+
+        echo esc_html($year);
+    }
+}, 10, 2);
+
+// Make the column sortable by meta (optional - helps if you store year in meta)
+add_filter('manage_edit-milestone_sortable_columns', function ($columns) {
+    $columns['milestone_year'] = 'milestone_year';
+    return $columns;
+});
+
+// Adjust query when sorting by milestone_year (meta key)
+add_action('pre_get_posts', function ($query) {
+    if (!is_admin() || !$query->is_main_query()) {
+        return;
+    }
+
+    $orderby = $query->get('orderby');
+    if ($orderby === 'milestone_year') {
+        // Sort by meta value (milestone_year). If meta not present, fallback is not handled here.
+        $query->set('meta_key', 'milestone_year');
+        $query->set('orderby', 'meta_value');
+    }
+});
