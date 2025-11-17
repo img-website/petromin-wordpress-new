@@ -3265,7 +3265,7 @@ function create_milestone_post_type() {
         'public' => true,
         'show_ui' => true,
         'show_in_menu' => true,
-        'supports' => array('thumbnail','page-attributes','custom-fields'),
+        'supports' => array('page-attributes','custom-fields'),
         'has_archive' => false,
         'rewrite' => array('slug' => 'milestones', 'with_front' => false),
         'show_in_rest' => true,
